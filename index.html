@@ -5,413 +5,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produktionsplan: KRENKARIRNIR</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: En dashboard-tilgang med et centralt filter. Hovedvisningen er en tidslinje af kort, der repræsenterer hver optagelsesdag. Dette giver et hurtigt overblik. Den vigtigste interaktion er et navnefilter, der lader cast/crew øjeblikkeligt se deres personlige tidsplan, hvilket er deres primære behov. Klik på et kort åbner en modal med detaljeret information for den dag, hvilket undgår rod i hovedvisningen. -->
-    <!-- Visualization & Content Choices: Tidslinje (HTML/Tailwind Grid) -> Organiser -> Viser alle optagedage kronologisk -> Klik for detaljer -> Giver overblik og adgang til dybdegående info. Navnefilter (HTML Select + JS) -> Organiser -> Filtrerer tidslinjen baseret på valgt person -> Gør det let at finde personlig tidsplan. Dagsdetaljer (HTML Modal + JS) -> Informer -> Viser fuld info for en valgt dag -> Giver al nødvendig information on-demand. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FDFBF8; /* Warm neutral background */
-            color: #4A4A4A;
-        }
-        .card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-        .scene-item {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-        .scene-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
+            background-color: #f3f4f6;
+            color: #1f2937;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="p-4 sm:p-8">
 
-    <div class="container mx-auto p-4 md:p-8">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold text-[#3A3A3A]">Produktionsplan</h1>
-            <p class="text-xl text-gray-600 mt-2">"KRENKARIRNIR"</p>
-            <p class="text-gray-700 mt-4 max-w-2xl mx-auto">Denne webside giver dig et interaktivt overblik over produktionsplanen for "KRENKARIRNIR". Brug filteret nedenfor til at finde din personlige tidsplan, og klik på hver dag for at se detaljerede informationer.</p>
-        </header>
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-10 border-t-8 border-blue-500">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-center text-gray-900 mb-2">
+            Produktionsplan
+        </h1>
+        <h2 class="text-xl sm:text-2xl font-bold text-center text-blue-600 mb-8">
+            “KRENKARIRNIR”
+        </h2>
 
-        <section id="controls" class="mb-8 p-6 bg-white rounded-xl shadow-md flex flex-col md:flex-row items-center justify-center gap-4">
-            <label for="personFilter" class="text-lg font-medium text-gray-700">Vis tidsplan for:</label>
-            <select id="personFilter" class="p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#E6A473] focus:border-[#E6A473] w-full md:w-auto max-w-sm">
-                <option value="all">Alle Involverede</option>
-            </select>
-        </section>
+        <p class="text-center text-gray-600 mb-10">
+            Denne masterplan giver et hurtigt overblik over den samlede produktion. <br>
+            Klik på et navn for at se en persons fulde tidsplan.
+        </p>
 
-        <main id="plan-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <p class="col-span-full text-center text-gray-500" id="no-days-message">Vælg en person fra listen for at se deres tidsplan.</p>
-        </main>
-    </div>
+        <!-- Skuespillere Section -->
+        <div class="mb-10">
+            <h3 class="text-2xl font-semibold mb-4 text-gray-800 border-b-2 border-gray-200 pb-2">Skuespillere</h3>
+            <div class="space-y-4">
+                
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Esther á Fjallinum (Johanna)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>1. & 2. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 07:00. Slut kl. 19:00.</li>
+                        <li><strong>5. nov.:</strong> Optagelse af "hjemme-scene", Dýrindalsgøta 66. Mødetid kl. 15:15. Slut kl. 19:30.</li>
+                        <li><strong>7. nov.:</strong> Optagelse af "chef kontor", Studenterskolen i Hoydølum. Mødetid kl. 15:15. Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Optagelse af "køre scener", Studenterskolen i Hoydølum. Mødetid kl. 13:15. Slut kl. 18:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 07:00. Slut kl. 19:00.</li>
+                    </ul>
+                </details>
 
-    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
-            <div class="sticky top-0 bg-white p-6 border-b border-gray-200 flex justify-between items-center">
-                <div>
-                    <h2 id="modal-title" class="text-2xl font-bold text-[#3A3A3A]"></h2>
-                    <p id="modal-location" class="text-md text-gray-600"></p>
-                </div>
-                <button id="closeModal" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Hans Tórgarð (Holgar)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>1. & 2. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 07:00. Slut kl. 19:00.</li>
+                        <li><strong>7. nov.:</strong> Optagelse af "chef kontor", Studenterskolen i Hoydølum. Mødetid kl. 15:15. Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Optagelse af "køre scener", Studenterskolen i Hoydølum. Mødetid kl. 13:15. Slut kl. 18:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 07:00. Slut kl. 19:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Elsa Maria Magnusardóttir Olsen (Ruth)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>18. okt.:</strong> Optagelse af "Flash back 4", Brandan.</li>
+                        <li><strong>1. & 2. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:30. Slut kl. 19:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:30. Slut kl. 19:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Hjálmar Dam (Høgni)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>1. & 2. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:30. Slut kl. 19:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:30. Slut kl. 19:00.</li>
+                        <li><strong>24. nov.:</strong> Optagelse af "Flash back 3", Tjarnir. Mødetid kl. 15:00. Slut kl. 21:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Marius DC (Danny)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>1. & 2. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:00. Slut kl. 19:00.</li>
+                        <li><strong>3. nov.:</strong> Optagelse af "Flashback 1", Sirkus & hotelværelse. Mødetid kl. 14:15. Slut kl. 23:30.</li>
+                        <li><strong>22. & 23. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:00. Slut kl. 19:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Bjørn Simonsen Ulvedal (Líggjas)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>1. & 2. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:00. Slut kl. 19:00.</li>
+                        <li><strong>4. nov.:</strong> Optagelse af "Flashback 2", Akranesgøta 11. Mødetid kl. 15:30. Slut kl. 19:30.</li>
+                        <li><strong>22. & 23. nov.:</strong> Optagelse i terapilokale, Studenterskolen i Hoydølum. Mødetid kl. 06:00. Slut kl. 19:00.</li>
+                    </ul>
+                </details>
+                
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Hanna Flóvinsdóttir
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>3. nov.:</strong> Optagelse af "Flashback 1", Sirkus & hotelværelse. Mødetid kl. 14:15. Slut kl. 23:30.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Súsanna Laursen & Sóley Heradóttir Hammer
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>3. nov.:</strong> Optagelse af "Flashback 1", Sirkus. Mødetid kl. 14:15. Fri kl. 17:30.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Lív Bruun Muller & Ása Helena Brynjardóttir
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>4. nov.:</strong> Optagelse af "Flashback 2", Akranesgøta 11. Mødetid kl. 15:30. Slut kl. 19:30.</li>
+                    </ul>
+                </details>
+                
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Páll Oddur
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene", Dýrindalsgøta 66. Mødetid kl. 15:15. Slut kl. 19:30.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Thora Augustinussen (Chefen)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>7. nov.:</strong> Optagelse af "Chef kontor", Studenterskolen i Hoydølum. Mødetid kl. 15:15. Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Optagelse af "Køre scener", Studenterskolen i Hoydølum. Mødetid kl. 13:15. Slut kl. 18:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Helena, Tórur við Áir & Astrið Gullborgardóttir
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir.</li>
+                        <li><strong>Helena:</strong> Mødetid kl. 15:00. Slut kl. 17:00.</li>
+                        <li><strong>Tórur & Astrið:</strong> Mødetid kl. 17:30. Slut kl. 21:00.</li>
+                    </ul>
+                </details>
+                
             </div>
-            <div class="p-6 space-y-6">
-                <div>
-                    <h3 class="font-semibold text-lg text-gray-800 border-b pb-2 mb-3">Program for dagen</h3>
-                    <div id="modal-program" class="text-gray-700 whitespace-pre-wrap"></div>
-                </div>
-                <div>
-                    <h3 class="font-semibold text-lg text-gray-800 border-b pb-2 mb-3">Involverede Skuespillere</h3>
-                    <ul id="modal-actors" class="list-disc list-inside space-y-1"></ul>
-                </div>
-                <div>
-                    <h3 class="font-semibold text-lg text-gray-800 border-b pb-2 mb-3">Involveret Crew</h3>
-                    <ul id="modal-crew" class="list-disc list-inside space-y-1"></ul>
-                </div>
-                 <div>
-                    <h3 class="font-semibold text-lg text-gray-800 border-b pb-2 mb-3">Scener der skal optages</h3>
-                    <div id="modal-scenes-container" class="text-gray-700 bg-gray-50 p-4 rounded-lg"></div>
-                </div>
+        </div>
+
+        <!-- Crew Section -->
+        <div class="mb-10">
+            <h3 class="text-2xl font-semibold mb-4 text-gray-800 border-b-2 border-gray-200 pb-2">Crew</h3>
+            <div class="space-y-4">
+                
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Michael Koba (Producer / Manus)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>17. okt.:</strong> Klargøring af terapilokale.</li>
+                        <li><strong>18. okt.:</strong> Optagelse af "Flash back 4".</li>
+                        <li><strong>1. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Slut kl. 19:00.</li>
+                        <li><strong>3. nov.:</strong> Optagelse af "Flashback 1". Mødetid kl. 13:00. Slut kl. 23:30.</li>
+                        <li><strong>4. nov.:</strong> Optagelse af "Flashback 2". Mødetid kl. 15:00. Slut kl. 19:30.</li>
+                        <li><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 14:00. Slut kl. 19:30.</li>
+                        <li><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 14:00. Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Optagelse af "Køre scener". Mødetid kl. 13:00. Slut kl. 18:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Slut kl. 19:00.</li>
+                        <li><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Slut kl. 21:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Thomas Koba (Instruktør)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>17. okt.:</strong> Mødetid kl. 11:00 til klargøring.</li>
+                        <li><strong>18. okt.:</strong> Optagelse af "Flash back 4".</li>
+                        <li><strong>1. & 2. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>3. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Flashback 1". Slut kl. 23:30.</li>
+                        <li><strong>4. nov.:</strong> Mødetid kl. 15:00 til optagelse af "Flashback 2". Slut kl. 19:30.</li>
+                        <li><strong>5. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Esther hjemme-scene". Slut kl. 19:30.</li>
+                        <li><strong>7. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Chef kontor". Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Køre scener". Slut kl. 18:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>24. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Flash back 3". Slut kl. 21:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Jónfinn Stenberg (Foto)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>17. okt.:</strong> Mødetid kl. 16:00 til klargøring.</li>
+                        <li><strong>1. & 2. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>3. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Flashback 1". Slut kl. 23:30.</li>
+                        <li><strong>22. & 23. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                    </ul>
+                </details>
+                
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Hans Petur Hansen (Lys)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>17. okt.:</strong> Mødetid kl. 11:00 til klargøring.</li>
+                        <li><strong>18. okt.:</strong> Optagelse af "Flash back 4".</li>
+                        <li><strong>1. & 2. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>3. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Flashback 1". Slut kl. 23:30.</li>
+                        <li><strong>4. nov.:</strong> Mødetid kl. 15:00 til optagelse af "Flashback 2". Slut kl. 19:30.</li>
+                        <li><strong>5. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Esther hjemme-scene". Slut kl. 19:30.</li>
+                        <li><strong>7. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Chef kontor". Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Køre scener". Slut kl. 18:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>24. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Flash back 3". Slut kl. 21:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Anna Kristin Bæk (Props & design)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>17. okt.:</strong> Klargøring af terapilokale.</li>
+                        <li><strong>18. okt.:</strong> Optagelse af "Flash back 4".</li>
+                        <li><strong>1. & 2. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>3. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Flashback 1". Slut kl. 23:30.</li>
+                        <li><strong>4. nov.:</strong> Mødetid kl. 15:00 til optagelse af "Flashback 2". Slut kl. 19:30.</li>
+                        <li><strong>5. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Esther hjemme-scene". Slut kl. 19:30.</li>
+                        <li><strong>7. nov.:</strong> Mødetid kl. 10:00 til optagelse af "Chef kontor". Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Køre scener". Slut kl. 18:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>24. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Flash back 3". Slut kl. 21:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Høgni Fagraberg (Lyd)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>17. okt.:</strong> Mødetid kl. 16:00 til klargøring.</li>
+                        <li><strong>1. & 2. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Ronni Poulsen (Lyd)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>3. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Flashback 1". Slut kl. 23:30.</li>
+                        <li><strong>4. nov.:</strong> Mødetid kl. 15:00 til optagelse af "Flashback 2". Slut kl. 19:30.</li>
+                        <li><strong>5. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Esther hjemme-scene". Slut kl. 19:30.</li>
+                        <li><strong>7. nov.:</strong> Mødetid kl. 14:00 til optagelse af "Chef kontor". Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Mødetid kl. 13:00 til optagelse af "Køre scener". Slut kl. 18:00.</li>
+                        <li><strong>24. nov.:</strong> Mødetid kl. 15:00 til optagelse af "Flash back 3". Slut kl. 21:00.</li>
+                    </ul>
+                </details>
+
+                <details class="bg-gray-50 rounded-lg shadow-sm p-4 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <summary class="font-bold text-lg text-gray-700">
+                        Julia Jacobsen (Make-up)
+                    </summary>
+                    <ul class="list-disc list-inside mt-2 text-gray-600 space-y-2 pl-4">
+                        <li><strong>1. & 2. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>3. nov.:</strong> Mødetid kl. 14:15 til optagelse af "Flashback 1". Slut kl. 23:30.</li>
+                        <li><strong>4. nov.:</strong> Mødetid kl. 15:30 til optagelse af "Flashback 2". Slut kl. 19:30.</li>
+                        <li><strong>5. nov.:</strong> Mødetid kl. 15:15 til optagelse af "Esther hjemme-scene". Slut kl. 19:30.</li>
+                        <li><strong>7. nov.:</strong> Mødetid kl. 15:15 til optagelse af "Chef kontor". Slut kl. 21:30.</li>
+                        <li><strong>8. nov.:</strong> Mødetid kl. 13:15 til optagelse af "Køre scener". Slut kl. 18:00.</li>
+                        <li><strong>22. & 23. nov.:</strong> Mødetid kl. 06:00 til optagelse i terapilokale. Slut kl. 19:00.</li>
+                        <li><strong>24. nov.:</strong> Mødetid kl. 15:00 til "kaffemaskin scene", derefter kl. 17:30 til "advokat scenen". Slut kl. 21:00.</li>
+                    </ul>
+                </details>
             </div>
         </div>
     </div>
-
-    <script>
-        const productionData = [
-            {
-                date: "Fredag den 17. oktober",
-                location: "Aulan i Studenterskolen i Hoydølum",
-                purpose: "Klargøring af 'terapi-lokale'",
-                actors: [],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 16:00 (med foto- og lyd afd.)", finish: "Når arbejdet er slut" },
-                    { name: "Thomas Koba", role: "Instruktør", meet: "Kl. 16:00 (med foto- og lyd afd.)", finish: "Når arbejdet er slut" },
-                    { name: "Jónfinn Stenberg", role: "Foto", meet: "Kl. 16:00 (med foto- og lyd afd.)", finish: "Når arbejdet er slut" },
-                    { name: "Hans Petur Hansen", role: "Ljós", meet: "Kl. 11:00 (lys afd.)", finish: "Når arbejdet er slut" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Når det passer", finish: "Når arbejdet er slut" },
-                    { name: "Høgni Fagraberg", role: "Lyd", meet: "Kl. 16:00 (med foto- og lyd afd.)", finish: "Når arbejdet er slut" }
-                ],
-                program: "Kl. 11:00: Lys afdeling møder.\nKl. 16:00: Foto- og lyd afdeling møder (Hans Petur, Høgni F., Jónfinn, Thomas).\nAnna Kristin Bæk møder, når det passer.\nFormål: Terapi-lokalet bliver klargjort, så optagelser kan påbegyndes tidligt næste morgen.",
-                scenes: ["Ingen scener, kun klargøring."]
-            },
-            {
-                date: "Lørdag den 1. november & Søndag den 2. november",
-                location: "Aulan i Studenterskolen i Hoydølum",
-                purpose: "Terapiscener",
-                actors: [
-                    { name: "Esther á Fjallinum", role: "Johanna, psyk. terapeut", meet: "Kl. 07:00", finish: "Kl. 19:00" },
-                    { name: "Hans Tórgarð", role: "Holgar, den intellektuelle observatør", meet: "Kl. 07:00", finish: "Kl. 19:00" },
-                    { name: "Elsa Maria Magnusardóttir Olsen", role: "Ruth, kvinnuligur chefur", meet: "Kl. 06:30", finish: "Kl. 19:00" },
-                    { name: "Hjálmar Dam", role: "Høgni Nielsen, business man", meet: "Kl. 06:30", finish: "Kl. 19:00" },
-                    { name: "Marius DC", role: "Danny Bergsson, Den Unge", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Bjørn Simonsen Ulvedal", role: "Líggjas Dahl, í rullistólinum", meet: "Kl. 06:01", finish: "Kl. 19:00" }
-                ],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Thomas Koba", role: "Instruktør", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Jónfinn Stenberg", role: "Foto", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Hans Petur Hansen", role: "Ljós", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Høgni Fagraberg", role: "Lyd", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Julia Jacobsen", role: "make-up", meet: "Kl. 06:01", finish: "Kl. 19:00" }
-                ],
-                program: "06:00 Morgenmad med kaffe/te\n06:01 Mødetid: Bjørn Ulvedal, Marius DC til make-up og tøj + alle crew deltagere\n06:30 Hjálmar, Elsa Maria møder til make-up og tøj\n07:00 Esther og Hans møder til make-up og tøj\n08:00 Optagelse påbegyndes\n10:30 PAUSE\n10:50 Optagelser fortsætter\n12:30 Frokost (gryderet fra Jan)\n13:15 Optagelse fortsætter\n15:30 Pause (kaffe & kage)\n15:45 Optagelse påbegyndes igen\n19:00 SLUT",
-                scenes: [
-                    "Terapisession 01",
-                    "Terapissesion 02",
-                    "Terapisession 03",
-                    "Terapisession 04",
-                    "Terapisession 05 (Ruth'sa monolog)"
-                ]
-            },
-            {
-                date: "Mandag den 3. november",
-                location: "Sirkus & hotel værelse",
-                purpose: "Flashback scene 1 (Bar & Hotelværelse)",
-                actors: [
-                    { name: "Marius DC", role: "Danny Bergsson, Den Unge", meet: "Kl. 14:00", finish: "Kl. 23:30" },
-                    { name: "Hanna Flóvinsdóttir", role: "Kvinde på bar 1 og hotelværelse", meet: "Kl. 14:00", finish: "Kl. 23:30" },
-                    { name: "Sóley Heradóttir Hammer", role: "Kvinde på bar 2", meet: "Kl. 14:00", finish: "Kl. 18:30" },
-                    { name: "Súsanna Laursen", role: "Kvinde på bar 3", meet: "Kl. 14:00", finish: "Kl. 18:30" }
-                ],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 13:00", finish: "Kl. 23:30" },
-                    { name: "Thomas Koba", role: "Instruktør", meet: "Kl. 13:00", finish: "Kl. 23:30" },
-                    { name: "Jónfinn Stenberg", role: "Foto", meet: "Kl. 13:00", finish: "Kl. 23:30" },
-                    { name: "Hans Petur Hansen", role: "Ljós", meet: "Kl. 13:00", finish: "Kl. 23:30" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Kl. 13:00", finish: "Kl. 23:30" },
-                    { name: "Ronni Poulsen", role: "Lyd", meet: "Kl. 13:00", finish: "Kl. 23:30" },
-                    { name: "Julia Jacobsen", role: "make-up", meet: "Kl. 14:00", finish: "Kl. 23:30" }
-                ],
-                program: "13:00 Teknisk crew gør scenen i Sirkus klar (HPH, Thomas, Jónfinn, Anna Kristin, Ronni P.)\n14:00 Skuespillere og make-up møder (Marius DC, Hanna F. , Sóley og Súsanna)\n15:00 Optagelse i Sirkus begynder\n18:30 Statisterne Sóley og Súsanna har fri\n18:35 Spisepause (gryderet fra Jan)\n18:55 Afmontering og afydning av lokale\n19:20 Opsætning av hotel scene på location ??? (Marius DC og Hanna F.)\n20:45 Optagelse påbegyndes af hotel scene og skal der sminkes lidt ekstra efter at kvinden er slået (Julia Jacobsen er i make-up)\n23:30 SLUT",
-                scenes: [
-                    "Barrin í Sirkus",
-                    "Hotelkamarið / Danny og kvinnan"
-                ]
-            },
-            {
-                date: "Tirsdag den 4. november",
-                location: "Akranesgøta 11",
-                purpose: "Flashback scene 2 (Fest)",
-                actors: [
-                    { name: "Bjørn Simonsen Ulvedal", role: "Líggjas Dahl", meet: "Kl. 15:30", finish: "Kl. 19:30" },
-                    { name: "Lív Bruun Muller", role: "Flash back Líggjas - girl 1", meet: "Kl. 15:30", finish: "Kl. 19:30" },
-                    { name: "Ása Helena Brynjardóttir", role: "Flash back Líggjas - girl 2", meet: "Kl. 15:30", finish: "Kl. 19:30" },
-                    { name: "André", role: "Flash back Líggjas - man 1", meet: "Kl. 15:30", finish: "Kl. 19:30" }
-                ],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 15:00", finish: "Kl. 19:30" },
-                    { name: "Thomas Koba", role: "Instruktør + foto", meet: "Kl. 15:00", finish: "Kl. 19:30" },
-                    { name: "Hans Petur Hansen", role: "Ljós", meet: "Kl. 15:00", finish: "Kl. 19:30" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Kl. 15:00", finish: "Kl. 19:30" },
-                    { name: "Ronni Poulsen", role: "Lyd", meet: "Kl. 15:00", finish: "Kl. 19:30" },
-                    { name: "Julia Jacobsen", role: "make-up", meet: "Kl. 15:30", finish: "Kl. 19:30" },
-                    { name: "Petur Háberg", role: "Location contact", meet: "Kl. 15:00", finish: "Kl. 19:30" }
-                ],
-                program: "15:00 Crew gør klart (Hans Petur, Thomas, Michael, Anna Kristin, Ronni)\n15:30 Skuespillere møder og make-up møder (Bjørn, Lív Bruun, Ása og ???)\n15:30 Julia møder og sørger for make-up\n16:30 Optagelse påbegyndes\n19:30 Slut",
-                scenes: [
-                    "Ballið í køkinum.",
-                    "Montage.",
-                    "Líggjas voiceover",
-                    "Líggjas følir uppá Lív"
-                ]
-            },
-            {
-                date: "Onsdag den 5. november",
-                location: "Dýrindalsgøta 66",
-                purpose: "Esther's hjemmescener",
-                actors: [
-                    { name: "Páll Oddur", role: "Maðurin hjá Johannu", meet: "Kl. 15:15", finish: "Kl. 19:30" },
-                    { name: "Esther á Fjallinum", role: "Johanna, psyk. terapeut", meet: "Kl. 15:15", finish: "Kl. 19:30" }
-                ],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 14:00", finish: "Kl. 19:30" },
-                    { name: "Thomas Koba", role: "Instruktør", meet: "Kl. 14:00", finish: "Kl. 19:30" },
-                    { name: "Jónfinn Stenberg", role: "Foto", meet: "Kl. 14:00", finish: "Kl. 19:30" },
-                    { name: "Hans Petur Hansen", role: "Ljós", meet: "Kl. 14:00", finish: "Kl. 19:30" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Kl. 14:00", finish: "Kl. 19:30" },
-                    { name: "Ronni Poulsen", role: "Lyd", meet: "Kl. 14:00", finish: "Kl. 19:30" },
-                    { name: "Julia Jacobsen", role: "make-up", meet: "Kl. 15:15", finish: "Kl. 19:30" }
-                ],
-                program: "Location: Dýrindalsgøta 66, 188 Hoyvík\n14:00 \t Crew møder (Hans Petur, Thomas, Ronni, Høgni Fagraberg\n15:15\t Skuespillere møder (Páll Oddur og Esther). Julia ordner make-up\n16:30 \t Optagelse starter\n19:30\t SLUT",
-                scenes: [
-                    "Sovikamar - Jóhanna og maðurin í sovikamari.",
-                    "Sovikamar endasena - Jóhanna og maðurin."
-                ]
-            },
-            {
-                date: "Lørdag den 8. november",
-                location: "Dýrindalsgøta 66 (mødested), kørescener i Føroyar",
-                purpose: "Køre-scener og parkering",
-                actors: [
-                    { name: "Esther á Fjallinum", role: "Johanna, psyk. terapeut", meet: "Kl. 13:15", finish: "Kl. 18:00" },
-                    { name: "Hans Tórgarð", role: "Holgar, den intellektuelle observatør", meet: "Kl. 13:15", finish: "Kl. 18:00" },
-                    { name: "Politi 1", role: "Ukendt skuespiller", meet: "Kl. 13:15", finish: "Kl. 18:00" },
-                    { name: "Politi 2", role: "Ukendt skuespiller", meet: "Kl. 13:15", finish: "Kl. 18:00" }
-                ],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 13:00", finish: "Kl. 18:00" },
-                    { name: "Thomas Koba", role: "Instruktør + camera", meet: "Kl. 13:00", finish: "Kl. 18:00" },
-                    { name: "Hans Petur Hansen", role: "Ljós", meet: "Kl. 13:00", finish: "Kl. 18:00" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Kl. 13:00", finish: "Kl. 18:00" },
-                    { name: "Ronni Poulsen", role: "Lyd", meet: "Kl. 13:00", finish: "Kl. 18:00" },
-                    { name: "Julia Jacobsen", role: "make-up", meet: "Kl. 13:15", finish: "Kl. 18:00" }
-                ],
-                program: "Location (mødested): \t Dýrindalsgøta 66, 188 Hoyvík\n13:00 \t Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)\n13:15\t Skuespillere møder (Hans Tórgarð,  Esther, politi 1 og politi 2). \t Julia ordner make-up\n14:15 \t Optagelse starter\n18:00\t SLUT",
-                scenes: [
-                    "Parkeringsproblemer.",
-                    "Holgar stjæler parkeringsplads hjá Jóhonnu.",
-                    "Bilscenan: Jóhanna fer ind i bilen, ser politi, kører til Havnar."
-                ]
-            },
-            {
-                date: "Lørdag den 22. november & Søndag den 23. november",
-                location: "Aulan i Studenterskolen i Hoydølum",
-                purpose: "Terapiscener og kontor",
-                actors: [
-                    { name: "Esther á Fjallinum", role: "Johanna, psyk. terapeut", meet: "Kl. 07:00", finish: "Kl. 19:00" },
-                    { name: "Hans Tórgarð", role: "Holgar, den intellektuelle observatør", meet: "Kl. 07:00", finish: "Kl. 19:00" },
-                    { name: "Elsa Maria Magnusardóttir Olsen", role: "Ruth, kvinnuligur chefur", meet: "Kl. 06:30", finish: "Kl. 19:00" },
-                    { name: "Hjálmar Dam", role: "Høgni Nielsen, business man", meet: "Kl. 06:30", finish: "Kl. 19:00" },
-                    { name: "Marius DC", role: "Danny Bergsson, tann ungi", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Bjørn Simonsen Ulvedal", role: "Líggjas Dahl, í rullistólinum", meet: "Kl. 06:01", finish: "Kl. 19:00" }
-                ],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Thomas Koba", role: "Instruktør", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Julia Jacobsen", role: "make-up", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Jónfinn Stenberg", role: "Foto", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Ukendt Lysmand", role: "Lys", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Kl. 06:01", finish: "Kl. 19:00" },
-                    { name: "Høgni Fagraberg", role: "Lyd", meet: "Kl. 06:01", finish: "Kl. 19:00" }
-                ],
-                program: "06:00 Morgenmad med kaffe/te\n06:01 Mødetid: Bjørn Ulvedal, Marius DC til make-up og tøj + alle crew deltagere\n06:30 Hjálmar, Elsa Maria møder til make-up og tøj\n07:00 Esther og Hans møder til make-up og tøj\n08:00 Optagelse påbegyndes\n10:30 PAUSE\n10:50 Optagelse fortsætter\n12:30 Frokost (gryderet fra Jan)\n13:15 Optagelse fortsætter\n15:30 Pause (kaffe & kage)\n15:45 Optagelse påbegyndes igen\n19:00 SLUT\n20:00 Lokalet er ryddet",
-                scenes: [
-                    "Stjórin á gongini + kontór",
-                    "Stjórin hjá Jóhonnu bjóðar Holgar við í bólkin."
-                ]
-            },
-            {
-                date: "Mandag den 24. november",
-                location: "Tjarnir",
-                purpose: "Flashback scene 3",
-                actors: [
-                    { name: "Helena", role: "Flash back - Høgni Nielsen - girl 1", meet: "Kl. 15:00", finish: "Kl. 17:00" },
-                    { name: "Ukendt statist 1", role: "Flash back - Høgni Nielsen - girl 2", meet: "Kl. 15:00", finish: "Kl. 17:00" },
-                    { name: "Tórur við Áir", role: "Flash back - Høgni Nielsen - advokat 1", meet: "Kl. 18:00", finish: "Kl. 21:00" },
-                    { name: "Astrið Gullborgardóttir", role: "Flash back - Høgni Nielsen - advokat 2", meet: "Kl. 18:00", finish: "Kl. 21:00" },
-                    { name: "Hjálmar Dam", role: "Høgni Nielsen", meet: "Kl. 15:00 (til kaffe-scenen), Kl. 18:00 (til advokat-scenen)", finish: "Kl. 21:00" }
-                ],
-                crew: [
-                    { name: "Michael Koba", role: "Framleiðari / manus", meet: "Kl. 14:00 (til klargøring), Kl. 17:45 (til opsætning)", finish: "Kl. 21:00" },
-                    { name: "Thomas Koba", role: "Instruktør + foto", meet: "Kl. 14:00 (til klargøring), Kl. 17:45 (til opsætning)", finish: "Kl. 21:00" },
-                    { name: "Hans Petur Hansen", role: "Ljós", meet: "Kl. 14:00 (til klargøring), Kl. 17:45 (til opsætning)", finish: "Kl. 21:00" },
-                    { name: "Anna Kristin Bæk", role: "Props & design", meet: "Kl. 14:00 (til klargøring), Kl. 15:00 (med make-up)", finish: "Kl. 21:00" },
-                    { name: "Ronni Poulsen", role: "Lyd", meet: "Kl. 15:00 (med make-up), Kl. 17:45 (til opsætning)", finish: "Kl. 21:00" },
-                    { name: "Julia Jacobsen", role: "make-up", meet: "Kl. 15:00 (med make-up), Kl. 18:00 (til make-up advokat)", finish: "Kl. 21:00" }
-                ],
-                program: "Location: Tjarnir\n14:00 \t Film crew gør “kaffemaskinen scenen” i Presselogen  klar (Hans Petur, Thomas,, Michael,Anna Kristin Bæk)\n15:00 \t Lydmand, stylist og make-up, møder (Ronni P., Julia J., og Anna Kristin Bæk)\n15:00 \t 2 statister og 1 hovedskuespiller møder til make-up og tøj (Helena + ??? + Hjálmar Dam)\n15:45 \t Optagelse påbegyndes \n17:00 \t Optagelse av kaffe-scenen slut\n17:15 \t Pause (sandwich) \n17:45 \t Opsætning av” advokat-scenen” (Hans Petur, Thomas, Ronni, Michael)\n18:00 \t 2 statister møder (Astrið Gullborgardóttir + Tórur við Áir) og hovedskuespiller (Hjálmar Dam) og Julia J. kommer og lægger make-up\n19:00 \t Optagelse af advokat scenen starter\n21:00 \t SLUT",
-                scenes: [
-                    "Kantinan hjá Høgni.",
-                    "Høgni kemur inn at fáa sær kaffi.",
-                    "Kemur við smørtum bemerkningum til tær báðar, sum standa við kaffimaskinuna.",
-                    "Fundarrúm. Høgni uppsagdur.",
-                    "Høgni og tvey HR fólk snakka um dickpicks"
-                ]
-            }
-        ];
-
-        const planContainer = document.getElementById('plan-container');
-        const personFilter = document.getElementById('personFilter');
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modal-content');
-        const closeModalBtn = document.getElementById('closeModal');
-        const noDaysMessage = document.getElementById('no-days-message');
-        const modalScenesContainer = document.getElementById('modal-scenes-container');
-
-        function createDayCard(dayData, index) {
-            const involvedCount = dayData.actors.length + dayData.crew.length;
-            const card = document.createElement('div');
-            card.className = 'card bg-white rounded-xl shadow-md p-6 cursor-pointer border-l-4 border-[#E6A473]';
-            card.dataset.index = index;
-            card.innerHTML = `
-                <h2 class="text-xl font-bold text-[#3A3A3A]">${dayData.date}</h2>
-                <p class="text-gray-600 mt-1">${dayData.location}</p>
-                <p class="text-sm text-gray-500 mt-2">${dayData.purpose}</p>
-                <div class="mt-4 pt-4 border-t border-gray-200 flex items-center justify-between">
-                    <span class="text-sm font-medium text-gray-700">Involverede:</span>
-                    <span class="text-lg font-bold text-[#D97706]">${involvedCount}</span>
-                </div>
-            `;
-            card.addEventListener('click', () => showModal(index));
-            return card;
-        }
-
-        function populatePlan(filter = 'all') {
-            planContainer.innerHTML = '';
-            let daysFound = false;
-            productionData.forEach((day, index) => {
-                const allInvolvedNames = [
-                    ...day.actors.map(a => a.name),
-                    ...day.crew.map(c => c.name)
-                ];
-                if (filter === 'all' || allInvolvedNames.includes(filter)) {
-                    const card = createDayCard(day, index);
-                    planContainer.appendChild(card);
-                    daysFound = true;
-                }
-            });
-
-            if (!daysFound) {
-                noDaysMessage.classList.remove('hidden');
-            } else {
-                noDaysMessage.classList.add('hidden');
-            }
-        }
-        
-        function populateFilter() {
-            const allPeople = new Set();
-            productionData.forEach(day => {
-                day.actors.forEach(actor => allPeople.add(actor.name));
-                day.crew.forEach(crewMember => allPeople.add(crewMember.name));
-            });
-
-            const sortedPeople = Array.from(allPeople).sort();
-            sortedPeople.forEach(person => {
-                const option = document.createElement('option');
-                option.value = person;
-                option.textContent = person;
-                personFilter.appendChild(option);
-            });
-        }
-
-        function showModal(index) {
-            const day = productionData[index];
-            document.getElementById('modal-title').textContent = day.date;
-            document.getElementById('modal-location').textContent = day.location;
-            document.getElementById('modal-program').textContent = day.program;
-            
-            modalScenesContainer.innerHTML = ''; // Clear previous scenes
-            if (day.scenes && day.scenes.length > 0) {
-                day.scenes.forEach((scene) => {
-                    const sceneDiv = document.createElement('div');
-                    sceneDiv.className = 'scene-item mb-4 last:mb-0 last:pb-0 last:border-b-0';
-                    sceneDiv.innerHTML = `
-                        <p class="whitespace-pre-wrap">${scene}</p>
-                    `;
-                    modalScenesContainer.appendChild(sceneDiv);
-                });
-            } else {
-                modalScenesContainer.innerHTML = '<p>Ingen scener angivet for denne dag.</p>';
-            }
-
-            const actorsList = document.getElementById('modal-actors');
-            actorsList.innerHTML = day.actors.length > 0 ? day.actors.map(actor => `<li>${actor.name} (${actor.role}) - Møder: ${actor.meet}, Slut: ${actor.finish}</li>`).join('') : '<li>Ingen skuespillere denne dag.</li>';
-
-            const crewList = document.getElementById('modal-crew');
-            crewList.innerHTML = day.crew.map(crewMember => `<li>${crewMember.name} (${crewMember.role}) - Møder: ${crewMember.meet}, Slut: ${crewMember.finish}</li>`).join('');
-
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modalContent.classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
-
-        function hideModal() {
-            modalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
-        
-        personFilter.addEventListener('change', (e) => {
-            populatePlan(e.target.value);
-        });
-
-        closeModalBtn.addEventListener('click', hideModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                hideModal();
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            populatePlan();
-            populateFilter();
-        });
-    </script>
 </body>
 </html>
