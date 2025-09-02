@@ -67,6 +67,9 @@
         .call-sheet-content {
             padding: 16px;
         }
+        .producer-section {
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-8">
@@ -77,7 +80,7 @@
         </header>
 
         <section class="section-card">
-            <h2 class="text-2xl font-semibold mb-4">Skuespillere</h2>
+            <h2 class="text-2xl font-semibold mb-4">Skuespillere & Statister</h2>
             <details class="mb-4">
                 <summary>Esther á Fjallinum (Johanna)</summary>
                 <ul>
@@ -132,6 +135,73 @@
                     <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
                     <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2 - Festen med Líggjas" på Akranesgøta 11. Mødetid kl. 15:15. Optagelserne slutter kl. 19:00.</li>
                     <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Hanna Flóvinsdóttir (Kvinde på bar & hotelværelse)</summary>
+                <ul>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1" på Sirkus & hotelværelse. Mødetid kl. 14:15. Optagelserne slutter kl. 22:30.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Sóley Heradóttir Hammer & Súsanna Laursen (Kvinder på bar)</summary>
+                <ul>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1" på Sirkus. Mødetid kl. 14:15. Optagelserne slutter kl. 17:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Lív Bruun Muller & Ása Helena Brynjardóttir (Flashback Piger)</summary>
+                <ul>
+                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2 - Festen med Líggjas" på Akranesgøta 11. Mødetid kl. 15:15. Optagelserne slutter kl. 19:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Páll Oddur (Johannas mand)</summary>
+                <ul>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene" på Dýrindalsgøta 66. Mødetid kl. 15:15. Optagelserne slutter kl. 19:30.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Thora Augustinussen (Chefen & Recepionist)</summary>
+                <ul>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor" på Studenterskolen i Hoydølum. Mødetid kl. 14:15. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene" på Studenterskolen i Hoydølum. Mødetid kl. 13:15. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Helena (Flashback Pige)</summary>
+                <ul>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir. Mødetid kl. 15:00. Optagelserne slutter kl. 17:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Tórur við Áir & Astrið Gullborgardóttir (Advokater)</summary>
+                <ul>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir. Mødetid kl. 17:30. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Jaspur Jørgensen & Tórur Árnastein (Kokke)</summary>
+                <ul>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4" på Hotel Brandan. Mødetid kl. 15:00. Optagelserne slutter kl. 18:30.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Ukendte Statister</summary>
+                <ul>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1" på Sirkus. Mødetid kl. 14:15. Optagelserne slutter kl. 17:00.</li>
+                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2" på Akranesgøta 11. Mødetid kl. 15:15. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene" på Studenterskolen i Hoydølum. Mødetid kl. 13:15. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir. Mødetid kl. 15:00. Optagelserne slutter kl. 17:00.</li>
                 </ul>
             </details>
         </section>
@@ -502,6 +572,154 @@
                 </div>
             </details>
         </section>
+
+        <section id="producer-overview" class="section-card mt-8">
+            <h2 class="text-2xl font-semibold mb-4">Måltider & Forplejning</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+                            <th class="py-3 px-6 text-left">Dato</th>
+                            <th class="py-3 px-6 text-left">Måltid</th>
+                            <th class="py-3 px-6 text-left">Antal Kuverter</th>
+                            <th class="py-3 px-6 text-left">Detaljer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 text-sm font-light">
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Fredag, 17. okt.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Søndag, 19. okt.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Lørdag, 1. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">9</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Søndag, 2. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">9</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Mandag, 3. nov.</td>
+                            <td class="py-3 px-6 text-left">Gryderet</td>
+                            <td class="py-3 px-6 text-left">11</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Marius, Hanna, Sóley, Súsanna)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Tirsdag, 4. nov.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Onsdag, 5. nov.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Fredag, 7. nov.</td>
+                            <td class="py-3 px-6 text-left">Sandwich</td>
+                            <td class="py-3 px-6 text-left">9</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Esther, Hans, Thora)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Lørdag, 8. nov.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Lørdag, 22. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">9</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Søndag, 23. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">9</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Mandag, 24. nov.</td>
+                            <td class="py-3 px-6 text-left">Sandwich</td>
+                            <td class="py-3 px-6 text-left">10</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Hjálmar, Helena, Tórur & Astrið)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
+    <script>
+        function showProducerOverview() {
+            const overviewSection = document.getElementById('producer-overview');
+            overviewSection.style.display = 'block';
+            window.scrollTo({
+                top: overviewSection.offsetTop,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
