@@ -29,6 +29,21 @@
             border-radius: 8px;
             background-color: #e5e7eb;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details > summary::after {
+            content: '▼';
+            font-size: 1.25rem;
+            transform: rotate(0);
+            transition: transform 0.2s ease-in-out;
+        }
+        details[open] > summary::after {
+            transform: rotate(180deg);
         }
         details > summary:hover {
             background-color: #d1d5db;
@@ -203,6 +218,18 @@
                     <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene" på Studenterskolen i Hoydølum. Mødetid kl. 13:15. Optagelserne slutter kl. 18:00.</li>
                 </ul>
             </details>
+            <details class="mb-4">
+                <summary>Rósa Maria Restorff & Sunneva Háberg Eysturstein (Location Ejer)</summary>
+                <ul>
+                    <li class="list-item"><strong>3. nov.:</strong> Flashback 1. Location Sirkus & Hotel Føroyar.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Katrin Kallsberg (Location Ejer)</summary>
+                <ul>
+                    <li class="list-item"><strong>5. nov.:</strong> Esther hjemme-scene. Location Dr. Dahlsgøta 15, Tórshavn.</li>
+                </ul>
+            </details>
         </section>
 
         <section class="section-card">
@@ -293,20 +320,20 @@
                     <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 14:00. Optagelserne slutter kl. 19:30.</li>
                     <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 13:00. Optagelserne slutter kl. 20:30.</li>
                     <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:00. Optagelserne slutter kl. 18:00.</li>
-                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 15:00. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Optagelserne slutter kl. 21:00.</li>
                 </ul>
             </details>
             <details class="mb-4">
                 <summary>Julia Jacobsen (Make-up)</summary>
                 <ul>
                     <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4". Mødetid kl. 15:00. Optagelserne slutter kl. 18:30.</li>
-                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Make-up får fri kl. 08:15. Optagelserne slutter kl. 19:00.</li>
                     <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1". Mødetid kl. 14:15. Optagelserne slutter kl. 22:30.</li>
-                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2". Mødetid kl. 15:15. Optagelserne slutter kl. 16:15.</li>
-                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 15:15. Optagelserne slutter kl. 15:15.</li>
+                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2". Mødetid kl. 15:15. Make-up får fri kl. 16:15.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 15:15. Make-up får fri kl. 15:15. Optagelserne slutter kl. 19:30.</li>
                     <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 14:15. Optagelserne slutter kl. 20:30.</li>
-                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:15. Optagelserne slutter kl. 14:15.</li>
-                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:15. Make-up får fri kl. 14:15. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Make-up får fri kl. 08:15. Optagelserne slutter kl. 18:00.</li>
                     <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 15:00 for kaffescenen og kl. 17:30 for advokatscenen. Optagelserne slutter kl. 21:00.</li>
                 </ul>
             </details>
@@ -363,7 +390,7 @@
                     <p>Aulan i Studenterskolen i Hoydølum</p>
                     <h3>Tidsplan:</h3>
                     <ul>
-                        <li><strong>Kl. 06:00:</strong> Mødetid for crew (Jónfinn, Høgni, Michael, Thomas, Hans Petur) og skuespillere (Bjørn, Marius, Julia) til make-up og tøj. Anna Kristin (Props & design) møder også.</li>
+                        <li><strong>Kl. 06:00:</strong> Mødetid for crew (Jónfinn, Høgni, Michael, Thomas, Hans Petur, Anna Kristin) og skuespillere (Bjørn, Marius). Julia møder også.</li>
                         <li><strong>Kl. 06:30:</strong> Mødetid for Hjálmar, Elsa Maria til make-up og tøj.</li>
                         <li><strong>Kl. 07:00:</strong> Mødetid for Esther og Hans til make-up og tøj.</li>
                         <li><strong>Kl. 07:01:</strong> Morgenmad for alle.</li>
@@ -521,8 +548,8 @@
                     <p>Aulan i Studenterskolen i Hoydølum.</p>
                     <h3>Tidsplan:</h3>
                     <ul>
-                        <li><strong>Kl. 06:00:</strong> Mødetid for crew (Jónfinn, Høgni, Michael, Thomas, Hans Petur) og skuespillere (Bjørn, Marius) til make-up og tøj. Anna Kristin (Props & design) møder også.</li>
-                        <li><strong>Kl. 06:30:</strong> Mødetid for Hjálmar, Elsa Maria og Julia til make-up og tøj.</li>
+                        <li><strong>Kl. 06:00:</strong> Mødetid for crew (Jónfinn, Høgni, Michael, Thomas, Hans Petur) og skuespillere (Bjørn, Marius). Julia møder også. Anna Kristin (Props & design) møder også.</li>
+                        <li><strong>Kl. 06:30:</strong> Mødetid for Hjálmar, Elsa Maria til make-up og tøj.</li>
                         <li><strong>Kl. 07:00:</strong> Mødetid for Esther og Hans til make-up og tøj.</li>
                         <li><strong>Kl. 07:01:</strong> Morgenmad for alle.</li>
                         <li><strong>Kl. 08:00:</strong> Film optagelse starter.</li>
@@ -715,15 +742,16 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const allSummaries = document.querySelectorAll('details > summary');
+            const allDetails = document.querySelectorAll('details');
 
-            allSummaries.forEach(summary => {
-                summary.addEventListener('click', () => {
-                    const parentDetails = summary.parentElement;
-                    if (parentDetails.hasAttribute('open')) {
-                        parentDetails.removeAttribute('open');
+            allDetails.forEach(details => {
+                const summary = details.querySelector('summary');
+                summary.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (details.hasAttribute('open')) {
+                        details.removeAttribute('open');
                     } else {
-                        parentDetails.setAttribute('open', '');
+                        details.setAttribute('open', '');
                     }
                 });
             });
