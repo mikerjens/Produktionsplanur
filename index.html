@@ -3,958 +3,853 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRENKARIRNIR - Produktionsplan</title>
+    <title>Produktionsplan: KRENKARIRNIR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
         }
         .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        details > summary {
+            cursor: pointer;
+            padding: 12px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #e5e7eb;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #34495e;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #2980b9;
-        }
-        .intro-box {
-            background-color: #eaf2f8;
-            border: 1px solid #d4e6f1;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        #nameSelector {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            box-sizing: border-box;
-            border-radius: 4px;
-            border: 2px solid #3498db;
-            transition: all 0.3s ease;
-        }
-        #nameSelector:focus {
-            border-color: #2980b9;
-            box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
-            outline: none;
-        }
-        .schedule-entry {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
+        details > summary::-webkit-details-marker {
             display: none;
         }
-        .schedule-entry.active {
-            display: block;
+        details > summary::after {
+            content: '▼';
+            font-size: 1.25rem;
+            transform: rotate(0);
+            transition: transform 0.2s ease-in-out;
         }
-        .location, .program {
-            margin-bottom: 10px;
+        details[open] > summary::after {
+            transform: rotate(180deg);
         }
-        .schedule-entry h3 {
-            margin-top: 0;
+        details > summary:hover {
+            background-color: #d1d5db;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+        details[open] > summary {
+            background-color: #d1d5db;
         }
-        li {
-            background: #ecf0f1;
-            margin-bottom: 5px;
+        .list-item {
+            padding: 8px 12px;
+            margin-top: 8px;
+            background-color: #f9fafb;
+            border-radius: 6px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .call-sheet-header {
+            background-color: #1f2937;
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .call-sheet-content {
+            padding: 16px;
+        }
+        .meal-overview-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .meal-overview-table th, .meal-overview-table td {
+            border: 1px solid #e5e7eb;
             padding: 8px;
-            border-left: 4px solid #3498db;
+            text-align: left;
         }
-        .daily-call-sheet {
-            border-top: 2px solid #34495e;
-            padding-top: 20px;
-            margin-top: 40px;
+        .meal-overview-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 p-8">
+    <div class="container">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-gray-800">Produktionsplan: "KRENKARIRNIR"</h1>
+            <p class="text-gray-600 mt-2">Vers. 1.3</p>
+        </header>
 
-<div class="container">
-    <h1>KRENKARIRNIR - Produktionsplan</h1>
-    
-    <div class="intro-box">
-        <h3>Find dit personlige skema</h3>
-        <p>Vælg dit navn i rullemenuen for at se, hvornår og hvor du skal møde.</p>
+        <section class="section-card">
+            <h2 class="text-2xl font-semibold mb-4">Skuespillere & Statister</h2>
+            <details class="mb-4">
+                <summary>Esther á Fjallinum (Johanna)</summary>
+                <ul>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 07:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene" på Dr. Dahlsgøta 15, Tórshavn. Mødetid kl. 15:15. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor" på Studenterskolen i Hoydølum. Mødetid kl. 14:15. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene" på Studenterskolen i Hoydølum. Mødetid kl. 13:15. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 07:00. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Hans Tórgarð (Holgar)</summary>
+                <ul>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 07:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor" på Studenterskolen i Hoydølum. Mødetid kl. 14:15. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene" på Studenterskolen i Hoydølum. Mødetid kl. 13:15. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 07:00. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Elsa Maria Magnusardóttir Olsen (Ruth)</summary>
+                <ul>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4" på Hotel Brandan. Mødetid kl. 15:00. Optagelserne slutter kl. 18:30.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:30. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:30. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Hjálmar Dam (Høgni)</summary>
+                <ul>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:30. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:30. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir. Mødetid kl. 15:00 for "kaffemaskin scene" og kl. 17:30 for "advokat scenen". Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Marius DC (Danny)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, Sirkus". Mødetid kl. 18:15. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B" på Studio 016 på Hotel Føroyar. Mødetid kl. 17:30. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+
+            <details class="mb-4">
+                <summary>Bjørn Simonsen Ulvedal (Líggjas)</summary>
+                <ul>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2" på Hvarvið 3, kj., Tórshavn. Mødetid kl. 15:15. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale på Aulan i Studenterskolen i Hoydølum. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Edwin Niclassen (Flashback Líggjas)</summary>
+                <ul>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2 - Festen med Líggjas" på Hvarvið 3, kj., Tórshavn. Mødetid kl. 15:15. Optagelserne slutter kl. 19:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Hanna Flóvinsdóttir (Kvinde på bar & hotelværelse)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, Sirkus". Mødetid kl. 18:15. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B" på Studio 016 på Hotel Føroyar. Mødetid kl. 17:30. Optagelserne slutter kl. 19:30.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Sóley Heradóttir Hammer & Súsanna Laursen (Kvinder på bar)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, Sirkus". Mødetid kl. 18:15. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Lív Bruun Muller & Ása Helena Brynjardóttir (Flashback Piger)</summary>
+                <ul>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2 - Festen med Líggjas" på Hvarvið 3, kj., Tórshavn. Mødetid kl. 15:15. Optagelserne slutter kl. 19:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Páll Oddur (Johannas mand)</summary>
+                <ul>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene" på Dr. Dahlsgøta 15, Tórshavn. Mødetid kl. 15:15. Optagelserne slutter kl. 19:30.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Thora Augustinussen (Chefen & Recepionist)</summary>
+                <ul>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor" på Studenterskolen i Hoydølum. Mødetid kl. 14:15. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene" på Studenterskolen i Hoydølum. Mødetid kl. 13:15. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Helena (Flashback Pige)</summary>
+                <ul>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir. Mødetid kl. 15:00. Optagelserne slutter kl. 17:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Tórur við Áir & Astrið Gullborgardóttir (Advokater)</summary>
+                <ul>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir. Mødetid kl. 17:30. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Jaspur Jørgensen & Tórur Árnastein (Kokke)</summary>
+                <ul>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4" på Hotel Brandan. Mødetid kl. 15:00. Optagelserne slutter kl. 18:30.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Ukendte Statister (Bar og advokat)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, SIRKUS" på Sirkus bar. Mødetid kl. 18:15. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3" på Tjarnir. Mødetid kl. 15:00 for "kaffemaskin scene" og kl. 17:30 for "advokat scenen". Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Ukendte Statister (Politibetjente)</summary>
+                <ul>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene" på Studenterskolen i Hoydølum. Mødetid kl. 13:15. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Sunneva Háberg Eysturstein (Location Ejer)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Flashback 1A. Lokation: Sirkus bar.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Rósa Maria Restorfff (Location Ejer)</summary>
+                <ul>
+                    <li class="list-item"><strong>3. nov.:</strong> Flashback 1B. Lokation: Hotel Føroyar.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Katrin Kallsberg (Location Ejer)</summary>
+                <ul>
+                    <li class="list-item"><strong>5. nov.:</strong> Esther hjemme-scene. Lokation: Dr. Dahlsgøta 15, Tórshavn.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Petur Háberg (Location Ejer)</summary>
+                <ul>
+                    <li class="list-item"><strong>7. okt.:</strong> Flashback 2. Lokation: Hvarvið 3, kj., Tórshavn.</li>
+                </ul>
+            </details>
+        </section>
+
+        <section class="section-card">
+            <h2 class="text-2xl font-semibold mb-4">Crew</h2>
+            <details class="mb-4">
+                <summary>Michael Koba (Producer / Manuskript)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, SIRKUS". Mødetid kl. 16:00. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>17. okt.:</strong> Klargøring af "terapi-lokale". Mødetid kl. 11:00-18:00.</li>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4". Mødetid kl. 14:00. Optagelserne slutter kl. 18:30.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B". Mødetid kl. 16:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 14:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 13:00. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Thomas Koba (Instruktør)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, SIRKUS". Mødetid kl. 16:00. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>17. okt.:</strong> Klargøring af "terapi-lokale". Mødetid kl. 11:00-18:00.</li>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4". Mødetid kl. 14:00. Optagelserne slutter kl. 18:30.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B". Mødetid kl. 16:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 14:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 13:00. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Jónfinn Stenberg (Foto)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, SIRKUS". Mødetid kl. 16:00. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>17. okt.:</strong> Klargøring af "terapi-lokale". Mødetid kl. 16:00-18:00.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B". Mødetid kl. 16:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Hans Petur Hansen (Lys)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A, SIRKUS". Mødetid kl. 16:00. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>17. okt.:</strong> Klargøring af "terapi-lokale". Mødetid kl. 11:00-18:00.</li>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4". Mødetid kl. 14:00. Optagelserne slutter kl. 18:30.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B". Mødetid kl. 16:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 14:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 13:00. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Anna Kristin Bæk (Props & design)</summary>
+                <ul>
+                    <li class="list-item"><strong>17. okt.:</strong> Klargøring af "terapi-lokale". Mødetid kl. 11:00-16:00.</li>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4". Mødetid kl. 14:45. Optagelserne slutter kl. 18:30.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 10:30.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B". Mødetid kl. 16:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>4. nov.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 14:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 10:00. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 10:30.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Høgni Fagraberg (Lyd)</summary>
+                <ul>
+                    <li class="list-item"><strong>17. okt.:</strong> Klargøring af "terapi-lokale". Mødetid kl. 16:00-18:00.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Optagelserne slutter kl. 18:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Ronni Poulsen (Lyd)</summary>
+                <ul>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2". Mødetid kl. 14:00. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B". Mødetid kl. 16:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 14:00. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 13:00. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:00. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 14:00. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+            <details class="mb-4">
+                <summary>Julia Jacobsen (Make-up)</summary>
+                <ul>
+                    <li class="list-item"><strong>23. sept.:</strong> Optagelse af "Flashback 1A". Mødetid kl. 18:15. Optagelserne slutter kl. 21:00.</li>
+                    <li class="list-item"><strong>7. okt.:</strong> Optagelse af "Flashback 2". Mødetid kl. 15:15. Make-up får fri kl. 16:15.</li>
+                    <li class="list-item"><strong>19. okt.:</strong> Optagelse af "Flash back 4". Mødetid kl. 15:00. Optagelserne slutter kl. 18:30.</li>
+                    <li class="list-item"><strong>1. nov. & 2. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Make-up får fri kl. 08:15. Optagelserne slutter kl. 19:00.</li>
+                    <li class="list-item"><strong>3. nov.:</strong> Optagelse af "Flashback 1B". Mødetid kl. 17:30. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>5. nov.:</strong> Optagelse af "Esther hjemme-scene". Mødetid kl. 15:15. Make-up får fri kl. 15:15. Optagelserne slutter kl. 19:30.</li>
+                    <li class="list-item"><strong>7. nov.:</strong> Optagelse af "Chef kontor". Mødetid kl. 14:15. Optagelserne slutter kl. 20:30.</li>
+                    <li class="list-item"><strong>8. nov.:</strong> Optagelse af "Køre scener og parkering scene". Mødetid kl. 13:15. Make-up får fri kl. 14:15. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>22. nov. & 23. nov.:</strong> Optagelse i terapilokale. Mødetid kl. 06:00. Make-up får fri kl. 08:15. Optagelserne slutter kl. 18:00.</li>
+                    <li class="list-item"><strong>24. nov.:</strong> Optagelse af "Flash back 3". Mødetid kl. 15:00 for kaffescenen og kl. 17:30 for advokatscenen. Optagelserne slutter kl. 21:00.</li>
+                </ul>
+            </details>
+        </section>
+
+        <section class="section-card">
+            <h2 class="text-2xl font-semibold mb-4">Daglige Call Sheets</h2>
+            
+            <details class="mb-4">
+                <summary>Mandag, 23. sept. - “Flashback 1A, SIRKUS”</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Sirkus bar</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 16:00:</strong> Teknisk crew gør scenen i Sirkus klar (HPH, Thomas, Jónfinn).</li>
+                        <li><strong>Kl. 18:15:</strong> Mødetid for alle skuespillere til make-up og tøjtilpasning (Marius DC, Hanna F. , Sóley og Súsanna). Det er vigtigt at man har spist inden ankomst :).</li>
+                        <li><strong>Kl. 19:30:</strong> Optagelse i Sirkus starter.</li>
+                        <li><strong>Kl. 21:00:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Marius DC, Hanna Flóvinsdóttir, Sóley Heradóttir Hammer, Súsanna Laursen, Ukendt statist G, H, I.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Jónfinn Stenberg, Hans Petur Hansen, Julia Jacobsen.</p>
+                    <p><strong>Location Ejer:</strong> Sunneva Háberg Eysturstein.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Barren í Sirkus.</li>
+                        <li>Danny (Marius DC) føler på én kvinde (Hanna) i barren.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="mb-4" open>
+                <summary>Tirsdag, 7. okt. - "Flashback 2 - Festen med Líggjas"</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Hvarvið 3, kj., Tórshavn.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 14:00:</strong> Crew gør scenen klar (Hans Petur, Thomas, Michael, Anna Kristin, Ronni).</li>
+                        <li><strong>Kl. 15:15:</strong> Alle skuespillere (Bjørn, Lív Bruun, Ása og Edwin) møder til make-up og tøjtilpasning. Julia møder i Hugskotið og har fri kl. 16:15.</li>
+                        <li><strong>Kl. 16:30:</strong> Optagelse påbegyndes på lokationen.</li>
+                        <li><strong>Kl. 19:00:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Bjørn Simonsen Ulvedal, Lív Bruun Muller, Ása Helena Brynjardóttir, Edwin Niclassen.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Hans Petur Hansen, Anna Kristin Bæk, Ronni Poulsen, Julia Jacobsen.</p>
+                    <p><strong>Location Ejer:</strong> Petur Háberg.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Ballið í køkinum.</li>
+                        <li>Montage.</li>
+                        <li>Líggjas voiceover.</li>
+                        <li>Líggjas følir uppá Lív.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="mb-4">
+                <summary>Fredag, 17. okt. - Klargøring af "terapi-lokale"</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Aulan i Studenterskolen i Hoydølum</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 11:00-18:00:</strong> Lys afdeling og instruktør møder (Hans Petur, Thomas).</li>
+                        <li><strong>Kl. 16:00-18:00:</strong> Foto- og lyd afdeling møder (Jónfinn, Høgni).</li>
+                        <li><strong>Kl. 11:00-16:00:</strong> Props og design klargøring (Anna Kristin).</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Jónfinn Stenberg, Hans Petur Hansen, Anna Kristin Bæk, Høgni Fagraberg.</p>
+                    <h3>Scener:</h3>
+                    <p>Forberedelse af terapilokalet, så optagelser kan påbegyndes tidligt næste morgen.</p>
+                </div>
+            </details>
+            
+            <details class="mb-4">
+                <summary>Søndag, 19. okt. - "Flash back 4, Ruth flirter med tjener"</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Hotel Brandan - i Rest. Húsagarður og køkken.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 14:00:</strong> Lys afdeling, instruktør og producer møder (Hans Petur, Thomas, Michael).</li>
+                        <li><strong>Kl. 14:45:</strong> Props og design møder (Anna Kristin).</li>
+                        <li><strong>Kl. 15:00:</strong> Skuespillere (Elsa Maria, Tórur og Jaspur) og make-up (Julia) møder.</li>
+                        <li><strong>Kl. 15:30:</strong> Optagelse begynder.</li>
+                        <li><strong>Kl. 18:30:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Elsa Maria Magnusardóttir Olsen, Tórur Árnastein, Jaspur Jørgensen.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Hans Petur Hansen, Anna Kristin Bæk, Julia Jacobsen.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Scenen hvor "Ruth" (Elsa Maria) flirter med tjeneren.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="mb-4">
+                <summary>Lørdag, 1. nov. & Søndag, 2. nov. - Optagelse i terapilokale</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Aulan i Studenterskolen i Hoydølum</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 06:00:</strong> Mødetid for crew (Jónfinn, Høgni, Michael, Thomas, Hans Petur, Anna Kristin) og skuespillere (Bjørn, Marius) til make-up og tøj. Julia møder også.</li>
+                        <li><strong>Kl. 06:30:</strong> Mødetid for Hjálmar, Elsa Maria til make-up og tøj.</li>
+                        <li><strong>Kl. 07:00:</strong> Mødetid for Esther og Hans til make-up og tøj.</li>
+                        <li><strong>Kl. 07:01:</strong> Morgenmad for alle der møder denne dag.</li>
+                        <li><strong>Kl. 08:00:</strong> Film optagelse starter.</li>
+                        <li><strong>Kl. 08:15:</strong> Make-up (Julia) får fri.</li>
+                        <li><strong>Kl. 10:30:</strong> Pause (Kaffe). Props & design (Anna Kristin) får fri.</li>
+                        <li><strong>Kl. 10:50:</strong> Optagelser fortsætter.</li>
+                        <li><strong>Kl. 12:30:</strong> Frokost (gryderet fra Jan).</li>
+                        <li><strong>Kl. 13:15:</strong> Optagelse fortsætter.</li>
+                        <li><strong>Kl. 15:30:</strong> Pause (Kaffe).</li>
+                        <li><strong>Kl. 15:45:</strong> Optagelse påbegyndes igen.</li>
+                        <li><strong>Kl. 19:00:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Esther á Fjallinum, Hans Tórgarð, Elsa Maria Magnusardóttir Olsen, Hjálmar Dam, Marius DC, Bjørn Simonsen Ulvedal.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Jónfinn Stenberg, Hans Petur Hansen, Anna Kristin Bæk, Høgni Fagraberg, Julia Jacobsen.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Terapisession 01-05.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="mb-4">
+                <summary>Mandag, 3. nov. - “Flashback 1B, Dannys flirt”</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Studio 016 på Hotel Føroyar</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 16:00:</strong> Teknisk crew gør scenen klar (HPH, Thomas, Jónfinn, Anna Kristin, Ronni P.).</li>
+                        <li><strong>Kl. 17:30:</strong> Mødetid for skuespillere til make-up og tøj (Marius DC, Hanna F.).</li>
+                        <li><strong>Kl. 18:15:</strong> Optagelse starter.</li>
+                        <li><strong>Kl. 19:30:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Marius DC, Hanna Flóvinsdóttir.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Jónfinn Stenberg, Hans Petur Hansen, Anna Kristin Bæk, Ronni Poulsen, Julia Jacobsen.</p>
+                    <p><strong>Location Ejer:</strong> Rósa Maria Restorfff.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Hotelværelse i Hotel Føroyar / Danny (Marius DC) og kvinde (Hanna).</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="mb-4">
+                <summary>Tirsdag, 4. nov. - “Flashback 2 - Festen med Líggjas”</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Hvarvið 3, kj., Tórshavn.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 14:00:</strong> Crew gør scenen klar (Hans Petur, Thomas, Michael, Anna Kristin, Ronni).</li>
+                        <li><strong>Kl. 15:15:</strong> Alle skuespillere (Bjørn, Lív Bruun, Ása og Edwin) møder til make-up og tøjtilpasning. Julia møder i Hugskotið og har fri kl. 16:15.</li>
+                        <li><strong>Kl. 16:30:</strong> Optagelse påbegyndes på lokationen.</li>
+                        <li><strong>Kl. 19:00:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Bjørn Simonsen Ulvedal, Lív Bruun Muller, Ása Helena Brynjardóttir, Edwin Niclassen.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Hans Petur Hansen, Anna Kristin Bæk, Ronni Poulsen, Julia Jacobsen.</p>
+                    <p><strong>Location Ejer:</strong> Petur Háberg.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Ballið i køkinum.</li>
+                        <li>Montage.</li>
+                        <li>Líggjas voiceover.</li>
+                        <li>Líggjas følir uppá Lív.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="mb-4">
+                <summary>Onsdag, 5. nov. - “Esther hjemme-scene”</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Dr. Dahlsgøta 15, Tórshavn.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 14:00:</strong> Crew møder.</li>
+                        <li><strong>Kl. 15:15:</strong> Skuespillere møder (Páll Oddur og Esther). Julia ordner make-up og får fri kl. 15:15.</li>
+                        <li><strong>Kl. 16:15:</strong> Optagelse starter.</li>
+                        <li><strong>Kl. 19:30:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Páll Oddur, Esther á Fjallinum.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Hans Petur Hansen, Anna Kristin Bæk, Ronni Poulsen, Julia Jacobsen.</p>
+                    <p><strong>Location Ejer:</strong> Katrin Kallsberg.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Sovikamar - Jóhanna og maðurin i sovikamari.</li>
+                        <li>Sovikamar endasena - Jóhanna og maðurin.</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details class="mb-4">
+                <summary>Fredag, 7. nov. - “Chef kontor”</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Studenterskolen i Hoydølum.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 10:00:</strong> Anna Kristin designer kontoret.</li>
+                        <li><strong>Kl. 13:00:</strong> Crew møder (Hans Petur, Thomas, Ronni og Anna Kristin).</li>
+                        <li><strong>Kl. 14:15:</strong> Skuespillere møder (Esther, Hans og Thora). Julia ordner make-up.</li>
+                        <li><strong>Kl. 16:00:</strong> Optagelse starter.</li>
+                        <li><strong>Kl. 18:00:</strong> Pause (sandwich).</li>
+                        <li><strong>Kl. 18:30:</strong> Optagelse starter igen.</li>
+                        <li><strong>Kl. 20:30:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Esther á Fjallinum, Hans Tórgarð, Thora Augustinussen.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Hans Petur Hansen, Anna Kristin Bæk, Ronni Poulsen, Julia Jacobsen.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Johanna kommer gående gennem gangen og bliver råbt ind på chefens kontor.</li>
+                        <li>Johanna står i døråbningen, chefen og Holgar sidder inde på kontoret.</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details class="mb-4">
+                <summary>Lørdag, 8. nov. - “Køre scener og parkering scene”</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Studenterskolen i Hoydølum.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 13:00:</strong> Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin).</li>
+                        <li><strong>Kl. 13:15:</strong> Skuespillere møder (Hans Tórgarð, Esther, politi 1 og politi 2). Julia ordner make-up.</li>
+                        <li><strong>Kl. 14:15:</strong> Optagelse starter.</li>
+                        <li><strong>Kl. 18:00:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Esther á Fjallinum, Hans Tórgarð, Thora Augustinussen, Politibetjent A, Politibetjent B.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Hans Petur Hansen, Anna Kristin Bæk, Ronni Poulsen, Julia Jacobsen.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Politi scenen filmes først, så betjentene kan få fri så hurtigt som muligt.</li>
+                        <li>Parkeringsproblemer: Holgar stjæler parkeringsplads fra Jóhanna.</li>
+                        <li>Jóhanna ser politi ved indgangen og kører til Havnar.</li>
+                        <li>Kørescener på Færøerne.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="mb-4">
+                <summary>Lørdag, 22. nov. & Søndag, 23. nov. - Optagelse i terapilokale</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Aulan i Studenterskolen i Hoydølum.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 06:00:</strong> Mødetid for crew (Jónfinn, Høgni, Michael, Thomas, Hans Petur) og skuespillere (Bjørn, Marius, Julia) til make-up og tøj. Anna Kristin møder også.</li>
+                        <li><strong>Kl. 06:30:</strong> Mødetid for Hjálmar, Elsa Maria til make-up og tøj.</li>
+                        <li><strong>Kl. 07:00:</strong> Mødetid for Esther og Hans til make-up og tøj.</li>
+                        <li><strong>Kl. 07:01:</strong> Morgenmad for alle.</li>
+                        <li><strong>Kl. 08:00:</strong> Film optagelse starter.</li>
+                        <li><strong>Kl. 08:15:</strong> Make-up (Julia) får fri.</li>
+                        <li><strong>Kl. 10:30:</strong> Pause (Kaffe). Props & design (Anna Kristin) får fri.</li>
+                        <li><strong>Kl. 10:50:</strong> Optagelser fortsætter.</li>
+                        <li><strong>Kl. 12:30:</strong> Frokost.</li>
+                        <li><strong>Kl. 13:15:</strong> Optagelse fortsætter.</li>
+                        <li><strong>Kl. 15:30:</strong> Pause (Kaffe).</li>
+                        <li><strong>Kl. 15:45:</strong> Optagelse påbegyndes igen.</li>
+                        <li><strong>Kl. 18:00:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Esther á Fjallinum, Hans Tórgarð, Elsa Maria Magnusardóttir Olsen, Hjálmar Dam, Marius DC, Bjørn Simonsen Ulvedal.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Jónfinn Stenberg, Hans Petur Hansen, Anna Kristin Bæk, Høgni Fagraberg, Julia Jacobsen.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Terapisession 01-05.</li>
+                        <li>Stjórin á gongini + kontór.</li>
+                        <li>Stjórin hjá Jóhonnu bjóðar Holgar við i bólkin.</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details class="mb-4">
+                <summary>Mandag, 24. nov. - Flash back 3 “kaffemaskin scene + advokat scene”</summary>
+                <div class="call-sheet-content">
+                    <h3>Lokation:</h3>
+                    <p>Tjarnir.</p>
+                    <h3>Tidsplan:</h3>
+                    <ul>
+                        <li><strong>Kl. 14:00:</strong> Film crew gør "kaffemaskin scenen" klar.</li>
+                        <li><strong>Kl. 15:00:</strong> Lydmand, stylist og make-up møder. Skuespillere (Helena, en statist og Hjálmar) møder til make-up og tøj.</li>
+                        <li><strong>Kl. 15:45:</strong> Optagelse starter.</li>
+                        <li><strong>Kl. 17:00:</strong> Optagelse av kaffe-scenen slut.</li>
+                        <li><strong>Kl. 17:05:</strong> Pause (sandwich).</li>
+                        <li><strong>Kl. 17:15:</strong> Opsætning af "advokat-scenen".</li>
+                        <li><strong>Kl. 17:30:</strong> Skuespillere (Astrið og Tórur) og Hjálmar møder. Julia lægger make-up.</li>
+                        <li><strong>Kl. 19:00:</strong> Optagelse af advokat scenen starter.</li>
+                        <li><strong>Kl. 21:00:</strong> SLUT.</li>
+                    </ul>
+                    <h3>Medvirkende:</h3>
+                    <p><strong>Skuespillere:</strong> Helena, Tórur við Áir, Astrið Gullborgardóttir, Hjálmar Dam.</p>
+                    <p><strong>Crew:</strong> Michael Koba, Thomas Koba, Jónfinn Stenberg, Anna Kristin Bæk, Ronni Poulsen, Julia Jacobsen.</p>
+                    <h3>Scener:</h3>
+                    <ul>
+                        <li>Kantinan hjá Høgni.</li>
+                        <li>Fundarrúm. Høgni er opsagt.</li>
+                    </ul>
+                </div>
+            </details>
+        </section>
+
+        <section class="section-card mt-8">
+            <h2 class="text-2xl font-semibold mb-4">Oversigt til Produceren: Måltider & Forplejning</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+                            <th class="py-3 px-6 text-left">Dato</th>
+                            <th class="py-3 px-6 text-left">Måltid</th>
+                            <th class="py-3 px-6 text-left">Antal Kuverter</th>
+                            <th class="py-3 px-6 text-left">Detaljer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 text-sm font-light">
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Mandag, 23. sept.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Tirsdag, 7. okt.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Fredag, 17. okt.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Søndag, 19. okt.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Lørdag, 1. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">14</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans, Jónfinn, Høgni, Julia, Michael, Thomas, Hans Petur, Anna Kristin)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin & Julia har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin & Julia har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Søndag, 2. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">14</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans, Jónfinn, Høgni, Julia, Michael, Thomas, Hans Petur, Anna Kristin)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin & Julia har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin & Julia har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Mandag, 3. nov.</td>
+                            <td class="py-3 px-6 text-left">Sandwich</td>
+                            <td class="py-3 px-6 text-left">9</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Marius, Hanna)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Tirsdag, 4. nov.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Onsdag, 5. nov.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Fredag, 7. nov.</td>
+                            <td class="py-3 px-6 text-left">Sandwich</td>
+                            <td class="py-3 px-6 text-left">9</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Esther, Hans, Thora)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Lørdag, 8. nov.</td>
+                            <td class="py-3 px-6 text-left">Ingen måltider planlagt</td>
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left"></td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Lørdag, 22. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans, Jónfinn, Høgni, Julia, Michael, Thomas)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Søndag, 23. nov.</td>
+                            <td class="py-3 px-6 text-left">Morgenmad</td>
+                            <td class="py-3 px-6 text-left">13</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Bjørn, Marius, Hjálmar, Elsa, Esther, Hans, Jónfinn, Høgni, Julia, Michael, Thomas)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Frokost (gryderet)</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left"></td>
+                            <td class="py-3 px-6 text-left">Kaffepause</td>
+                            <td class="py-3 px-6 text-left">12</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Anna Kristin har fri)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">Mandag, 24. nov.</td>
+                            <td class="py-3 px-6 text-left">Sandwich</td>
+                            <td class="py-3 px-6 text-left">10</td>
+                            <td class="py-3 px-6 text-left">Crew & skuespillere (Hjálmar, Helena, Tórur & Astrið)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
-
-    <label for="nameSelector">Vælg dit navn:</label>
-    <select id="nameSelector">
-        <option value="">-- Vælg et navn --</option>
-        <option value="Esther á Fjallinum">Esther á Fjallinum</option>
-        <option value="Hans Tórgarð">Hans Tórgarð</option>
-        <option value="Elsa Maria Magnusardóttir Olsen">Elsa Maria Magnusardóttir Olsen</option>
-        <option value="Hjálmar Dam">Hjálmar Dam</option>
-        <option value="Marius DC">Marius DC</option>
-        <option value="Bjørn Simonsen Ulvedal">Bjørn Simonsen Ulvedal</option>
-        <option value="Michael Koba">Michael Koba</option>
-        <option value="Thomas Koba">Thomas Koba</option>
-        <option value="Hans Petur Hansen">Hans Petur Hansen</option>
-        <option value="Anna Kristin Bæk">Anna Kristin Bæk</option>
-        <option value="Ronni Poulsen">Ronni Poulsen</option>
-        <option value="Julia Jacobsen">Julia Jacobsen</option>
-        <option value="Lív Bruun Muller">Lív Bruun Muller</option>
-        <option value="Ása Helena Brynjardóttir">Ása Helena Brynjardóttir</option>
-        <option value="Edwin Niclassen">Edwin Niclassen</option>
-        <option value="Petur Háberg">Petur Háberg</option>
-        <option value="Jónfinn Stenberg">Jónfinn Stenberg</option>
-        <option value="Høgni Fagraberg">Høgni Fagraberg</option>
-        <option value="Tórur Árnastein">Tórur Árnastein</option>
-        <option value="Jaspur Jørgensen">Jaspur Jørgensen</option>
-        <option value="Hanna Flóvinsdóttir">Hanna Flóvinsdóttir</option>
-        <option value="Sóley Heradóttir Hammer">Sóley Heradóttir Hammer</option>
-        <option value="Súsanna Laursen">Súsanna Laursen</option>
-        <option value="Páll Oddur">Páll Oddur</option>
-        <option value="Thora Augustinussen">Thora Augustinussen</option>
-        <option value="Helena">Helena</option>
-        <option value="Tórur við Áir">Tórur við Áir</option>
-        <option value="Astrið Gullborgardóttir">Astrið Gullborgardóttir</option>
-    </select>
-
-    <div id="scheduleOutput">
-        </div>
-
-    <p style="text-align: center; font-style: italic;">Scroll ned for at se de daglige call sheets for hele produktionen.</p>
-
     <script>
-        const schedules = {
-            "Esther á Fjallinum": [
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Johanna, psyk. terapeut",
-                    program: "07:00: Skuespilleren Esther møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 19:00: SLUT."
-                },
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Johanna, psyk. terapeut",
-                    program: "15:15: Skuespilleren Esther møder. 16:15: Optagelse starter. 19:30: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Johanna, psyk. terapeut",
-                    program: "14:15: Skuespilleren Esther møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Johanna, psyk. terapeut",
-                    program: "13:15: Skuespilleren Esther møder. 13:15-14:15: Make-up. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Johanna, psyk. terapeut",
-                    program: "07:00: Skuespilleren Esther møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 18:00: SLUT."
-                }
-            ],
-            "Hans Tórgarð": [
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Holgar, den intellektuelle observatør",
-                    program: "07:00: Skuespilleren Hans møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 19:00: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Holgar, den intellektuelle observatør",
-                    program: "14:15: Skuespilleren Hans møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Holgar, den intellektuelle observatør",
-                    program: "13:15: Skuespilleren Hans møder. 13:15-14:15: Make-up. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Holgar, den intellektuelle observatør",
-                    program: "07:00: Skuespilleren Hans møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 18:00: SLUT."
-                }
-            ],
-            "Elsa Maria Magnusardóttir Olsen": [
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Ruth, kvinnuligur chefur (krænker)",
-                    program: "15:00: Skuespilleren Elsa Maria møder til make-up. 15:30: Optagelse begynder. 18:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Ruth, kvinnuligur chefur (krænker)",
-                    program: "06:30: Skuespilleren Elsa Maria møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 19:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Ruth, kvinnuligur chefur (krænker)",
-                    program: "06:30: Skuespilleren Elsa Maria møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 18:00: SLUT."
-                }
-            ],
-            "Hjálmar Dam": [
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Høgni Nielsen, business man (krænker)",
-                    program: "06:30: Skuespilleren Hjálmar møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 19:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Høgni Nielsen, business man (krænker)",
-                    program: "06:30: Skuespilleren Hjálmar møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 18:00: SLUT."
-                },
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Høgni Nielsen",
-                    program: "15:00: Hovedskuespilleren Hjálmar Dam møder til make-up. 15:45: Optagelse starter. 17:05: Pause. 17:30: Hovedskuespilleren Hjálmar Dam møder til make-up. 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Marius DC": [
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Danny Bergsson, Den Unge, (krænker)",
-                    program: "06:00: Skuespilleren Marius DC møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Danny Bergsson, Den Unge, (krænker)",
-                    program: "14:15: Skuespilleren Marius DC møder til make-up. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 18:30: Pause. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Danny Bergsson, tann ungi (krænker)",
-                    program: "06:00: Skuespilleren Marius DC møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 18:00: SLUT."
-                }
-            ],
-            "Bjørn Simonsen Ulvedal": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Líggjas Dahl, í rullistólinum (krænker)",
-                    program: "15:15: Skuespilleren Bjørn møder til make-up og tøj. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Líggjas Dahl, í rullistólinum (krænker)",
-                    program: "06:00: Skuespilleren Bjørn møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 19:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Líggjas Dahl, í rullistólinum (krænker)",
-                    program: "06:00: Skuespilleren Bjørn møder til make-up og tøj. 07:01: Morgenmad. 08:00: Filmoptagelse starter. 12:30: Frokost. 18:00: SLUT."
-                }
-            ],
-            "Michael Koba": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Producer",
-                    program: "14:00: Crew gør scenen klar. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                },
-                {
-                    date: "Fredag den 17. okt.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Producer",
-                    program: "Klargøring af “terapi-lokale”."
-                },
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Producer",
-                    program: "14:00: Producer møder. 15:30: Optagelse begynder. 18:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Producer",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Producer",
-                    program: "13:00: Teknisk crew gør scenen i Sirkus klar. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                },
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Producer",
-                    program: "14:00: Crew møder. 16:15: Optagelse starter. 19:30: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Producer",
-                    program: "13:00: Crew møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Producer",
-                    program: "13:00: Crew møder. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Producer",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Producer",
-                    program: "14:00: Film crew gør \"kaffemaskinen scenen\" klar. 15:45: Optagelse starter. 17:05: Pause. 17:15: Opsætning af \"advokat-scenen\". 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Thomas Koba": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Instruktør + foto",
-                    program: "14:00: Crew gør scenen klar. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                },
-                {
-                    date: "Fredag den 17. okt.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Instruktør",
-                    program: "11:00-18:00: Lys afdeling og instruktør møder."
-                },
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Instruktør og foto",
-                    program: "14:00: Instruktør møder. 15:30: Optagelse begynder. 18:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Instruktør",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Instruktør",
-                    program: "13:00: Teknisk crew gør scenen i Sirkus klar. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                },
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Instruktør og foto",
-                    program: "14:00: Crew møder. 16:15: Optagelse starter. 19:30: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Instruktør og foto",
-                    program: "13:00: Crew møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Instruktør + camera",
-                    program: "13:00: Crew møder. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Instruktør",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Instruktør",
-                    program: "14:00: Film crew gør \"kaffemaskinen scenen\" klar. 15:45: Optagelse starter. 17:05: Pause. 17:15: Opsætning af \"advokat-scenen\". 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Hans Petur Hansen": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Ljós",
-                    program: "14:00: Crew gør scenen klar. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                },
-                {
-                    date: "Fredag den 17. okt.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Ljós",
-                    program: "11:00-18:00: Lys afdeling og instruktør møder."
-                },
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Ljós",
-                    program: "14:00: Lys afdeling møder. 15:30: Optagelse begynder. 18:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Ljós",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Ljós",
-                    program: "13:00: Teknisk crew gør scenen i Sirkus klar. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                },
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Ljós",
-                    program: "14:00: Crew møder. 16:15: Optagelse starter. 19:30: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Ljós",
-                    program: "13:00: Crew møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Ljós",
-                    program: "13:00: Crew møder. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Ljós",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 18:00: SLUT."
-                }
-            ],
-            "Anna Kristin Bæk": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Props & design",
-                    program: "14:00: Crew gør scenen klar. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                },
-                {
-                    date: "Fredag den 17. okt.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Props & design",
-                    program: "11:00-16:00: Props og design klargøring."
-                },
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Props & design",
-                    program: "14:45: Props og design møder. 15:30: Optagelse begynder. 18:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Props & design",
-                    program: "06:00: Props & design (Anna Kristin) møder. 08:00: Filmoptagelse starter. 10:30: Props & design får fri. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Props & design",
-                    program: "13:00: Teknisk crew gør scenen i Sirkus klar. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                },
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Props & design",
-                    program: "14:00: Crew møder. 16:15: Optagelse starter. 19:30: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Props & design",
-                    program: "10:00: Anna Kristin designer rummet. 13:00: Crew møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Props & design",
-                    program: "13:00: Crew møder. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Props & design",
-                    program: "06:00: Props & design (Anna Kristin) møder. 08:00: Filmoptagelse starter. 10:30: Props & design får fri. 18:00: SLUT."
-                },
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Props & design",
-                    program: "14:00: Film crew gør \"kaffemaskinen scenen\" klar. 15:00: Stylist og make-up møder. 15:45: Optagelse starter. 17:05: Pause. 17:15: Opsætning af \"advokat-scenen\". 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Ronni Poulsen": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Lyd",
-                    program: "14:00: Crew gør scenen klar. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Lyd",
-                    program: "13:00: Teknisk crew gør scenen i Sirkus klar. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                },
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Lyd",
-                    program: "14:00: Crew møder. 16:15: Optagelse starter. 19:30: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Lyd",
-                    program: "13:00: Crew møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Lyd",
-                    program: "13:00: Crew møder. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Lyd",
-                    program: "15:00: Lydmand møder. 15:45: Optagelse starter. 17:05: Pause. 17:15: Opsætning af \"advokat-scenen\". 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Julia Jacobsen": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Make-up",
-                    program: "15:15: Julia møder i Hugskotið og sørger for make-up. Julia har fri kl. 16:15."
-                },
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Make-up",
-                    program: "15:00: Make-up møder. 15:30: Optagelse begynder. 18:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Make-up",
-                    program: "06:00: Julia Jacobsen møder. 08:00: Optagelse starter. 08:15: Make-up får fri. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Make-up",
-                    program: "14:15: Make-up møder. 16:00: Optagelse i Sirkus starter. 19:45: Optagelse af hotel scene påbegyndes og der skal sminkes lidt ekstra. 22:30: SLUT."
-                },
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Make-up",
-                    program: "15:15: Julia ordner make-up og får fri kl. 15:15. 16:15: Optagelse starter. 19:30: SLUT."
-                },
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Make-up",
-                    program: "14:15: Julia ordner make-up. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Make-up",
-                    program: "13:15-14:15: Make-up (Julia) gør skuespillere klar til scenen. 14:15: Optagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Make-up",
-                    program: "06:00: Julia Jacobsen møder. 08:00: Optagelse starter. 08:15: Make-up får fri. 18:00: SLUT."
-                },
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Make-up",
-                    program: "15:00: Julia J. møder. 15:45: Optagelse starter. 17:05: Pause. 17:30: Julia J. kommer og lægger make-up. 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Lív Bruun Muller": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Flash back Líggjas - girl 1",
-                    program: "15:15: Skuespilleren Lív møder til make-up og tøjtilpasning. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                }
-            ],
-            "Ása Helena Brynjardóttir": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Flash back Líggjas - girl 2",
-                    program: "15:15: Skuespilleren Ása møder til make-up og tøjtilpasning. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                }
-            ],
-            "Edwin Niclassen": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Flash back Líggjas - i manus har han navnet \"André\" eller mand 1",
-                    program: "15:15: Skuespilleren Edwin møder til make-up og tøjtilpasning. 16:30: Optagelse påbegyndes. 19:00: SLUT."
-                }
-            ],
-            "Petur Háberg": [
-                {
-                    date: "Tirsdag den 7. okt.",
-                    location: "Hvarvið 3, kj., Tórshavn",
-                    role: "Location ejer",
-                    program: "Location ejer. Bliver orienteret."
-                }
-            ],
-            "Jónfinn Stenberg": [
-                {
-                    date: "Fredag den 17. okt.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Foto",
-                    program: "16:00-18:00: Foto- og lyd afdeling møder."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Foto",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 19:00: SLUT."
-                },
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Foto",
-                    program: "13:00: Teknisk crew gør scenen i Sirkus klar. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Foto",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 18:00: SLUT."
-                },
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "foto operator + grip ass.",
-                    program: "14:00: Film crew gør \"kaffemaskinen scenen\" klar. 15:45: Optagelse starter. 17:05: Pause. 17:15: Opsætning af \"advokat-scenen\". 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Høgni Fagraberg": [
-                {
-                    date: "Fredag den 17. okt.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Lyd",
-                    program: "16:00-18:00: Foto- og lyd afdeling møder."
-                },
-                {
-                    date: "Lørdag den 1. nov. + søndag den 2. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Lyd",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 19:00: SLUT."
-                },
-                {
-                    date: "Lørdag den 22. nov. & søndag den 23. nov.",
-                    location: "Aulan i Studenterskolen i Hoydølum",
-                    role: "Lyd",
-                    program: "06:00: Mødetid for alle crew. 08:00: Filmoptagelse starter. 18:00: SLUT."
-                }
-            ],
-            "Tórur Árnastein": [
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Kokkur 2",
-                    program: "15:00: Skuespilleren Tórur møder til make-up. 15:30: Optagelse begynder. 18:30: SLUT."
-                }
-            ],
-            "Jaspur Jørgensen": [
-                {
-                    date: "Søndag 19. okt.",
-                    location: "Hotel Brandan - i Rest. Húsagarður og køkken",
-                    role: "Kokkur 1",
-                    program: "15:00: Skuespilleren Jaspur møder til make-up. 15:30: Optagelse begynder. 18:30: SLUT."
-                }
-            ],
-            "Hanna Flóvinsdóttir": [
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Kvinde på bar 1 og på hotel værelse",
-                    program: "14:15: Skuespilleren Hanna møder til make-up. 16:00: Optagelse i Sirkus starter. 18:15: Opsætning af hotel scene. 18:30: Pause. 19:45: Optagelse af hotel scene påbegyndes. 22:30: SLUT."
-                }
-            ],
-            "Sóley Heradóttir Hammer": [
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Kvinde på bar 2",
-                    program: "14:15: Skuespilleren Sóley møder til make-up. 16:00: Optagelse i Sirkus starter. 17:30: Statisterne, Sóley og Súsanna har fri. 22:30: SLUT."
-                }
-            ],
-            "Súsanna Laursen": [
-                {
-                    date: "Mandag den 3. nov.",
-                    location: "Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar",
-                    role: "Kvinde på bar 3",
-                    program: "14:15: Skuespilleren Súsanna møder til make-up. 16:00: Optagelse i Sirkus starter. 17:30: Statisterne, Sóley og Súsanna har fri. 22:30: SLUT."
-                }
-            ],
-            "Páll Oddur": [
-                {
-                    date: "Onsdag den 5. nov.",
-                    location: "Dr. Dahlsgøta 15, Tórshavn",
-                    role: "Maðurin hjá Johannu",
-                    program: "15:15: Skuespilleren Páll Oddur møder. 16:15: Optagelse starter. 19:30: SLUT."
-                }
-            ],
-            "Thora Augustinussen": [
-                {
-                    date: "Fredag 7. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Chefen",
-                    program: "14:15: Skuespilleren Thora møder. 16:00: Optagelse starter. 18:00: Pause. 20:30: SLUT."
-                },
-                {
-                    date: "Lørdag 8. nov.",
-                    location: "Studenterskolen i Hoydølum",
-                    role: "Recepionist",
-                    program: "13:15: Skuespilleren Thora møder. 13:15-14:15: Make-up. 14:15: Optagelse starter. 18:00: SLUT."
-                }
-            ],
-            "Helena": [
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Flash back - Høgni Nielsen - girl 1",
-                    program: "15:00: Skuespilleren Helena møder til make-up og tøj. 15:45: Optagelse starter. 17:00: Optagelse af kaffe-scenen slut. 17:05: Pause. 17:15: Opsætning af \"advokat-scenen\". 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Tórur við Áir": [
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Flash back - Høgni Nielsen - advokat 1",
-                    program: "17:30: Skuespilleren Tórur møder. 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ],
-            "Astrið Gullborgardóttir": [
-                {
-                    date: "Mandag den 24. nov.",
-                    location: "Tjarnir",
-                    role: "Flash back - Høgni Nielsen - advokat 2",
-                    program: "17:30: Skuespilleren Astrið møder. 19:00: Optagelse af advokat scenen starter. 21:00: SLUT."
-                }
-            ]
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const allDetails = document.querySelectorAll('details');
 
-        const nameSelector = document.getElementById('nameSelector');
-        const scheduleOutput = document.getElementById('scheduleOutput');
-
-        nameSelector.addEventListener('change', (event) => {
-            const selectedName = event.target.value;
-            scheduleOutput.innerHTML = '';
-
-            if (selectedName && schedules[selectedName]) {
-                const personSchedules = schedules[selectedName];
-                personSchedules.forEach(schedule => {
-                    const entry = document.createElement('div');
-                    entry.classList.add('schedule-entry');
-                    entry.classList.add('active');
-                    entry.innerHTML = `
-                        <h3>${schedule.date}</h3>
-                        <div class="location"><strong>Lokation:</strong> ${schedule.location}</div>
-                        <div class="program"><strong>Rolle/Job:</strong> ${schedule.role}</div>
-                        <div class="program"><strong>Program:</strong> ${schedule.program}</div>
-                    `;
-                    scheduleOutput.appendChild(entry);
+            allDetails.forEach(details => {
+                const summary = details.querySelector('summary');
+                summary.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (details.hasAttribute('open')) {
+                        details.removeAttribute('open');
+                    } else {
+                        details.setAttribute('open', '');
+                    }
                 });
-            }
+            });
         });
     </script>
-</div>
-
----
-
-<div class="container daily-call-sheet">
-    <h2>Daglige Call Sheets</h2>
-    
-    <div class="section">
-        <h3>Tirsdag den 7. okt.</h3>
-        <p><strong>Lokation:</strong> Hvarvið 3, kj., Tórshavn</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>14:00:</strong> Crew gør scenen klar (Hans Petur, Thomas, Michael, Anna Kristin, Ronni).</li>
-            <li><strong>15:15:</strong> Alle skuespillere (Bjørn, Lív Bruun, Ása og Edwin) møder til make-up og tøjtilpasning. Julia Jacobsen møder til make-up.</li>
-            <li><strong>16:30:</strong> Optagelse påbegyndes på location.</li>
-            <li><strong>19:00:</strong> SLUT.</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h3>Fredag den 17. okt.</h3>
-        <p><strong>Lokation:</strong> Aulan i Studenterskolen i Hoydølum</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>11:00-18:00:</strong> Lys afdeling (Hans Petur) og instruktør (Thomas) møder.</li>
-            <li><strong>16:00-18:00:</strong> Foto- (Jónfinn) og lyd- (Høgni) afdeling møder.</li>
-            <li><strong>11:00-16:00:</strong> Props og design klargøring (Anna Kristin).</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h3>Søndag 19. okt.</h3>
-        <p><strong>Lokation:</strong> Hotel Brandan - i Rest. Húsagarður og køkken</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>14:00:</strong> Lys afdeling (Hans Petur), instruktør (Thomas) og producer (Michael) møder.</li>
-            <li><strong>14:45:</strong> Props og design (Anna Kristin) møder.</li>
-            <li><strong>15:00:</strong> Skuespillere (Elsa Maria, Tórur og Jaspur) møder også. Make-up (Julia) møder.</li>
-            <li><strong>15:30:</strong> Optagelse begynder.</li>
-            <li><strong>18:30:</strong> SLUT.</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h3>Lørdag den 1. nov. + søndag den 2. nov.</h3>
-        <p><strong>Lokation:</strong> Aulan i Studenterskolen i Hoydølum</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>06:00:</strong> Mødetid for alle crew og skuespillerne Bjørn Ulvedal, Marius DC, Anna Kristin Bæk, og Julia Jacobsen.</li>
-            <li><strong>06:30:</strong> Mødetid for Hjálmar og Elsa Maria.</li>
-            <li><strong>07:00:</strong> Skuespillerne Esther og Hans møder.</li>
-            <li><strong>07:01:</strong> Morgenmad, kaffe/te og rundstykker.</li>
-            <li><strong>08:00:</strong> Filmoptagelse starter.</li>
-            <li><strong>12:30:</strong> Frokost (gryderet fra Jan).</li>
-            <li><strong>19:00:</strong> SLUT.</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h3>Mandag den 3. nov.</h3>
-        <p><strong>Lokation:</strong> Sirkus bar & hotel værelse Studio 016 på Hotel Føroyar</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>13:00:</strong> Teknisk crew (HPH, Thomas, Jónfinn, Anna Kristin, Ronni P.) gør scenen i Sirkus klar.</li>
-            <li><strong>14:15:</strong> Alle skuespillere (Marius DC, Hanna F., Sóley og Súsanna) møder til make-up og tøjtilpasning.</li>
-            <li><strong>16:00:</strong> Optagelse i Sirkus starter.</li>
-            <li><strong>17:30:</strong> Statisterne, Sóley og Súsanna har fri.</li>
-            <li><strong>18:15:</strong> Opsætning af hotel scene i “Studio 016”.</li>
-            <li><strong>18:30:</strong> Pause (sandwich og vand).</li>
-            <li><strong>19:45:</strong> Optagelse påbegyndes af hotel scene.</li>
-            <li><strong>22:30:</strong> SLUT.</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h3>Onsdag den 5. nov.</h3>
-        <p><strong>Lokation:</strong> Dr. Dahlsgøta 15, Tórshavn</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>14:00:</strong> Crew (Hans Petur, Thomas, Ronni) møder.</li>
-            <li><strong>15:15:</strong> Skuespillere (Páll Oddur og Esther) møder.</li>
-            <li><strong>16:15:</strong> Optagelse starter.</li>
-            <li><strong>19:30:</strong> SLUT.</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h3>Fredag 7. nov.</h3>
-        <p><strong>Lokation:</strong> Studenterskolen i Hoydølum</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>10:00:</strong> Anna Kristin sørger for at rummet bliver designet som kontor.</li>
-            <li><strong>13:00:</strong> Crew (Hans Petur, Thomas, Ronni og Anna Kristin) møder.</li>
-            <li><strong>14:15:</strong> Skuespillere (Esther, Hans og Thora) møder. Julia ordner make-up.</li>
-            <li><strong>16:00:</strong> Optagelse starter.</li>
-            <li><strong>18:00:</strong> Pause med sandwich.</li>
-            <li><strong>18:30:</strong> Optagelse starter igen.</li>
-            <li><strong>20:30:</strong> SLUT.</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h3>Lørdag 8. nov.</h3>
-        <p><strong>Lokation:</strong> Studenterskolen i Hoydølum</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>13:00:</strong> Crew (Hans Petur, Thomas, Ronni, Anna Kristin) møder.</li>
-            <li><strong>13:15:</strong> Skuespillere (Hans Tórgarð, Esther, politibetjent 1 og politibetjent 2) møder.</li>
-            <li><strong>13:15-14:15:</strong> Make-up (Julia) gør skuespillere klar.</li>
-            <li><strong>14:15:</strong> Optagelse starter.</li>
-            <li><strong>18:00:</strong> SLUT.</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h3>Lørdag den 22. nov. & søndag den 23. nov.</h3>
-        <p><strong>Lokation:</strong> Aulan i Studenterskolen i Hoydølum</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>06:00:</strong> Mødetid for alle crew og skuespillerne Bjørn Ulvedal, Marius DC, Anna Kristin Bæk og Julia Jacobsen.</li>
-            <li><strong>06:30:</strong> Mødetid for Hjálmar og Elsa Maria.</li>
-            <li><strong>07:00:</strong> Skuespillerne Esther og Hans møder.</li>
-            <li><strong>07:01:</strong> Morgenmad, kaffe/te og rundstykker.</li>
-            <li><strong>08:00:</strong> Filmoptagelse starter.</li>
-            <li><strong>12:30:</strong> Frokost (gryderet fra Jan).</li>
-            <li><strong>18:00:</strong> SLUT.</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h3>Mandag den 24. nov.</h3>
-        <p><strong>Lokation:</strong> Tjarnir</p>
-        <p><strong>Program:</strong></p>
-        <ul>
-            <li><strong>14:00:</strong> Film crew gør “kaffemaskinen scenen” klar i Presselogen (Hans Petur, Thomas, Michael, Anna Kristin Bæk).</li>
-            <li><strong>15:00:</strong> Lydmand (Ronni P.), stylist og make-up (Julia J., og Anna Kristin Bæk) møder.</li>
-            <li><strong>15:00:</strong> 2 statister (Helena + ???) og 1 hovedskuespiller (Hjálmar Dam) møder til make-up og tøj.</li>
-            <li><strong>15:45:</strong> Optagelse starter.</li>
-            <li><strong>17:00:</strong> Optagelse af kaffe-scenen slut.</li>
-            <li><strong>17:05:</strong> Pause (sandwich).</li>
-            <li><strong>17:15:</strong> Opsætning af ”advokat-scenen” (Hans Petur, Thomas, Ronni, Michael).</li>
-            <li><strong>17:30:</strong> 2 statister (Astrið Gullborgardóttir + Tórur við Áir) og hovedskuespiller (Hjálmar Dam) møder. Julia J. lægger make-up.</li>
-            <li><strong>19:00:</strong> Optagelse af advokat scenen starter.</li>
-            <li><strong>21:00:</strong> SLUT.</li>
-        </ul>
-    </div>
-</div>
-
 </body>
 </html>
