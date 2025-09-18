@@ -11,6 +11,7 @@
   <style>
     html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
     mark { padding: .1rem .2rem; border-radius: .25rem; }
+    .chip { display:inline-block; padding:.25rem .5rem; border-radius:999px; border:1px solid #e5e7eb; background:#fff; font-size:.8rem; }
     @media print {
       .no-print { display:none !important; }
       .print-break { page-break-before: always; }
@@ -74,7 +75,7 @@
   <section id="rolodex" class="max-w-6xl mx-auto px-4 pb-16">
     <hr class="my-8"/>
     <h2 class="text-lg font-semibold mb-2">Kontaktbog · Alle navne</h2>
-    <p class="text-sm text-slate-600 mb-4">Alfabetisk liste (uden telefon og e-mail).</p>
+    <p class="text-sm text-slate-600 mb-4">Alfabetisk liste (uden telefon og e‑mail).</p>
     <div id="rolodexGrid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
   </section>
 
@@ -174,7 +175,7 @@ const scheduleData = [
     dateISO: "2025-11-01",
     dateLabel: "Lørdag 1. nov.",
     title: "Optagelse i terapilokale (Dag 1)",
-    location: { name: "Aulan, Studentaskúlin í Hoydølum", map: "https://maps.google.com/?q=Studentask%C3%BAlin+%C3%AD+Hoyd%C3%B8lum" },
+    location: { name: "Aulan, Studentaskúlin í Hoydølum", map: "https://maps.google.com/?q=Studentask%C3%BAlin+%C3%AD+Hoyd%C3%B0lum" },
     calltimes: [
       { time: "06:00", group: "Crew + (Bjørn, Marius)", notes: "Make-up/kostume; Props møder (Anna K.)" },
       { time: "06:30", group: "Hjálmar & Elsa", notes: "Make-up/kostume" },
@@ -353,9 +354,7 @@ function highlight(text, needle){
 function collectAllNames(){
   const set = new Set();
   scheduleData.forEach(d=>{
-    // Alle contacts (inkl. location-ejere) i kontaktbogen
     (d.contacts||[]).forEach(c=>{ if(c.name) set.add(c.name.trim()); });
-    // Navne i cast/statist-blokke
     (d.calltimes||[]).forEach(ct=>{
       const isCastBlock = /skuespiller|skodespill|cast|statist/i.test(ct.group||'');
       if(!isCastBlock) return;
@@ -381,6 +380,29 @@ function buildRolodex(names){
   });
 }
 
+// Udtræk navne pr. dag – delt op i crew vs. cast/statister
+function extractNames(day){
+  const crew = new Set();
+  const cast = new Set();
+  (day.contacts||[]).forEach(c=>{
+    if(!c?.name) return;
+    if(/location/i.test(c.role||'')) return; // udeluk ejere/locations i personalister
+    crew.add(c.name.trim());
+  });
+  (day.calltimes||[]).forEach(ct=>{
+    const isCast = /skuespiller|skodespill|cast|statist/i.test(ct.group||'');
+    const bucket = isCast ? cast : crew; // hvis "Crew" i group → crew
+    const m = (ct.notes||'').match(/[A-ZÆØÅÍÐÓÚÝÁÄÖËÏÜ][A-Za-zÀ-ÖØ-öø-ÿÆØÅæøåÍÐÓÚÝÁÄÖËÏÜ'.\- ]{1,40}/g) || [];
+    m.map(s=>s.trim())
+     .filter(s=>!/(ALLE|Pause|Morgenmad|Frokost|Optagelse|Opsætning|SLUT|Make\-up|kostume|kaffe|transport|scene|Plan|fri)/i.test(s))
+     .forEach(n=>bucket.add(n));
+  });
+  return {
+    crew: Array.from(crew).sort((a,b)=>a.localeCompare(b,'da')),
+    cast: Array.from(cast).sort((a,b)=>a.localeCompare(b,'da'))
+  };
+}
+
 // Day card
 function createDayCard(day, person){
   const month = day.dateISO.slice(5,7);
@@ -396,6 +418,7 @@ function createDayCard(day, person){
   card.id = `day-${day.id}`;
 
   const hasPerson = person && searchBlob.includes(person.toLowerCase());
+  const names = extractNames(day);
 
   card.innerHTML = `
     <div class="px-5 py-4 flex flex-wrap items-start gap-3 md:gap-4 border-b ${hasPerson? 'bg-amber-50' : 'bg-slate-50'}">
@@ -439,14 +462,16 @@ function createDayCard(day, person){
       </div>
 
       <div>
-        <h3 class="font-semibold mb-2">Kontakter (navne uden tlf/e-mail)</h3>
-        <div class="space-y-2 text-sm">
-          ${(day.contacts||[]).map(c=>`
-            <div class="p-3 rounded-xl border">
-              <div class="font-medium">${esc(c.role||'')}</div>
-              <div>${highlight(c.name||'', person)}</div>
-            </div>
-          `).join('')}
+        <h3 class="font-semibold mb-2">Hold & medvirkende (uden tlf/e‑mail)</h3>
+        <div class="space-y-3 text-sm">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-slate-500 mb-1">Crew</div>
+            <div class="flex flex-wrap gap-2">${names.crew.map(n=>`<span class="chip">${highlight(n, person)}</span>`).join('') || '<span class="text-slate-400">–</span>'}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-slate-500 mb-1">Skuespillere & statister</div>
+            <div class="flex flex-wrap gap-2">${names.cast.map(n=>`<span class="chip">${highlight(n, person)}</span>`).join('') || '<span class="text-slate-400">–</span>'}</div>
+          </div>
         </div>
       </div>
     </div>
