@@ -58,10 +58,7 @@
   </style>
 
   <!-- Firebase (Compat SDK) -->
-  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
-</head>
+      </head>
 <body>
   <div class="app" id="app">
     <header>
@@ -69,7 +66,7 @@
         <div class="logo">KR</div>
         <div>
           <h1>KRENKARIRNIR · Produktionsportal</h1>
-          <div class="sub">Vælg navn → dit skema · Call sheets · Kontakter · Forum</div>
+          <div class="sub">Vælg navn → dit skema · Call sheets · Kontakter</div>
         </div>
       </div>
       <div class="controls">
@@ -96,7 +93,6 @@
             <button class="tab" id="tab-day" aria-selected="true">Mit skema</button>
             <button class="tab" id="tab-calls">Call sheets</button>
             <button class="tab" id="tab-contacts">Kontakter</button>
-            <button class="tab" id="tab-forum">Forum</button>
           </div>
         </div>
         <div class="bd" id="panel">
@@ -363,14 +359,17 @@
   function renderNextDays(){
     nextDays.innerHTML=''; const ul = el('div','list');
     for(const d of days){
-      const row = el('div','row');
+      const row = el('div','row'); row.style.cursor='pointer'; row.title='Klik for at se dagens program';
       const left = el('div');
       left.appendChild(el('div','title', d.date + ' · ' + d.title));
       left.appendChild(el('div','muted small', d.location.name + (d.location.address ? ' · '+d.location.address : '')));
       const right = el('div');
       right.appendChild(el('span','chip', d.program[0]?.time ? 'Mødetid ' + d.program[0].time : 'Se call sheet'));
       row.append(left,right); ul.appendChild(row);
+      row.onclick = ()=>{ selectTab(tabCalls); renderDayById(d.id); };
     }
+    nextDays.appendChild(ul);
+  }
     nextDays.appendChild(ul);
   }
 
@@ -457,173 +456,29 @@
     panel.innerHTML=''; panel.appendChild(wrap);
   }
 
-  // ---------- FIREBASE CORE (til Forum) ----------
-  const fb = {
-    config: {
-      apiKey: "AIzaSyBtKG38CDCXVe36gxID9HUNmhMu9ooLrAQ",
-      authDomain: "krenkarirnir.firebaseapp.com",
-      projectId: "krenkarirnir",
-      storageBucket: "krenkarirnir.firebasestorage.app",
-      messagingSenderId: "116992787112",
-      appId: "1:116992787112:web:1e140b9e7b8811b7f5f89d"
-    },
-    db:null,
-    _ready:null,
-    ensure(){
-      try{
-        if(fb.db) return true;
-        if(firebase.apps?.length===0) firebase.initializeApp(fb.config);
-        if(!fb._ready){
-          fb._ready = new Promise((resolve)=>{
-            firebase.auth().onAuthStateChanged(u=>{ if(u) resolve(true); });
-            if(!firebase.auth().currentUser){ firebase.auth().signInAnonymously().catch(console.warn); }
-          });
-        }
-        fb.db = firebase.firestore();
-        return true;
-      }catch(e){ console.warn('Firebase init failed', e); return false; }
-    },
-    ready(){ return fb._ready || Promise.resolve(true); },
-    base(){ return fb.db.collection('productions').doc('KRENKARIRNIR'); },
-    ts(){ return firebase.firestore.FieldValue.serverTimestamp(); },
-    inc(n){ return firebase.firestore.FieldValue.increment(n); }
-  };
-
-  // ---------- FORUM ----------
-  const forum = {
-    channel: localStorage.getItem('forumChan') || '#produktion',
-    currentThread:null, unsubThreads:null, unsubPosts:null,
-    ui(){
-      // Normalisér kanalnavn (fjerner evt. leading backslash fra ældre versioner)
-      forum.channel = (forum.channel || '#produktion').replace(/^\+/, '');
-      localStorage.setItem('forumChan', forum.channel);
-      if(!fb.ensure()){ panel.innerHTML='<p class="muted small">Firebase er ikke klar.</p>'; return; }
-      const wrap = el('div','forumWrap');
-
-      // VENSTRE: trådliste + kontroller
-      const left = el('div','topics');
-      const hd = el('div','hd');
-      const htitle = el('div','title'); htitle.textContent='Diskussionsforum';
-      const controls = el('div');
-      const chan = document.createElement('select'); chan.id='forumChan';
-      chan.appendChild(new Option('#produktion (alle kan se)','#produktion'));
-      for(const d of days){ chan.appendChild(new Option(d.id+' — '+d.title, d.id)); }
-      chan.value = forum.channel;
-      chan.addEventListener('change',()=>{ forum.channel = chan.value; localStorage.setItem('forumChan', forum.channel); forum.loadThreads(); });
-      const newBtn = document.createElement('button'); newBtn.textContent='Ny tråd'; newBtn.onclick=()=>{ newBox.style.display = (newBox.style.display==='grid'?'none':'grid'); };
-      controls.append(chan, newBtn); hd.append(htitle, controls);
-
-      const list = document.createElement('div'); list.id='topicList';
-
-      const newBox = document.createElement('div'); newBox.className='newThreadBox'; newBox.style.display='none'; newBox.style.gridTemplateColumns='1fr';
-      const inTitle = document.createElement('input'); inTitle.placeholder='Trådens titel'; inTitle.id='newThreadTitle';
-      const ta = document.createElement('textarea'); ta.placeholder='Første indlæg…'; ta.id='newThreadBody'; ta.style.minHeight='90px';
-      const createBtn = document.createElement('button'); createBtn.textContent='Opret tråd'; createBtn.onclick=()=>forum.createThread();
-      newBox.append(inTitle, ta, createBtn);
-
-      left.append(hd, newBox, list);
-
-      // HØJRE: trådvisning
-      const right = el('div','thread');
-      const th = el('div','hd');
-      const tTitle = el('div','title'); tTitle.id='threadTitle'; tTitle.textContent='Vælg en tråd til venstre';
-      th.append(tTitle);
-      const posts = document.createElement('div'); posts.className='posts'; posts.id='posts'; posts.innerHTML='<div class="muted small">Ingen indlæg endnu.</div>';
-      const composer = el('div','composer');
-      const who = personSelect.value || '';
-      const taReply = document.createElement('textarea'); taReply.id='replyText'; taReply.placeholder = who? 'Skriv svar… (Enter sender, Shift+Enter ny linje)' : 'Vælg navn for at skrive'; taReply.disabled = !who;
-      taReply.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); forum.postReply(); }});
-      const send = document.createElement('button'); send.textContent='Send'; send.onclick=()=>forum.postReply(); send.disabled=!who;
-      composer.append(taReply, send);
-      right.append(th, posts, composer);
-
-      wrap.append(left, right);
-      panel.innerHTML=''; panel.appendChild(wrap);
-
-      forum.loadThreads();
-    },
-    loadThreads(){
-      if(forum.unsubThreads) { forum.unsubThreads(); forum.unsubThreads=null; }
-      const list = $('#topicList'); if(!list) return; list.innerHTML='<div class="muted small" style="padding:10px">Læser…</div>';
-      const col = fb.base().collection('threads');
-      forum.unsubThreads = col.where('channel','==',forum.channel).orderBy('lastAt','desc').limit(50)
-        .onSnapshot(s=>{
-          list.innerHTML='';
-          if(s.empty){ list.innerHTML = '<div class="muted small" style="padding:10px">Ingen tråde endnu. Opret den første.</div>'; return; }
-          s.forEach(doc=>{
-            const d=doc.data();
-            const row = el('div','topic'+(forum.currentThread===doc.id?' active':''));
-            const left = el('div');
-            left.appendChild(el('div','title', d.title || '(uden titel)'));
-            left.appendChild(el('div','meta', `${d.postsCount||0} indlæg · senest ${d.lastAt?.toDate? d.lastAt.toDate().toLocaleString(): ''}`));
-            const right = el('div','meta'); right.textContent = d.createdBy || '';
-            row.append(left,right);
-            row.onclick = ()=> forum.openThread(doc.id, d);
-            list.appendChild(row);
-          });
-        }, err=>{ list.innerHTML = '<div class="small danger" style="padding:10px">'+err.message+'</div>'; });
-    },
-    openThread(id, data){
-      forum.currentThread=id;
-      const tTitle = $('#threadTitle'); if(tTitle) tTitle.textContent = data?.title || 'Tråd';
-      const postsEl = $('#posts'); if(postsEl) postsEl.innerHTML='<div class="muted small">Læser indlæg…</div>';
-      if(forum.unsubPosts){ forum.unsubPosts(); forum.unsubPosts=null; }
-      const col = fb.base().collection('threads').doc(id).collection('posts');
-      forum.unsubPosts = col.orderBy('ts','asc').limit(500).onSnapshot(s=>{
-        postsEl.innerHTML='';
-        s.forEach(doc=>{
-          const m = doc.data();
-          const post = el('div','post');
-          const when = m.ts?.toDate? m.ts.toDate().toLocaleString(): '';
-          post.appendChild(el('div','meta', `${m.user||'Ukendt'}${m.role? ' · '+m.role:''} — ${when}`));
-          post.appendChild(el('div',null, m.text));
-          postsEl.appendChild(post);
-        });
-        postsEl.scrollTop = postsEl.scrollHeight;
-      }, err=>{ postsEl.innerHTML = '<div class="small danger">'+err.message+'</div>'; });
-    },
-    async createThread(){
-      try{
-        await fb.ready();
-        const title = $('#newThreadTitle').value.trim();
-        const body  = $('#newThreadBody').value.trim();
-        const user = personSelect.value; const role = (people[user]||{}).role || '';
-        if(!title || !body){ alert('Titel og første indlæg skal udfyldes.'); return; }
-        if(!user){ alert('Vælg navn (øverst) for at oprette tråd.'); return; }
-        const uid = (firebase.auth().currentUser && firebase.auth().currentUser.uid) || null;
-        const base = fb.base();
-        const thread = { title, channel: forum.channel, createdBy:user, role, createdAt: fb.ts(), lastAt: fb.ts(), postsCount: 0, uid };
-        const tRef = await base.collection('threads').add(thread);
-        await tRef.collection('posts').add({ user, role, text: body, ts: fb.ts(), uid });
-        await tRef.update({ postsCount: fb.inc(1), lastAt: fb.ts() });
-        $('#newThreadTitle').value=''; $('#newThreadBody').value='';
-        forum.openThread(tRef.id, {title});
-      }catch(e){
-        alert('Kunne ikke gemme tråden: '+ (e.message||e));
-        console.error(e);
-      }
-    },
-    async postReply(){
-      try{
-        if(!forum.currentThread){ alert('Vælg en tråd først.'); return; }
-        const ta = $('#replyText'); if(!ta || !ta.value.trim()) return;
-        await fb.ready();
-        const user = personSelect.value; const role = (people[user]||{}).role || '';
-        if(!user){ alert('Vælg navn (øverst) for at skrive.'); return; }
-        const uid = (firebase.auth().currentUser && firebase.auth().currentUser.uid) || null;
-        const tRef = fb.base().collection('threads').doc(forum.currentThread);
-        await tRef.collection('posts').add({ user, role, text: ta.value.trim(), ts: fb.ts(), uid });
-        await tRef.update({ postsCount: fb.inc(1), lastAt: fb.ts() });
-        ta.value='';
-      }catch(e){
-        alert('Kunne ikke gemme svaret: ' + (e.message||e));
-        console.error(e);
-      }
-    }
-  };
+  // NY: Vis én bestemt dag (klik fra højre kolonne)
+  function renderDayById(dayId){
+    const d = days.find(x=>x.id===dayId);
+    if(!d){ panel.innerHTML='<p class="muted small">Dagen blev ikke fundet.</p>'; return; }
+    const wrap = el('div');
+    const card = el('div','row'); card.style.flexDirection='column';
+    const head = el('div');
+    head.appendChild(el('div','title', d.date + ' · ' + d.title));
+    head.appendChild(el('div','muted small', d.location.name + (d.location.address? ' · '+d.location.address:'')));
+    const chips = el('div'); const call = d.program[0]?.time || ''; if(call) chips.appendChild(el('span','chip','Mødetid · '+call));
+    card.appendChild(head); card.appendChild(chips);
+    const prog = el('div','section'); const h3 = el('h3'); h3.textContent='Dagsprogram'; prog.appendChild(h3);
+    for(const p of d.program){ const line = el('div','small mono'); line.textContent=(p.time? p.time.padEnd(6,' ')+' ':'')+p.text; prog.appendChild(line); }
+    const calls = el('div','two section');
+    const left = el('div'); left.appendChild(el('h3','', 'Skuespillere')); for(const c of d.cast){ left.appendChild(personRow(c)); }
+    const right = el('div'); right.appendChild(el('h3','', 'Crew')); for(const c of d.crew){ right.appendChild(personRow(c)); }
+    calls.append(left,right);
+    card.appendChild(prog); card.appendChild(calls); wrap.appendChild(card);
+    panel.innerHTML=''; panel.appendChild(wrap);
+  }
 
   // ---------- TABS ----------
-  const tabDay = $('#tab-day'), tabCalls = $('#tab-calls'), tabContacts = $('#tab-contacts'), tabForum = $('#tab-forum');
+  const tabDay = $('#tab-day'), tabCalls = $('#tab-calls'), tabContacts = $('#tab-contacts');
   function selectTab(tab){ for(const t of [tabDay,tabCalls,tabContacts,tabForum]) t.setAttribute('aria-selected','false'); tab.setAttribute('aria-selected','true'); }
 
   tabDay.addEventListener('click',()=>{ selectTab(tabDay); const v=personSelect.value; if(v) renderMySchedule(v); else panel.innerHTML='<p class="muted small">Vælg navn for at se dit skema.</p>'; });
