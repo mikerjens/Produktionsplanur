@@ -45,11 +45,9 @@
   .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center}
   a{color:#a5b4fc}
   @media (max-width:1100px){ .wrap{grid-template-columns:1fr;}.right{order:3}.center{order:2}.left{order:1}}
-  /* Modal */
   .modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;align-items:center;justify-content:center}
   .modal .box{width:min(1000px,94vw);max-height:86vh;overflow:auto}
   .modal .hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:var(--card);padding-bottom:8px;margin-bottom:8px}
-  /* Print */
   @media print{
     body{background:white;color:black}
     header,.left,.right,.footer,#contactsModal{display:none !important}
@@ -70,7 +68,6 @@
 </header>
 
 <div class="wrap">
-  <!-- VENSTRE -->
   <div class="card pane left">
     <div class="toolbar">
       <button class="primary" onclick="openContacts()">Kontakter</button>
@@ -89,7 +86,6 @@
     </div>
   </div>
 
-  <!-- MIDTEN -->
   <div class="card pane center">
     <div class="two">
       <div>
@@ -112,7 +108,6 @@
     </div>
   </div>
 
-  <!-- HØJRE -->
   <div class="card pane right">
     <div class="kicker">Produktionsdage</div>
     <div class="search"><input id="daySearch" type="search" placeholder="Søg dato, sted, titel…" oninput="renderDayList()"></div>
@@ -138,24 +133,24 @@
   </div>
 </div>
 
-<div class="footer">Version: 24.09.2025 · Kilde: Produktionsplan v1.4</div>
+<div class="footer">Version: 24.09.2025 · Kilde: Produktionsplan v1.5</div>
 
 <script>
-/* -------------------- DATA (opdateret efter dokumentet) -------------------- */
+/* -------------------- DATA -------------------- */
 const DAYS = [
-  /* 30.09 Flashback 1B – Dannys flirt (Ronni fjernet) */ /* Kilde: Produktionsplan v1.4 */ 
+  /* 30.09 Flashback 1B – Dannys flirt (TIRSDAG) */ // Kilde: v1.5 :contentReference[oaicite:1]{index=1}
   {
     id:"2025-09-30",
-    title:'Mandag 30. sept. · “Flashback 1B – Dannys flirt”',
+    title:'Tirsdag 30. sept. · “Flashback 1B – Dannys flirt”', // ← Mandag → Tirsdag
     location:'Studio 016, Hotel Føroyar',
     program:[
-      ["16:00","Teknisk crew klarer scenen (HPH, Thomas, Jónfinn, Anna Kristin)"], /* Ronni fjernet her */
+      ["16:00","Teknisk crew klarer scenen (HPH, Thomas, Jónfinn, Anna Kristin)"], // Ronni tidligere fjernet
       ["16:00","Mødetid skuespillere til make-up/tøj (Marius DC, Hanna)"],
       ["19:00","Optagelse starter"],
       ["21:30","SLUT"],
     ],
     cast:["Marius DC","Hanna Flóvinsdóttir"],
-    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen","Rósa Maria Restorfff"], /* Ronni ikke på denne dag */
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen","Rósa Maria Restorfff"],
     call:null
   },
   /* 07.10 Flashback 2 – Festen med Líggjas */
@@ -343,7 +338,7 @@ const DAYS = [
   }
 ];
 
-/* Kontakter (uddrag) */
+/* Kontakter (uændret) */
 const CONTACTS = {
   "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
   "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
@@ -375,17 +370,15 @@ const CONTACTS = {
   "Petur Háberg":{role:"Location ejer · Hvarvið 3, kj.", phone:"213090"}
 };
 
-/* Udledte navne */
+/* Afledte navne og UI-funktioner (uændret) */
 const PEOPLE = Array.from(new Set([
   ...Object.keys(CONTACTS),
   ...DAYS.flatMap(d => [...d.cast, ...d.crew])
 ])).sort((a,b)=>a.localeCompare(b,'da'));
 
-/* -------------------- DOM helpers -------------------- */
 const el = id => document.getElementById(id);
 let currentDay = null;
 
-/* -------------------- INIT -------------------- */
 function init(){
   const sel = el('nameSelect');
   for(const p of PEOPLE){
@@ -396,7 +389,6 @@ function init(){
 }
 init();
 
-/* -------------------- UI base -------------------- */
 function resetUI(){
   el('nameSelect').value="";
   renderMySchedule();
@@ -411,11 +403,10 @@ function resetUI(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* -------------------- Dagsliste (højre) -------------------- */
 function renderDayList(){
   const q = (el('daySearch').value||'').toLowerCase();
   const list = el('dayList'); list.innerHTML = '';
-  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)); // dato-sorteret
+  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
   days.forEach(d=>{
     if(q && !(d.title.toLowerCase().includes(q) || d.location.toLowerCase().includes(q))) return;
     const div = document.createElement('div');
@@ -482,7 +473,6 @@ function contactTip(name){
   return bits.join(' · ');
 }
 
-/* -------------------- Kontakter -------------------- */
 function openContacts(){ el('contactsModal').style.display='flex'; renderContacts(); }
 function closeContacts(){ el('contactsModal').style.display='none'; }
 function renderContacts(){
@@ -506,7 +496,6 @@ function renderContacts(){
   });
 }
 
-/* -------------------- Call sheets (samlet liste) -------------------- */
 function openCallSheets(){ el('callSheetsModal').style.display='flex'; renderCallSheets(); }
 function closeCallSheets(){ el('callSheetsModal').style.display='none'; }
 function renderCallSheets(){
