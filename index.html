@@ -1,510 +1,552 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KRENKARIRNIR · Produktionsportal</title>
-  <style>
-    :root{ --bg:#0f1115;--panel:#151922;--muted:#8b94a7;--text:#e9eef7;--accent:#7dd3fc;--accent2:#a3e635;--danger:#f87171;--ok:#34d399;--card:#0c0f15;--chip:#1f2531 }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;color:var(--text);background:linear-gradient(180deg,#0b0e13 0%,#0f1115 60%,#0d1016 100%) fixed}
-    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-    .app{max-width:1200px;margin:24px auto;padding:16px}
-    .brand{display:flex;align-items:center;gap:12px;cursor:pointer}
-    .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#60a5fa);display:grid;place-items:center;font-weight:800;color:#0b0e13;box-shadow:0 6px 18px rgba(125,211,252,.25)}
-    h1{margin:0;font-size:22px;letter-spacing:.3px}
-    .sub{color:var(--muted);font-size:12px;margin-top:2px}
-    header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border:1px solid #232838;background:linear-gradient(180deg,#151a22,#121723);border-radius:16px}
-    .controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .select, .search{position:relative}
-    input, select, button{background:#0d1118;color:var(--text);border:1px solid #263047;border-radius:12px;padding:10px 12px;font-size:14px}
-    select{padding-right:36px} button{cursor:pointer}
-    .pill{background:var(--chip);border:1px solid #2a3446;border-radius:999px;padding:8px 12px;color:var(--muted);font-size:12px}
-    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
-    @media (max-width:980px){.grid{grid-template-columns:1fr}}
-    .card{background:linear-gradient(180deg,#121723,#0e131c);border:1px solid #232b3b;border-radius:16px;overflow:hidden}
-    .card .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #232b3b;background:radial-gradient(1200px 300px at -10% -40%,rgba(125,211,252,.06),transparent)}
-    .card .bd{padding:14px 16px}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap}
-    .tab{border-radius:12px;border:1px solid #2a3446;padding:8px 12px;background:#0d1118;color:var(--muted)}
-    .tab[aria-selected="true"]{color:#091017;background:linear-gradient(180deg,#9ae6b4,#60d7fb);border-color:#60d7fb;font-weight:600}
-    .list{display:flex;flex-direction:column;gap:10px}
-    .row{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid #242c3b;border-radius:12px;background:#0c1118}
-    .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid #2a3446;border-radius:999px;background:#0b1017;color:var(--muted);font-size:12px}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-    .muted{color:var(--muted)} .kicker{font-size:11px;letter-spacing:.4px;color:var(--muted);text-transform:uppercase}
-    .title{font-weight:700} .two{display:grid;grid-template-columns:1fr 1fr;gap:10px} @media(max-width:700px){.two{grid-template-columns:1fr}}
-    .section{margin-top:12px} .section h3{margin:0 0 8px 0;font-size:14px;color:#cfe6ff}
-    .print{border:1px dashed #2a3446} .footer{margin:18px 0 6px;color:var(--muted);font-size:12px;text-align:center}
-    .divider{height:1px;background:#222a3a;margin:10px 0} .small{font-size:12px}
-
-    /* Forum UI */
-    .forumWrap{display:grid;grid-template-columns:340px 1fr;gap:12px}
-    @media (max-width:900px){.forumWrap{grid-template-columns:1fr}}
-    .topics{border:1px solid #242c3b;border-radius:12px;background:#0b1017;max-height:560px;overflow:auto}
-    .topics .hd, .thread .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 12px;border-bottom:1px solid #242c3b}
-    .topic{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px dashed #1d2534;cursor:pointer}
-    .topic:hover{background:#0f1520}
-    .topic.active{background:linear-gradient(180deg,#101a2c,#0d1522)}
-    .topic .meta{font-size:12px;color:var(--muted)}
-    .thread{border:1px solid #242c3b;border-radius:12px;background:#0b1017;min-height:560px}
-    .posts{display:flex;flex-direction:column;gap:10px;padding:12px;max-height:460px;overflow:auto}
-    .post{border:1px solid #253149;border-radius:10px;background:#121826;padding:8px 10px}
-    .post .meta{font-size:11px;color:var(--muted);margin-bottom:4px}
-    .composer{display:flex;gap:8px;padding:10px;border-top:1px solid #242c3b}
-    .composer textarea{flex:1;min-height:60px;max-height:160px;resize:vertical;background:#0d1118;border:1px solid #263047;border-radius:10px;color:var(--text);padding:8px}
-    .newThreadBox{padding:10px;border-top:1px dashed #242c3b;display:none;gap:8px}
-    .newThreadBox input{width:100%;background:#0d1118;border:1px solid #263047;border-radius:10px;color:var(--text);padding:8px;margin-bottom:8px}
-  </style>
-
-  <!-- Firebase (Compat SDK) -->
-      </head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KRENKARIRNIR · Produktionsportal</title>
+<style>
+  :root{ --bg:#0f1115; --card:#171922; --muted:#9aa3b2; --text:#e8ecf1; --brand:#7dd3fc; --brand2:#a78bfa; --border:#262a36; }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0d0f14 0%,#11141b 100%);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  header{display:flex;align-items:center;gap:.75rem;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#0f1115cc;backdrop-filter: blur(6px);z-index:10}
+  .logo{display:flex;align-items:center;gap:.5rem;cursor:pointer;text-decoration:none;color:var(--text)}
+  .logo .mark{width:32px;height:32px;border-radius:10px;background:conic-gradient(from 210deg,var(--brand),var(--brand2))}
+  .logo h1{font-size:18px;letter-spacing:.4px;margin:0;font-weight:700}
+  .wrap{display:grid;grid-template-columns:320px 1fr 360px;gap:16px;padding:16px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .pane{padding:16px}
+  h2{margin:.25rem 0 1rem 0;font-size:18px}
+  h3{margin:1rem 0 .5rem 0;font-size:16px}
+  label{display:block;margin-bottom:.5rem;font-size:13px;color:var(--muted)}
+  select,input[type="search"]{width:100%;padding:12px;border-radius:12px;background:#0f1218;border:1px solid var(--border);color:var(--text);outline:none}
+  .tag{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+  .list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .item{padding:12px;border:1px solid var(--border);border-radius:12px;background:#131623;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  .item:hover{border-color:#2f3444;transform:translateY(-1px)}
+  .muted{color:var(--muted)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .program{display:flex;flex-direction:column;gap:8px}
+  .step{display:flex;gap:10px;align-items:flex-start;background:#121622;border:1px dashed #293042;padding:10px;border-radius:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:#0f1218;font-size:12px}
+  .pill{padding:4px 10px;border-radius:999px;background:#0f1218;border:1px solid var(--border);font-size:12px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  button{cursor:pointer;border:1px solid var(--border);background:#10131a;color:var(--text);padding:10px 12px;border-radius:12px}
+  button.primary{border-color:transparent;background:linear-gradient(135deg,var(--brand),var(--brand2))}
+  .section{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
+  .empty{padding:16px;text-align:center;color:var(--muted)}
+  .kicker{font-size:12px;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+  .stack{display:flex;flex-direction:column;gap:10px}
+  .two{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+  .daybtn{width:100%;text-align:left}
+  .contact-row{display:flex;justify-content:space-between;gap:8px;padding:10px;border:1px solid var(--border);border-radius:10px;background:#101421}
+  .scroll{max-height:62vh;overflow:auto;padding-right:6px}
+  .search{display:flex;gap:8px;margin-top:8px}
+  .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center}
+  a{color:#a5b4fc}
+  @media (max-width:1100px){ .wrap{grid-template-columns:1fr;}.right{order:3}.center{order:2}.left{order:1}}
+  /* Modal */
+  .modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;align-items:center;justify-content:center}
+  .modal .box{width:min(1000px,94vw);max-height:86vh;overflow:auto}
+  .modal .hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:var(--card);padding-bottom:8px;margin-bottom:8px}
+  /* Print */
+  @media print{
+    body{background:white;color:black}
+    header,.left,.right,.footer,#contactsModal{display:none !important}
+    .center{border:none;box-shadow:none}
+    #callSheetsModal{display:block;background:none}
+    #callSheetsModal .box{width:100%;max-height:none;overflow:visible}
+    #callSheetsList .sheet{page-break-after:always;border:1px solid #0002}
+    .sheet .program .step{border:1px solid #0001;background:#fff}
+    a{color:inherit}
+  }
+</style>
+</head>
 <body>
-  <div class="app" id="app">
-    <header>
-      <div class="brand" id="brand">
-        <div class="logo">KR</div>
-        <div>
-          <h1>KRENKARIRNIR · Produktionsportal</h1>
-          <div class="sub">Vælg navn → dit skema · Call sheets · Kontakter</div>
-        </div>
-      </div>
-      <div class="controls">
-        <div class="select">
-          <select id="personSelect" title="Vælg navn">
-            <option value="">— Vælg navn —</option>
-          </select>
-        </div>
-        <div class="search">
-          <input id="search" placeholder="Søg i kontakter & call sheets" />
-        </div>
-        <button id="print" class="print" title="Print eller gem som PDF">🖨️ Print</button>
-      </div>
-    </header>
+<header>
+  <a class="logo" onclick="resetUI()" title="Til start">
+    <span class="mark"></span><h1>KRENKARIRNIR · Produktionsportal</h1>
+  </a>
+</header>
 
-    <div class="grid">
-      <div class="card" id="myDay">
-        <div class="hd">
-          <div>
-            <div class="kicker">Mit skema</div>
-            <div class="title" id="myDayTitle">Vælg et navn</div>
-          </div>
-          <div class="tabs">
-            <button class="tab" id="tab-day" aria-selected="true">Mit skema</button>
-            <button class="tab" id="tab-calls">Call sheets</button>
-            <button class="tab" id="tab-contacts">Kontakter</button>
-          </div>
-        </div>
-        <div class="bd" id="panel">
-          <p class="muted small">Vælg et navn ovenfor for at se dine optagedage, mødetider, sted og dagsprogram. Klik på "KR" for at gå til forsiden.</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="hd">
-          <div>
-            <div class="kicker">Næste optagedage</div>
-            <div class="title">Overblik</div>
-          </div>
-        </div>
-        <div class="bd" id="nextDays"></div>
-      </div>
+<div class="wrap">
+  <!-- VENSTRE -->
+  <div class="card pane left">
+    <div class="toolbar">
+      <button class="primary" onclick="openContacts()">Kontakter</button>
+      <button onclick="openCallSheets()">Call sheets</button>
+      <button onclick="window.print()">Print</button>
     </div>
-
-    <div class="footer">Prototype · Version 0.6 (DK + forum) · © KOVBOY FILM</div>
+    <div class="section">
+      <label for="nameSelect">Vælg dit navn</label>
+      <select id="nameSelect" onchange="renderMySchedule()">
+        <option value="">— Vælg person —</option>
+      </select>
+    </div>
+    <div class="section">
+      <div class="kicker">Mit skema</div>
+      <div id="mySchedule" class="stack"></div>
+    </div>
   </div>
 
-  <script>
-  // ---------- DATA ----------
-  const people = {
-    'Michael Koba':      { role: 'Producer', phone: '591011', email: 'mk@fixer.fo' },
-    'Thomas Koba':       { role: 'Instruktør', phone: '213457', email: 'thomas@kovboyfilm.com' },
-    'Jónfinn Stenberg':  { role: 'Foto', phone: '296682', email: 'jonfinn_stenberg@hotmail.com' },
-    'Hans Petur Hansen': { role: 'Lys', phone: '296652', email: 'hph@kvf.fo' },
-    'Anna Kristin Bæk':  { role: 'Props & design', phone: '265180', email: 'kristin.baek@gmail.com' },
-    'Høgni Fagraberg':   { role: 'Lyd', phone: '296659', email: 'h.fagraberg@gmail.com' },
-    'Ronni Poulsen':     { role: 'Lyd', phone: '794141', email: 'ronni.poulsen@gmail.com' },
-    'Julia Jacobsen':    { role: 'Make-up', phone: '251175', email: 'juliajacobsen@outlook.com' },
-    'Sunneva Háberg Eysturstein': { role: 'Location · SIRKUS', phone: '503136', email: 'sirkus@sirkus.fo' },
-    'Petur Háberg':      { role: 'Location · Hvarvið 3', phone: '213090', email: '' },
-    'Rósa Maria Restorff': { role: 'Location · Hotel Føroyar', phone: '', email: 'rosamaria@hotelforoyar.fo' },
-    'Katrin Kallsberg':  { role: 'Location · Dr. Dahlsgøta 15', phone: '218208', email: 'katrinkallsberg@gmail.com' },
-    'Esther á Fjallinum': { role: 'Skuespiller · Jóhanna', phone: '265069', email: 'estherafjallinum@gmail.com' },
-    'Hans Tórgarð':      { role: 'Skuespiller · Holgar', phone: '229342', email: 'hanstorgar@gmail.com' },
-    'Elsa Maria Magnusardóttir Olsen': { role: 'Skuespiller · Ruth', phone: '507104', email: 'emmocontact@gmail.com' },
-    'Hjálmar Dam':       { role: 'Skuespiller · Høgni', phone: '512449', email: 'helmetsdam@gmail.com' },
-    'Marius DC':         { role: 'Skuespiller · Danny', phone: '582161', email: 'mariusdamchr@gmail.com' },
-    'Bjørn Simonsen Ulvedal': { role: 'Skuespiller · Líggjas', phone: '222867', email: 'bjorn.simonsen@gmail.com' },
-    'Hanna Flóvinsdóttir': { role: 'Skuespiller', phone: '218007', email: 'hannaflov@hotmail.com' },
-    'Sóley Heradóttir Hammer': { role: 'Skuespiller', phone: '', email: 'soleyhh@torshavn.fo' },
-    'Súsanna Laursen':   { role: 'Skuespiller', phone: '', email: 'susannal@torshavn.fo' },
-    'Lív Bruun Muller':  { role: 'Skuespiller', phone: '591414', email: 'livbruunmuller@gmail.com' },
-    'Ása Helena Brynjardóttir': { role: 'Skuespiller', phone: '261660', email: 'asahelena@outlook.dk' },
-    'Edwin Niclassen':   { role: 'Skuespiller', phone: '597264', email: 'edvinhniclasen@gmail.com' },
-    'Páll Oddur':        { role: 'Skuespiller · Jóhannas mand', phone: '252421', email: 'palloddur@hotmail.com' },
-    'Thora Augustinussen': { role: 'Skuespiller · Chef/Reception', phone: '', email: 'ta@faer.fo' },
-    'Jaspur Jørgensen':  { role: 'Skuespiller · Kok', phone: '227570', email: 'jj@hotelbrandan.fo' },
-    'Tórur Árnastein':   { role: 'Skuespiller · Kok', phone: '266858', email: 'torurarnastein@gmail.com' },
-    'Helena':            { role: 'Statist · Kaffemaskine', phone: '', email: 'helena.h.jorgensen@gmail.com' },
-    'Astrið Gullborgardóttir': { role: 'Statist · Advokat', phone: '274450', email: 'gullborgardottir@gmail.com' },
-    'Tórur við Áir':     { role: 'Statist · Advokat', phone: '239403', email: '' },
-    'Politibetjent A':   { role: 'Statist · Politi', phone: '', email: 'SLE021@politi.dk' },
-    'Politibetjent B':   { role: 'Statist · Politi', phone: '', email: 'SLE021@politi.dk' },
-    'Ukendt statist G':  { role: 'Statist', phone: '', email: '' },
-    'Ukendt statist H':  { role: 'Statist', phone: '', email: '' },
-    'Ukendt statist I':  { role: 'Statist', phone: '', email: '' },
-  };
+  <!-- MIDTEN -->
+  <div class="card pane center">
+    <div class="two">
+      <div>
+        <div class="kicker">Valgt dag</div>
+        <h2 id="dayTitle">Vælg en dag i højre side</h2>
+        <div id="dayMeta" class="chips"></div>
+        <div class="section">
+          <h3>Program</h3>
+          <div id="program" class="program"></div>
+        </div>
+        <div class="section grid">
+          <div><h3>Skuespillere</h3><div id="cast" class="chips"></div></div>
+          <div><h3>Crew</h3><div id="crew" class="chips"></div></div>
+        </div>
+      </div>
+      <div>
+        <h3>Call sheet</h3>
+        <div id="callInfo" class="stack"><div class="muted">Ingen fil knyttet.</div></div>
+      </div>
+    </div>
+  </div>
 
-  const P = (names)=>names.map(n=>({ name:n, ...(people[n]||{role:'',phone:'',email:''}) }));
+  <!-- HØJRE -->
+  <div class="card pane right">
+    <div class="kicker">Produktionsdage</div>
+    <div class="search"><input id="daySearch" type="search" placeholder="Søg dato, sted, titel…" oninput="renderDayList()"></div>
+    <div id="dayList" class="list scroll"></div>
+  </div>
+</div>
 
-  const days = [
-    // 23 Sep — Flashback 1A · SIRKUS
-    { id:'2025-09-23', date:'Tirsdag 23. september 2025', title:'Flashback 1A · SIRKUS', location:{name:'Sirkus bar', address:'Tórshavn'},
-      program:[
-        {time:'16:00', text:'Teknisk crew gør scenen klar i Sirkus (HPH, Thomas, Jónfinn)'},
-        {time:'18:15', text:'Skuespillere møder til make-up & kostume (Marius, Hanna, Sóley, Súsanna). Spis hjemme på forhånd.'},
-        {time:'19:30', text:'Optagelse starter'},
-        {time:'21:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Jónfinn Stenberg','Hans Petur Hansen','Julia Jacobsen']),
-      cast:P(['Marius DC','Hanna Flóvinsdóttir','Sóley Heradóttir Hammer','Súsanna Laursen','Ukendt statist G','Ukendt statist H','Ukendt statist I','Sunneva Háberg Eysturstein'])
-    },
+<!-- Kontakter modal -->
+<div id="contactsModal" class="modal">
+  <div class="card pane box">
+    <div class="hdr"><h2 style="margin:0">Kontakter</h2><div class="toolbar"><button onclick="closeContacts()">Luk</button></div></div>
+    <div class="search"><input id="contactSearch" type="search" placeholder="Søg navn, rolle, e-mail, tlf…" oninput="renderContacts()"></div>
+    <div id="contactsList" class="stack section"></div>
+  </div>
+</div>
 
-    // 7 Oct — Flashback 2 · Festen
-    { id:'2025-10-07', date:'Tirsdag 7. oktober 2025', title:'Flashback 2 · Festen ved Líggjas', location:{name:'Hvarvið 3, kld.', address:'Tórshavn'},
-      program:[
-        {time:'14:00', text:'Crew gør scenen klar (Hans Petur, Thomas, Michael, Anna Kristin, Ronni)'},
-        {time:'15:15', text:'Skuespillere & make-up mødes i Hugskotið (Bjørn, Lív, Ása, Edwin). Julia hjælper – fri 16:15'},
-        {time:'16:30', text:'Optagelse starter på location: Hvarvið 3, kld.'},
-        {time:'19:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Hans Petur Hansen','Anna Kristin Bæk','Ronni Poulsen','Julia Jacobsen','Petur Háberg']),
-      cast:P(['Bjørn Simonsen Ulvedal','Lív Bruun Muller','Ása Helena Brynjardóttir','Edwin Niclassen'])
-    },
+<!-- Call sheets modal -->
+<div id="callSheetsModal" class="modal">
+  <div class="card pane box">
+    <div class="hdr"><h2 style="margin:0">Call sheets · fuld dagsplan pr. dag</h2><div class="toolbar"><button onclick="window.print()">Print</button><button onclick="closeCallSheets()">Luk</button></div></div>
+    <div class="search"><input id="callSearch" type="search" placeholder="Søg (dato, titel, location, person…)" oninput="renderCallSheets()"></div>
+    <div id="callSheetsList" class="stack section"></div>
+  </div>
+</div>
 
-    // 17 Oct — Klargøring terapilokale
-    { id:'2025-10-17', date:'Fredag 17. oktober 2025', title:'Klargøring af terapilokale', location:{name:'Aulaen, Studentaskúlin í Hoydølum', address:''},
-      program:[
-        {time:'11:00', text:'Lys & instruktør møder (Hans Petur, Thomas)'},
-        {time:'16:00', text:'Foto & Lyd møder (Jónfinn, Høgni)'},
-        {time:'11:00', text:'Props & design klargøring (Anna Kristin)'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Jónfinn Stenberg','Hans Petur Hansen','Anna Kristin Bæk','Høgni Fagraberg']),
-      cast:P([])
-    },
+<div class="footer">Version: 24.09.2025 · Kilde: Produktionsplan v1.4</div>
 
-    // 19 Oct — Ruth flirter med tjener
-    { id:'2025-10-19', date:'Søndag 19. oktober 2025', title:'Flashback 4 · Ruth flirter med tjener', location:{name:'Hotel Brandan · Rest. Húsagarður & køkken', address:'Tórshavn'},
-      program:[
-        {time:'14:00', text:'Lys, instruktør og producer møder (Hans Petur, Thomas, Michael)'},
-        {time:'14:45', text:'Props & design møder (Anna Kristin)'},
-        {time:'15:00', text:'Skuespillere møder (Elsa Maria, Tórur, Jaspur). Make-up møder'},
-        {time:'15:30', text:'Optagelse starter'},
-        {time:'18:30', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Hans Petur Hansen','Anna Kristin Bæk','Julia Jacobsen']),
-      cast:P(['Elsa Maria Magnusardóttir Olsen','Tórur Árnastein','Jaspur Jørgensen'])
-    },
-
-    // 1 Nov — Terapilokale dag 1
-    { id:'2025-11-01', date:'Lørdag 1. november 2025', title:'Optagelser i terapilokale · Dag 1', location:{name:'Aulaen, Studentaskúlin í Hoydølum', address:''},
-      program:[
-        {time:'06:00', text:'Mødetid for hele crewet. Skuesp.: Bjørn & Marius til make-up.'},
-        {time:'06:30', text:'Hjálmar & Elsa Maria til make-up/kostume'},
-        {time:'07:00', text:'Esther & Hans til make-up/kostume'},
-        {time:'07:01', text:'Morgenmad til alle'},
-        {time:'08:00', text:'Optagelse starter'},
-        {time:'10:30', text:'Kaffepause'},
-        {time:'12:30', text:'Frokost'},
-        {time:'15:30', text:'Kaffepause'},
-        {time:'19:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Jónfinn Stenberg','Hans Petur Hansen','Anna Kristin Bæk','Høgni Fagraberg','Julia Jacobsen']),
-      cast:P(['Esther á Fjallinum','Hans Tórgarð','Elsa Maria Magnusardóttir Olsen','Hjálmar Dam','Marius DC','Bjørn Simonsen Ulvedal'])
-    },
-
-    // 2 Nov — Terapilokale dag 2
-    { id:'2025-11-02', date:'Søndag 2. november 2025', title:'Optagelser i terapilokale · Dag 2', location:{name:'Aulaen, Studentaskúlin í Hoydølum', address:''},
-      program:[
-        {time:'06:00', text:'Crew møder · fortsatte terapiscener'},
-        {time:'08:00', text:'Optagelse starter'},
-        {time:'12:30', text:'Frokost'},
-        {time:'19:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Jónfinn Stenberg','Hans Petur Hansen','Anna Kristin Bæk','Høgni Fagraberg','Julia Jacobsen']),
-      cast:P(['Esther á Fjallinum','Hans Tórgarð','Elsa Maria Magnusardóttir Olsen','Hjálmar Dam','Marius DC','Bjørn Simonsen Ulvedal'])
-    },
-
-    // 3 Nov — Flashback 1B · Dannys flirt
-    { id:'2025-11-03', date:'Mandag 3. november 2025', title:'Flashback 1B · Dannys flirt', location:{name:'Studio 016 · Hotel Føroyar', address:'Tórshavn'},
-      program:[
-        {time:'16:00', text:'Teknisk crew gør scenen klar (HPH, Thomas, Jónfinn, Anna Kristin, Ronni)'},
-        {time:'17:30', text:'Marius & Hanna til make-up/kostume'},
-        {time:'18:15', text:'Optagelse starter'},
-        {time:'19:30', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Jónfinn Stenberg','Hans Petur Hansen','Anna Kristin Bæk','Ronni Poulsen','Julia Jacobsen','Rósa Maria Restorff']),
-      cast:P(['Marius DC','Hanna Flóvinsdóttir'])
-    },
-
-    // 5 Nov — Esther hjemme
-    { id:'2025-11-05', date:'Onsdag 5. november 2025', title:'Esther hjemme-scene', location:{name:'Dr. Dahlsgøta 15', address:'Tórshavn'},
-      program:[
-        {time:'14:00', text:'Crew møder (Hans Petur, Thomas, Ronni)'},
-        {time:'15:15', text:'Páll Oddur & Esther møder'},
-        {time:'16:15', text:'Make-up (Julia) · set-up'},
-        {time:'16:15', text:'Optagelse starter'},
-        {time:'19:30', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Hans Petur Hansen','Anna Kristin Bæk','Ronni Poulsen','Julia Jacobsen','Katrin Kallsberg']),
-      cast:P(['Páll Oddur','Esther á Fjallinum'])
-    },
-
-    // 7 Nov — Chef kontor
-    { id:'2025-11-07', date:'Fredag 7. november 2025', title:'Chef kontor', location:{name:'Studentaskúlin í Hoydølum', address:''},
-      program:[
-        {time:'10:00', text:'Anna Kristin designer rummet som kontor (efter aftale med instruktør/producer)'},
-        {time:'13:00', text:'Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)'},
-        {time:'14:15', text:'Skuespillere møder (Esther, Hans, Thora) · Make-up & kostume'},
-        {time:'16:00', text:'Optagelse starter'},
-        {time:'18:00', text:'Pause / sandwich'},
-        {time:'18:30', text:'Optagelse fortsætter'},
-        {time:'20:30', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Hans Petur Hansen','Anna Kristin Bæk','Ronni Poulsen','Julia Jacobsen']),
-      cast:P(['Esther á Fjallinum','Hans Tórgarð','Thora Augustinussen'])
-    },
-
-    // 8 Nov — Kørerscener & parkering
-    { id:'2025-11-08', date:'Lørdag 8. november 2025', title:'Kørerscener & parkering', location:{name:'Studentaskúlin í Hoydølum', address:''},
-      program:[
-        {time:'13:00', text:'Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)'},
-        {time:'13:15', text:'Skuespillere møder (Hans Tórgarð, Esther, Politi A & B). Make-up 13:15–14:15'},
-        {time:'14:15', text:'Optagelse starter'},
-        {time:'18:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Hans Petur Hansen','Anna Kristin Bæk','Ronni Poulsen','Julia Jacobsen']),
-      cast:P(['Esther á Fjallinum','Hans Tórgarð','Thora Augustinussen','Politibetjent A','Politibetjent B'])
-    },
-
-    // 22 Nov — Terapilokale fortsat
-    { id:'2025-11-22', date:'Lørdag 22. november 2025', title:'Optagelser i terapilokale', location:{name:'Aulaen, Studentaskúlin í Hoydølum', address:''},
-      program:[
-        {time:'06:00', text:'Crew & skuespillere møder. Marius & Bjørn til make-up'},
-        {time:'06:30', text:'Hjálmar & Elsa Maria til make-up'},
-        {time:'07:00', text:'Esther & Hans til make-up'},
-        {time:'08:00', text:'Optagelse starter'},
-        {time:'12:30', text:'Frokost'},
-        {time:'19:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Julia Jacobsen','Jónfinn Stenberg','Hans Petur Hansen','Anna Kristin Bæk','Høgni Fagraberg']),
-      cast:P(['Esther á Fjallinum','Hans Tórgarð','Elsa Maria Magnusardóttir Olsen','Hjálmar Dam','Marius DC','Bjørn Simonsen Ulvedal'])
-    },
-
-    // 23 Nov — Terapilokale fortsat
-    { id:'2025-11-23', date:'Søndag 23. november 2025', title:'Optagelser i terapilokale (fortsat)', location:{name:'Aulaen, Studentaskúlin í Hoydølum', address:''},
-      program:[
-        {time:'06:00', text:'Crew & skuespillere møder'},
-        {time:'08:00', text:'Optagelse starter'},
-        {time:'12:30', text:'Frokost'},
-        {time:'18:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Julia Jacobsen','Jónfinn Stenberg','Hans Petur Hansen','Anna Kristin Bæk','Høgni Fagraberg']),
-      cast:P(['Esther á Fjallinum','Hans Tórgarð','Elsa Maria Magnusardóttir Olsen','Hjálmar Dam','Marius DC','Bjørn Simonsen Ulvedal'])
-    },
-
-    // 24 Nov — Kaffemaskine & advokat
-    { id:'2025-11-24', date:'Mandag 24. november 2025', title:'Flashback 3 · Kaffemaskine & advokat', location:{name:'Tjarnir (Presselogen + møderum)', address:'Tórshavn'},
-      program:[
-        {time:'14:00', text:'Crew gør kaffemaskine-scenen klar (Hans Petur, Thomas, Michael, Anna Kristin)'},
-        {time:'15:00', text:'Lyd, stylist & make-up møder (Ronni, Julia, Anna Kristin)'},
-        {time:'15:00', text:'2 statister + 1 hovedrolle (Helena + ??? + Hjálmar) til make-up'},
-        {time:'15:45', text:'Optagelse af kaffe-scenen starter'},
-        {time:'17:00', text:'Kaffescene færdig'},
-        {time:'17:05', text:'Pause (sandwich)'},
-        {time:'17:15', text:'Set-up til advokat-scenen'},
-        {time:'17:30', text:'2 statister (Astrið & Tórur við Áir) + Hjálmar til make-up'},
-        {time:'19:00', text:'Optagelse af advokat-scenen starter'},
-        {time:'21:00', text:'SLUT'}
-      ],
-      crew:P(['Michael Koba','Thomas Koba','Jónfinn Stenberg','Anna Kristin Bæk','Ronni Poulsen','Julia Jacobsen']),
-      cast:P(['Helena','Hjálmar Dam','Tórur við Áir','Astrið Gullborgardóttir'])
-    }
-  ];
-
-  // ---------- UI HELPERS ----------
-  const $ = sel => document.querySelector(sel);
-  const el = (tag, cls, txt) => { const x=document.createElement(tag); if(cls) x.className=cls; if(txt!==undefined) x.textContent=txt; return x };
-
-  const personSelect = $('#personSelect');
-  const search = $('#search');
-  const panel = $('#panel');
-  const nextDays = $('#nextDays');
-  const brand = $('#brand');
-
-  // Fyld navn-dropdown (crew+cast+statister)
-  const crewOrCast = Object.entries(people)
-    .filter(([n,p])=>/(Producer|Instruktør|Foto|Lys|Lyd|Make-up|Props|Skuespiller|Statist|Location)/.test(p.role))
-    .sort((a,b)=>a[0].localeCompare(b[0]));
-  for(const [name, info] of crewOrCast){ const opt = el('option'); opt.value = name; opt.textContent = `${name} — ${info.role}`; personSelect.appendChild(opt); }
-
-  // Husk valgt person og vis skema med det samme
-  const savedWho = localStorage.getItem('who');
-  if(savedWho && people[savedWho]){
-    personSelect.value = savedWho;
-    $('#myDayTitle').textContent = 'Plan for '+savedWho;
-    renderMySchedule(savedWho);
+<script>
+/* -------------------- DATA (opdateret efter dokumentet) -------------------- */
+const DAYS = [
+  /* 30.09 Flashback 1B – Dannys flirt (Ronni fjernet) */ /* Kilde: Produktionsplan v1.4 */ 
+  {
+    id:"2025-09-30",
+    title:'Mandag 30. sept. · “Flashback 1B – Dannys flirt”',
+    location:'Studio 016, Hotel Føroyar',
+    program:[
+      ["16:00","Teknisk crew klarer scenen (HPH, Thomas, Jónfinn, Anna Kristin)"], /* Ronni fjernet her */
+      ["16:00","Mødetid skuespillere til make-up/tøj (Marius DC, Hanna)"],
+      ["19:00","Optagelse starter"],
+      ["21:30","SLUT"],
+    ],
+    cast:["Marius DC","Hanna Flóvinsdóttir"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen","Rósa Maria Restorfff"], /* Ronni ikke på denne dag */
+    call:null
+  },
+  /* 07.10 Flashback 2 – Festen med Líggjas */
+  {
+    id:"2025-10-07",
+    title:'Tirsdag 7. okt. · “Flashback 2 – Festen med Líggjas”',
+    location:'Hvarvið 3, kj., Tórshavn (make-up i Hugskotið)',
+    program:[
+      ["14:00","Crew gør scenen klar (Hans Petur, Thomas, Michael, Anna Kristin, Ronni)"],
+      ["15:15","Skuespillere møder i Hugskotið → transport til location (Bjørn, Lív Bruun, Ása, Edwin)"],
+      ["15:15","Julia møder i Hugskotið (fri 16:15)"],
+      ["16:30","Optagelse på location"],
+      ["19:00","SLUT"],
+    ],
+    cast:["Bjørn Simonsen Ulvedal","Lív Bruun Muller","Ása Helena Brynjardóttir","Edwin Niclassen"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Petur Háberg"],
+    call:null
+  },
+  /* 17.10 Klargøring terapilokale */
+  {
+    id:"2025-10-17",
+    title:'Fredag 17. okt. · Klargøring terapilokale',
+    location:'Aulan, Studenterskolen i Hoydølum',
+    program:[
+      ["11:00–18:00","Lys + instruktør møder (Hans Petur, Thomas)"],
+      ["11:00–16:00","Props & design klargøring (Anna Kristin)"],
+      ["16:00–18:00","Foto + lyd møder (Jónfinn, Høgni)"]
+    ],
+    cast:[],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg"],
+    call:null
+  },
+  /* 19.10 Flashback 4 – Ruth flirter med tjener */
+  {
+    id:"2025-10-19",
+    title:'Søndag 19. okt. · “Flashback 4 – Ruth flirter med tjener”',
+    location:'Hotel Brandan – Rest. Húsagarður & køkken',
+    program:[
+      ["14:00","Lys + instruktør + producer møder (HPH, Thomas, Michael)"],
+      ["14:45","Props & design møder"],
+      ["15:00","Skuespillere + make-up (Elsa Maria, Tórur Á., Jaspur)"],
+      ["15:30","Optagelse begynder"],
+      ["18:30","SLUT"],
+    ],
+    cast:["Elsa Maria Magnusardóttir Olsen","Tórur Árnastein","Jaspur Jørgensen"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen"],
+    call:null
+  },
+  /* 01.11 Terapilokale */
+  {
+    id:"2025-11-01",
+    title:'Lørdag 1. nov. · Terapilokale',
+    location:'Aulan, Studenterskolen i Hoydølum',
+    program:[
+      ["06:00","Alle crew møder. Bjørn & Marius til make-up/tøj. Props møder"],
+      ["06:30","Hjálmar & Elsa til make-up/tøj"],
+      ["07:00","Esther & Hans til make-up/tøj"],
+      ["07:01","Morgenmad: kaffe/te + rundstykker"],
+      ["08:00","Optagelse starter"],
+      ["10:30","Pause/kaffe · (Props fri kl. 10:30)"],
+      ["10:50","Optagelser fortsætter"],
+      ["12:30","Frokost (gryderet fra Jan)"],
+      ["13:15","Optagelser fortsætter"],
+      ["15:30","Pause/kaffe"],
+      ["15:45","Optagelser fortsætter"],
+      ["19:00","SLUT"],
+    ],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
+    call:null
+  },
+  /* 02.11 Terapilokale */
+  {
+    id:"2025-11-02",
+    title:'Søndag 2. nov. · Terapilokale',
+    location:'Aulan, Studenterskolen i Hoydølum',
+    program:[["08:00","Optagelser fortsætter (se 1. nov. rytme)"]],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
+    call:null
+  },
+  /* 05.11 Esther hjemme-scene */
+  {
+    id:"2025-11-05",
+    title:'Onsdag 5. nov. · “Esther hjemme-scene”',
+    location:'Dr. Dahlsgøta 15, Tórshavn',
+    program:[
+      ["14:00","Crew møder (HPH, Thomas, Ronni)"],
+      ["15:15","Skuespillere møder (Páll Oddur, Esther)"],
+      ["16:15","Julia make-up (fri 15:15 iflg. kladde)"],
+      ["16:15","Optagelse starter"],
+      ["19:30","SLUT"],
+    ],
+    cast:["Páll Oddur","Esther á Fjallinum"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Katrin Kallsberg"],
+    call:null
+  },
+  /* 07.11 Chef kontor */
+  {
+    id:"2025-11-07",
+    title:'Fredag 7. nov. · “Chef kontor”',
+    location:'Studenterskolen i Hoydølum',
+    program:[
+      ["10:00","Rummet designes som kontor (Anna Kristin + instruktør/producer)"],
+      ["13:00","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
+      ["14:15","Skuespillere møder (Esther, Hans, Thora). Make-up & kostume."],
+      ["16:00","Optagelse starter"],
+      ["18:00","Pause med sandwich"],
+      ["18:30","Optagelse fortsætter"],
+      ["20:30","SLUT"],
+    ],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
+    call:null
+  },
+  /* 08.11 Køre-scener + parkering */
+  {
+    id:"2025-11-08",
+    title:'Lørdag 8. nov. · “Køre-scener + parkering”',
+    location:'Studenterskolen i Hoydølum',
+    program:[
+      ["13:00","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
+      ["13:15","Skuespillere + politi (Hans T., Esther, Politibetjent 1–2) • Make-up 13:15–14:15"],
+      ["14:15","Optagelse starter"],
+      ["18:00","SLUT"],
+    ],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A","Politibetjent B"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
+    call:null
+  },
+  /* 22.11 Terapilokale */
+  {
+    id:"2025-11-22",
+    title:'Lørdag 22. nov. · Terapilokale',
+    location:'Aulan, Studenterskolen i Hoydølum',
+    program:[
+      ["06:00","Alle crew møder. Bjørn & Marius til make-up/tøj. Props møder"],
+      ["06:30","Hjálmar & Elsa til make-up/tøj"],
+      ["07:00","Esther & Hans til make-up/tøj"],
+      ["07:01","Morgenmad"],
+      ["08:00","Optagelse starter"],
+      ["10:30","Pause/kaffe"],
+      ["12:30","Frokost"],
+      ["13:15","Optagelser fortsætter"],
+      ["15:30","Pause"],
+      ["15:45","Optagelser fortsætter"],
+      ["18:00","SLUT"],
+    ],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
+    call:null
+  },
+  /* 23.11 Terapilokale (fortsat) */
+  {
+    id:"2025-11-23",
+    title:'Søndag 23. nov. · Terapilokale (fortsat)',
+    location:'Aulan, Studenterskolen i Hoydølum',
+    program:[
+      ["08:00","Optagelser fortsætter (session 5 fortsættes)"],
+      ["18:00","SLUT (forventet)"],
+    ],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
+    call:null
+  },
+  /* 24.11 FB3 – Kaffemaskine + advokat */
+  {
+    id:"2025-11-24",
+    title:'Mandag 24. nov. · “FB3 – Kaffemaskine + advokat”',
+    location:'Tjarnir (Presselogen + møderum)',
+    program:[
+      ["14:00","Crew gør kaffemaskine-scenen klar (HPH, Thomas, Michael, Anna Kristin)"],
+      ["15:00","Lyd, stylist & make-up (Ronni, Julia, Anna Kristin)"],
+      ["15:00","2 statister + hovedskuespiller til make-up/tøj (Helena + ??? + Hjálmar)"],
+      ["15:45","Optagelse kaffescene"],
+      ["17:00","Kaffescene slut · 17:05 Pause (sandwich)"],
+      ["17:15","Opsætning advokatscene (HPH, Thomas, Ronni, Michael)"],
+      ["17:30","2 statister (Astrið G., Tórur við Áir) + Hjálmar + make-up"],
+      ["19:00","Optagelse advokatscene"],
+      ["21:00","SLUT"]
+    ],
+    cast:["Helena","???","Hjálmar Dam","Tórur við Áir","Astrið Gullborgardóttir"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
+    call:null
   }
+];
 
-  function renderNextDays(){
-    nextDays.innerHTML=''; const ul = el('div','list');
-    for(const d of days){
-      const row = el('div','row'); row.style.cursor='pointer'; row.title='Klik for at se dagens program';
-      const left = el('div');
-      left.appendChild(el('div','title', d.date + ' · ' + d.title));
-      left.appendChild(el('div','muted small', d.location.name + (d.location.address ? ' · '+d.location.address : '')));
-      const right = el('div');
-      right.appendChild(el('span','chip', d.program[0]?.time ? 'Mødetid ' + d.program[0].time : 'Se call sheet'));
-      row.append(left,right); ul.appendChild(row);
-      row.onclick = ()=>{ selectTab(tabCalls); renderDayById(d.id); };
-    }
-    nextDays.appendChild(ul);
+/* Kontakter (uddrag) */
+const CONTACTS = {
+  "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
+  "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
+  "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
+  "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
+  "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
+  "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
+  "Hanna Flóvinsdóttir":{role:"Skuespiller · Kvinde (bar/værelse)", email:"hannaflov@hotmail.com", phone:"218007"},
+  "Lív Bruun Muller":{role:"Skuespiller · Flashback girl 1", email:"livbruunmuller@gmail.com", phone:"591414"},
+  "Ása Helena Brynjardóttir":{role:"Skuespiller · Flashback girl 2", email:"asahelena@outlook.dk", phone:"261660"},
+  "Edwin Niclassen":{role:"Skuespiller · André/mand 1", email:"edvinhniclasen@gmail.com", phone:"597264"},
+  "Páll Oddur":{role:"Skuespiller · Mand", email:"palloddur@hotmail.com", phone:"252421"},
+  "Thora Augustinussen":{role:"Skuespiller · Chefen/Receptionist", email:"ta@faer.fo"},
+  "Tórur Árnastein":{role:"Skuespiller · Kok 2", email:"torurarnastein@gmail.com", phone:"266858"},
+  "Jaspur Jørgensen":{role:"Skuespiller · Kok 1", email:"jj@hotelbrandan.fo", phone:"227570"},
+  "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com"},
+  "Astrið Gullborgardóttir":{role:"Statist · Advokat 2", email:"gullborgardottir@gmail.com", phone:"274450"},
+  "Tórur við Áir":{role:"Statist · Advokat 1", phone:"239403"},
+  "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
+  "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},
+  "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},
+  "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},
+  "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},
+  "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com", phone:"296659"},
+  "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
+  "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
+  "Rósa Maria Restorfff":{role:"Location ejer · Hotel Føroyar", email:"rosamaria@hotelforoyar.fo"},
+  "Katrin Kallsberg":{role:"Location ejer · Dr. Dahlsgøta 15", email:"katrinkallsberg@gmail.com", phone:"218208"},
+  "Petur Háberg":{role:"Location ejer · Hvarvið 3, kj.", phone:"213090"}
+};
+
+/* Udledte navne */
+const PEOPLE = Array.from(new Set([
+  ...Object.keys(CONTACTS),
+  ...DAYS.flatMap(d => [...d.cast, ...d.crew])
+])).sort((a,b)=>a.localeCompare(b,'da'));
+
+/* -------------------- DOM helpers -------------------- */
+const el = id => document.getElementById(id);
+let currentDay = null;
+
+/* -------------------- INIT -------------------- */
+function init(){
+  const sel = el('nameSelect');
+  for(const p of PEOPLE){
+    const o = document.createElement('option');
+    o.value=p; o.textContent=p; sel.appendChild(o);
   }
-    nextDays.appendChild(ul);
-  }
+  renderDayList();
+}
+init();
 
-  function renderMySchedule(name){
-    const mine = days.filter(d=>{ const participants = [].concat(d.crew||[], d.cast||[]); return participants.some(x=>x && x.name===name); });
-    const info = people[name];
-    const wrap = el('div');
-    wrap.appendChild(el('div','muted small',`Navn: ${name} · ${info?.role||''}`));
-    if(mine.length===0){
-      wrap.appendChild(el('p','muted','Ingen skema fundet for det valgte navn.'));
-      panel.innerHTML=''; panel.appendChild(wrap); return;
-    }
-    const list = el('div','list');
-    for(const d of mine){
-      const card = el('div','row'); card.style.flexDirection='column';
-      const header = el('div');
-      header.appendChild(el('div','title', d.date + ' · ' + d.title));
-      header.appendChild(el('div','muted small', d.location.name + (d.location.address? ' · '+d.location.address : '')));
-      const chips = el('div');
-      const call = d.program[0]?.time || '';
-      if(call) chips.appendChild(el('span','chip','Mødetid · '+call));
-      chips.appendChild(el('span','chip copy','📍 '+(d.location.address||d.location.name)));
-      const prog = el('div','section');
-      const h3 = el('h3'); h3.textContent = 'Dagsprogram'; prog.appendChild(h3);
-      for(const p of d.program){ const line = el('div','small mono'); line.textContent = (p.time? p.time.padEnd(6,' ')+' ':'') + p.text; prog.appendChild(line); }
-      const calls = el('div','two section');
-      const left = el('div'); const hCast = el('h3'); hCast.textContent='Skuespillere'; left.appendChild(hCast);
-      for(const c of d.cast){ left.appendChild(personRow(c)); }
-      const right = el('div'); const hCrew = el('h3'); hCrew.textContent='Crew'; right.appendChild(hCrew);
-      for(const c of d.crew){ right.appendChild(personRow(c)); }
-      calls.append(left,right);
-      card.append(header,chips,prog,calls); list.appendChild(card);
-    }
-    panel.innerHTML=''; panel.appendChild(wrap); panel.appendChild(el('div','divider')); panel.appendChild(list);
-  }
+/* -------------------- UI base -------------------- */
+function resetUI(){
+  el('nameSelect').value="";
+  renderMySchedule();
+  currentDay = null;
+  el('dayTitle').textContent = 'Vælg en dag i højre side';
+  el('dayMeta').innerHTML = '';
+  el('program').innerHTML = '';
+  el('cast').innerHTML = '';
+  el('crew').innerHTML = '';
+  el('callInfo').innerHTML = '<div class="muted">Ingen fil knyttet.</div>';
+  renderDayList();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-  function personRow(p){
-    const row = el('div','small');
-    const name = el('div'); name.innerHTML = `<strong>${p.name}</strong> · <span class="muted">${p.role||''}</span>`;
-    const contacts = el('div','muted'); const parts=[];
-    if(p.phone) parts.push(`<a href="tel:${p.phone}">📞 ${p.phone}</a>`);
-    if(p.email) parts.push(`<a href="mailto:${p.email}">✉️ ${p.email}</a>`);
-    contacts.innerHTML = parts.join(' · ');
-    row.appendChild(name); row.appendChild(contacts);
-    row.style.display='flex'; row.style.flexDirection='column'; row.style.gap='2px'; row.style.padding='6px 0';
-    return row;
-  }
-
-  function renderCallSheets(filter=''){
-    const wrap = el('div');
-    for(const d of days){
-      if(filter && !JSON.stringify(d).toLowerCase().includes(filter.toLowerCase())) continue;
-      const card = el('div','row'); card.style.flexDirection='column';
-      const head = el('div');
-      head.appendChild(el('div','title', d.date + ' · ' + d.title));
-      head.appendChild(el('div','muted small', d.location.name + (d.location.address? ' · '+d.location.address:'')));
-      card.appendChild(head);
-      const prog = el('div','section'); const h3 = el('h3'); h3.textContent = 'Dagsprogram'; prog.appendChild(h3);
-      for(const p of d.program){ const line = el('div','small mono'); line.textContent = (p.time? p.time.padEnd(6,' ')+' ':'') + p.text; prog.appendChild(line); }
-      card.appendChild(prog);
-      const calls = el('div','two section');
-      const left = el('div'); left.appendChild(el('h3','', 'Skuespillere'));
-      for(const c of d.cast){ left.appendChild(personRow(c)); }
-      const right = el('div'); right.appendChild(el('h3','', 'Crew'));
-      for(const c of d.crew){ right.appendChild(personRow(c)); }
-      calls.append(left,right); card.appendChild(calls);
-      wrap.appendChild(card);
-    }
-    panel.innerHTML=''; panel.appendChild(wrap);
-  }
-
-  function renderContacts(filter=''){
-    const wrap = el('div','list');
-    const entries = Object.entries(people)
-      .filter(([n,p])=>/(Producer|Instruktør|Foto|Lys|Lyd|Make-up|Props|Skuespiller|Statist|Location)/.test(p.role))
-      .filter(([n,p])=> !filter || (n.toLowerCase().includes(filter.toLowerCase()) || (p.role||'').toLowerCase().includes(filter.toLowerCase())))
-      .sort((a,b)=>a[0].localeCompare(b[0]));
-    for(const [name, p] of entries){
-      const row = el('div','row');
-      const L = el('div'); L.appendChild(el('div','title', name)); L.appendChild(el('div','muted small', p.role || ''));
-      const R = el('div'); if(p.phone) R.appendChild(el('span','chip', '📞 '+p.phone)); if(p.email) R.appendChild(el('span','chip', '✉️ '+p.email));
-      row.append(L,R); wrap.appendChild(row);
-    }
-    panel.innerHTML=''; panel.appendChild(wrap);
-  }
-
-  // NY: Vis én bestemt dag (klik fra højre kolonne)
-  function renderDayById(dayId){
-    const d = days.find(x=>x.id===dayId);
-    if(!d){ panel.innerHTML='<p class="muted small">Dagen blev ikke fundet.</p>'; return; }
-    const wrap = el('div');
-    const card = el('div','row'); card.style.flexDirection='column';
-    const head = el('div');
-    head.appendChild(el('div','title', d.date + ' · ' + d.title));
-    head.appendChild(el('div','muted small', d.location.name + (d.location.address? ' · '+d.location.address:'')));
-    const chips = el('div'); const call = d.program[0]?.time || ''; if(call) chips.appendChild(el('span','chip','Mødetid · '+call));
-    card.appendChild(head); card.appendChild(chips);
-    const prog = el('div','section'); const h3 = el('h3'); h3.textContent='Dagsprogram'; prog.appendChild(h3);
-    for(const p of d.program){ const line = el('div','small mono'); line.textContent=(p.time? p.time.padEnd(6,' ')+' ':'')+p.text; prog.appendChild(line); }
-    const calls = el('div','two section');
-    const left = el('div'); left.appendChild(el('h3','', 'Skuespillere')); for(const c of d.cast){ left.appendChild(personRow(c)); }
-    const right = el('div'); right.appendChild(el('h3','', 'Crew')); for(const c of d.crew){ right.appendChild(personRow(c)); }
-    calls.append(left,right);
-    card.appendChild(prog); card.appendChild(calls); wrap.appendChild(card);
-    panel.innerHTML=''; panel.appendChild(wrap);
-  }
-
-  // ---------- TABS ----------
-  const tabDay = $('#tab-day'), tabCalls = $('#tab-calls'), tabContacts = $('#tab-contacts');
-  function selectTab(tab){ for(const t of [tabDay,tabCalls,tabContacts,tabForum]) t.setAttribute('aria-selected','false'); tab.setAttribute('aria-selected','true'); }
-
-  tabDay.addEventListener('click',()=>{ selectTab(tabDay); const v=personSelect.value; if(v) renderMySchedule(v); else panel.innerHTML='<p class="muted small">Vælg navn for at se dit skema.</p>'; });
-  tabCalls.addEventListener('click',()=>{ selectTab(tabCalls); renderCallSheets(search.value.trim()); });
-  tabContacts.addEventListener('click',()=>{ selectTab(tabContacts); renderContacts(search.value.trim()); });
-  tabForum.addEventListener('click',()=>{ selectTab(tabForum); forum.ui(); });
-
-  // ---------- EVENTS ----------
-  personSelect.addEventListener('change',()=>{
-    const v = personSelect.value; localStorage.setItem('who', v||'');
-    $('#myDayTitle').textContent = v? ('Plan for '+v) : 'Vælg et navn';
-    // Altid skift til "Mit skema" når man vælger navn
-    selectTab(tabDay);
-    if(!v){ panel.innerHTML='<p class="muted small">Vælg navn for at se dit skema.</p>'; return }
-    renderMySchedule(v);
-    // Opdater forum-komponisten (aktiver skrivning)
-    const reply = document.querySelector('#replyText'); const send = document.querySelector('.composer button');
-    if(reply){ reply.disabled = false; reply.placeholder = 'Skriv svar… (Enter sender, Shift+Enter ny linje)'; }
-    if(send){ send.disabled = false; }
+/* -------------------- Dagsliste (højre) -------------------- */
+function renderDayList(){
+  const q = (el('daySearch').value||'').toLowerCase();
+  const list = el('dayList'); list.innerHTML = '';
+  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)); // dato-sorteret
+  days.forEach(d=>{
+    if(q && !(d.title.toLowerCase().includes(q) || d.location.toLowerCase().includes(q))) return;
+    const div = document.createElement('div');
+    div.className='item';
+    div.innerHTML = `
+      <div>
+        <div><strong>${d.title}</strong></div>
+        <div class="muted">${d.location}</div>
+      </div>
+      <span class="tag">Se program</span>`;
+    div.onclick = ()=>showDay(d.id);
+    list.appendChild(div);
   });
-  search.addEventListener('input',()=>{ if(tabCalls.getAttribute('aria-selected')==='true') renderCallSheets(search.value.trim()); if(tabContacts.getAttribute('aria-selected')==='true') renderContacts(search.value.trim()); });
-  $('#print').addEventListener('click',()=>window.print());
-  brand.addEventListener('click',()=>{ personSelect.value=''; localStorage.removeItem('who'); search.value=''; selectTab(tabDay); $('#myDayTitle').textContent='Vælg et navn'; panel.innerHTML='<p class="muted small">Vælg navn for at se dit skema.</p>'; window.scrollTo({top:0,behavior:'smooth'}); });
+}
 
-  // Init
-  renderNextDays();
-  </script>
+function showDay(dayId){
+  const d = DAYS.find(x=>x.id===dayId); if(!d) return;
+  currentDay = d.id;
+  el('dayTitle').textContent = d.title;
+  el('dayMeta').innerHTML = `
+    <span class="pill">Location: ${d.location}</span>
+    <span class="pill">Skuespillere: ${d.cast.length}</span>
+    <span class="pill">Crew: ${d.crew.length}</span>`;
+  const prog = el('program'); prog.innerHTML='';
+  if(!d.program?.length){ prog.innerHTML = '<div class="empty">Intet program registreret.</div>'; }
+  else{
+    d.program.forEach(([t,desc])=>{
+      const row = document.createElement('div');
+      row.className='step';
+      row.innerHTML = `<time class="tag">${t}</time><div>${desc}</div>`;
+      prog.appendChild(row);
+    });
+  }
+  el('cast').innerHTML = d.cast.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
+  el('crew').innerHTML = d.crew.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
+  el('callInfo').innerHTML = d.call ? `<a href="${d.call}" target="_blank">Åbn call sheet</a>` : '<div class="muted">Ingen fil knyttet.</div>';
+  if(window.innerWidth<1100){ document.querySelector('.center').scrollIntoView({behavior:'smooth'}); }
+}
+
+function renderMySchedule(){
+  const name = el('nameSelect').value;
+  const box = el('mySchedule');
+  box.innerHTML='';
+  if(!name){ box.innerHTML = '<div class="empty">Vælg dit navn for at se dine arbejdsdage.</div>'; return; }
+  const mine = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)).filter(d => d.cast.includes(name) || d.crew.includes(name));
+  if(!mine.length){ box.innerHTML = '<div class="empty">Ingen dage fundet for denne person.</div>'; return; }
+  mine.forEach(d=>{
+    const div = document.createElement('div');
+    div.className='item';
+    div.innerHTML = `
+      <div>
+        <div><strong>${d.title}</strong></div>
+        <div class="muted">${d.location}</div>
+      </div>
+      <button class="daybtn">Åbn</button>`;
+    div.onclick = ()=>showDay(d.id);
+    box.appendChild(div);
+  });
+}
+
+function contactTip(name){
+  const c = CONTACTS[name]; if(!c) return '';
+  const bits = [c.role, c.email, c.phone].filter(Boolean);
+  return bits.join(' · ');
+}
+
+/* -------------------- Kontakter -------------------- */
+function openContacts(){ el('contactsModal').style.display='flex'; renderContacts(); }
+function closeContacts(){ el('contactsModal').style.display='none'; }
+function renderContacts(){
+  const q = (el('contactSearch').value||'').toLowerCase();
+  const root = el('contactsList'); root.innerHTML='';
+  const rows = Object.entries(CONTACTS)
+    .filter(([name,c])=>{
+      const hay = [name,c.role||'',c.email||'',c.phone||''].join(' ').toLowerCase();
+      return !q || hay.includes(q);
+    })
+    .sort((a,b)=>a[0].localeCompare(b[0],'da'));
+  if(!rows.length){ root.innerHTML='<div class="empty">Ingen kontakter matcher.</div>'; return; }
+  rows.forEach(([name,c])=>{
+    const div = document.createElement('div');
+    div.className='contact-row';
+    const role = c.role? `<div class="muted">${c.role}</div>` : '';
+    const mail = c.email? `<a href="mailto:${c.email}">${c.email}</a>` : '<span class="muted">—</span>';
+    const tel  = c.phone? `<a href="tel:${c.phone}">${c.phone}</a>` : '<span class="muted">—</span>';
+    div.innerHTML = `<div><div><strong>${name}</strong></div>${role}</div><div style="text-align:right"><div>${mail}</div><div>${tel}</div></div>`;
+    root.appendChild(div);
+  });
+}
+
+/* -------------------- Call sheets (samlet liste) -------------------- */
+function openCallSheets(){ el('callSheetsModal').style.display='flex'; renderCallSheets(); }
+function closeCallSheets(){ el('callSheetsModal').style.display='none'; }
+function renderCallSheets(){
+  const q = (el('callSearch').value||'').toLowerCase();
+  const root = el('callSheetsList'); root.innerHTML='';
+  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
+  days.forEach(d=>{
+    const hay = [d.id, d.title, d.location, ...d.cast, ...d.crew, ...(d.program?.flat()||[])].join(' ').toLowerCase();
+    if(q && !hay.includes(q)) return;
+    const sheet = document.createElement('div');
+    sheet.className='sheet';
+    sheet.style.border='1px solid var(--border)';
+    sheet.style.borderRadius='12px';
+    sheet.style.padding='16px';
+    sheet.style.background='#111521';
+    sheet.innerHTML = `
+      <div class="kicker">${d.id}</div>
+      <h2 style="margin:.25rem 0 0 0">${d.title}</h2>
+      <div class="chips" style="margin:.5rem 0 1rem 0">
+        <span class="pill">Location: ${d.location}</span>
+        <span class="pill">Skuespillere: ${d.cast.length}</span>
+        <span class="pill">Crew: ${d.crew.length}</span>
+        ${d.call ? `<a class="pill" href="${d.call}" target="_blank">Eksternt call sheet</a>` : `<span class="pill">Ingen ekstern fil</span>`}
+      </div>
+      <div class="section">
+        <h3>Program</h3>
+        <div class="program">
+          ${ (d.program&&d.program.length)
+              ? d.program.map(([t,desc])=>`<div class="step"><time class="tag">${t}</time><div>${desc}</div></div>`).join('')
+              : '<div class="muted">Intet program registreret.</div>' }
+        </div>
+      </div>
+      <div class="section grid">
+        <div><h3>Skuespillere</h3><div class="chips">${ d.cast.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
+        <div><h3>Crew</h3><div class="chips">${ d.crew.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
+      </div>`;
+    root.appendChild(sheet);
+  });
+  if(!root.children.length){ root.innerHTML = '<div class="empty">Ingen dage matcher din søgning.</div>'; }
+}
+</script>
 </body>
 </html>
