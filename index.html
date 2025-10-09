@@ -98,6 +98,10 @@
           <h3>Program</h3>
           <div id="program" class="program"></div>
         </div>
+        <div class="section">
+          <h3>Scener</h3>
+          <div id="scenes" class="stack"></div>
+        </div>
         <div class="section grid">
           <div><h3>Skuespillere</h3><div id="cast" class="chips"></div></div>
           <div><h3>Crew</h3><div id="crew" class="chips"></div></div>
@@ -136,10 +140,10 @@
   </div>
 </div>
 
-<div class="footer">Version: 1.8 (opdateret efter “(10).docx”) · Kilde: Produktionsplan v1.8</div>
+<div class="footer">Version: 1.8 · Kilde: Produktionsplan v1.8 (+ scener)</div>
 
 <script>
-/* -------------------- DATA (fra v1.8 – COMPLETED udeladt) -------------------- */ // Kilde: (10).docx :contentReference[oaicite:1]{index=1}
+/* -------------------- DATA (v1.8 – COMPLETED udeladt) -------------------- */
 const DAYS = [
   /* 13.10 Flashback 3A – Advokat scene */
   {
@@ -148,10 +152,13 @@ const DAYS = [
     location:'Tjarnir',
     program:[
       ["15:00","Film crew gør advokatscenen klar (Hans Petur, Thomas, Jónfinn, Ronni, Michael)"],
-      ["16:00","Props & design møder (Anna Kristin forbereder tøj på forhånd). Make-up (Julia)"],
+      ["16:00","Props & design + make-up (Anna Kristin forbereder tøj, Julia make-up)"],
       ["16:00","Statister + hovedskuespiller til make-up/tøj (Tórur við Áir, Astrið Gullborgardóttir, Hjálmar Dam)"],
       ["17:00","Optagelse starter"],
-      ["19:00","SLUT"]
+      ["19:00","SLUT"],
+    ],
+    scenes:[
+      // Ingen decideret sceneliste fundet i kildedok – udfyldes når du ønsker.
     ],
     cast:["Tórur við Áir","Astrið Gullborgardóttir","Hjálmar Dam"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
@@ -164,29 +171,36 @@ const DAYS = [
     title:'Søndag 19. okt. · “Flashback 4 – Ruth flirter med tjener”',
     location:'Hotel Brandan – Rest. Húsagarður & køkken',
     program:[
-      ["14:00","Lys-afdeling, instruktør og producer møder (Hans Petur, Thomas, Michael)"],
-      ["14:45","Props & design møder. Skuespillere møder. Make-up (TBC)"],
+      ["14:00","Lys, instruktør og producer møder (Hans Petur, Thomas, Michael)"],
+      ["14:45","Props & design møder. Skuespillere møder (make-up TBC)"],
       ["16:00","Optagelse begynder"],
-      ["18:30","SLUT"]
+      ["18:30","SLUT"],
+    ],
+    scenes:[
+      // Ikke specificeret i dok – kan tilføjes.
     ],
     cast:["Elsa Maria Magnusardóttir Olsen","Tórur Árnastein","Jaspur Jørgensen"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk"],
     call:null
   },
 
-  /* 21.10 Esther hjemme-scene */
+  /* 21.10 Esther hjemme-scene */ /* Scener fra v1.8 (10).docx */
   {
     id:"2025-10-21",
     title:'Tirsdag 21. okt. · “Esther hjemme-scene”',
     location:'Dr. Dahlsgøta 15, Tórshavn',
     program:[
       ["15:00","Crew møder (Hans Petur, Thomas, Ronni, Guðrun)"],
-      ["15:30","Skuespillere møder (Aksel í Botni, Esther) · Anna Kristin ordner tøj"],
+      ["15:30","Skuespillere møder (Aksel í Botni, Esther). Anna Kristin ordner tøj"],
       ["15:45","Gennemgang af scene og indstillinger"],
-      ["16:15","Julia møder (make-up/hår) · fri kl. 18:00"],
+      ["16:15","Julia møder (make-up/hår) – fri ca. 18:00"],
       ["18:30","Julia får fri"],
       ["19:00","Optagelse starter"],
-      ["21:30","SLUT"]
+      ["21:30","SLUT"],
+    ],
+    scenes:[
+      "Soveværelse – Jóhanna og manden i soveværelset.",
+      "Soveværelse, endescene – Jóhanna og manden.", // :contentReference[oaicite:1]{index=1}
     ],
     cast:["Aksel í Botni","Esther á Fjallinum"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen","Katrin Kallsberg"],
@@ -210,7 +224,11 @@ const DAYS = [
       ["13:15","Optagelser fortsætter"],
       ["15:30","Pause/kaffe"],
       ["15:45","Optagelser fortsætter"],
-      ["19:00","SLUT"]
+      ["19:00","SLUT"],
+    ],
+    scenes:[
+      "Terapisession 01 – intro, Johanna introducerer Holgar; L íggjas & Danny om “breka”; Høgni starter dickpic-historien.",
+      "Terapisession 02 – Høgni kort inde; “havde glemt alt om det”.", // :contentReference[oaicite:2]{index=2}
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
@@ -223,6 +241,10 @@ const DAYS = [
     title:'Søndag 2. nov. · Terapilokale (fortsat)',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[["08:00","Optagelser fortsætter (rytme som 1. nov.)"]],
+    scenes:[
+      "Terapisession 03 – Ruth viser dickpic-billede; Høgni om børn & selvmord; L íggjas næste; Danny driller.",
+      "Terapisession 04 – L íggjas benægter at kunne krænke; Holgar bryder ind; Danny starter sin historie.", // :contentReference[oaicite:3]{index=3}
+    ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
     call:null
@@ -234,30 +256,36 @@ const DAYS = [
     title:'Fredag 7. nov. · “Chef kontor”',
     location:'Studenterskolen i Hoydølum',
     program:[
-      ["10:00","Guðrun sørger for at rummet designes som kontor (aftale med instruktør/producer)"],
+      ["10:00","Guðrun designer rummet som kontor (aftale med instruktør/producer)"],
       ["13:00","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
-      ["14:15","Skuespillere møder (Esther, Hans, Thora). Make-up & kostume (Julia)"],
+      ["14:15","Skuespillere møder (Esther, Hans, Thora). Make-up & kostume"],
       ["16:00","Optagelse starter"],
-      ["18:00","Pause med sandwich"],
+      ["18:00","Pause (sandwich)"],
       ["18:30","Optagelse fortsætter"],
-      ["20:30","SLUT"]
+      ["20:30","SLUT"],
+    ],
+    scenes:[
+      // Ikke specificeret i dok – kan tilføjes.
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"],
     call:null
   },
 
-  /* 10.11 Køre scener og parkering (ændret fra 8/11) */
+  /* 10.11 Køre-scener + parkering (ændret fra 8/11) */
   {
     id:"2025-11-10",
     title:'Mandag 10. nov. · “Køre scener og parkering scene”',
     location:'Studenterskolen i Hoydølum',
     program:[
       ["13:00","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
-      ["13:15","Skuespillere møder (Hans Tórgarð, Esther, Politi 1 (uniform) + Civil politibetjent)"],
+      ["13:15","Skuespillere møder (Esther, Hans, Politi 1 (uniform) + Civil politibetjent)"],
       ["13:15–14:15","Make-up gør skuespillere klar (Julia)"],
       ["14:15","Optagelse starter"],
-      ["18:00","SLUT"]
+      ["18:00","SLUT"],
+    ],
+    scenes:[
+      // Ikke specificeret i dok – kan tilføjes.
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A","Civil politibetjent"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
@@ -280,7 +308,10 @@ const DAYS = [
       ["12:30","Frokost"],
       ["13:15","Optagelser fortsætter"],
       ["15:30","Pause/kaffe"],
-      ["18:00","SLUT"]
+      ["18:00","SLUT"],
+    ],
+    scenes:[
+      "Terapisession 05 – Ruths monolog; Holgar “Alt handler om sex/magt”; konfrontation; Johanna mentorscene m.m.", // :contentReference[oaicite:4]{index=4}
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
@@ -294,14 +325,17 @@ const DAYS = [
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
       ["08:00","Optagelser fortsætter (session 5 fortsættes)"],
-      ["18:00","SLUT (forventet)"]
+      ["18:00","SLUT (forventet)"],
+    ],
+    scenes:[
+      "Terapisession 05 fortsat – Holgar konfronterer alle; opsummering; Johanna fanger Holgar på magt.", // :contentReference[oaicite:5]{index=5}
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
     call:null
   },
 
-  /* 24.11 Flashback 3B – Kaffemaskine scene */
+  /* 24.11 Flashback 3B – Kaffemaskine */ /* Scener fra dok v1.7/1.8 */
   {
     id:"2025-11-24",
     title:'Mandag 24. nov. · “Flashback 3B – Kaffemaskine scene”',
@@ -311,7 +345,13 @@ const DAYS = [
       ["15:00","Lyd, stylist & make-up, LM, props & design møder (Ronni, Julia, Guðrun, Anna Kristin)"],
       ["16:00","Statister + hovedskuespiller til make-up/tøj (Helena, Ukendt kvindelig statist, Hjálmar Dam)"],
       ["17:00","Optagelse starter"],
-      ["20:00","SLUT"]
+      ["20:00","SLUT"],
+    ],
+    scenes:[
+      "Kantinen ved Høgni – han henter kaffe.",
+      "Høgni leverer smarte bemærkninger til de to ved kaffemaskinen.",
+      "Møderum – Høgni bliver opsagt.",
+      "Høgni og to HR-folk taler om dickpicks.", // :contentReference[oaicite:6]{index=6}
     ],
     cast:["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"],
@@ -319,7 +359,7 @@ const DAYS = [
   }
 ];
 
-/* -------------------- KONTAKTER (uddrag – v1.8) -------------------- */ // Kilde: (10).docx :contentReference[oaicite:2]{index=2}
+/* -------------------- KONTAKTER (uddrag – v1.8) -------------------- */ // :contentReference[oaicite:7]{index=7}
 const CONTACTS = {
   // Cast
   "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
@@ -334,7 +374,7 @@ const CONTACTS = {
   "Astrið Gullborgardóttir":{role:"Statist · Advokat 2", email:"gullborgardottir@gmail.com", phone:"504467"},
   "Tórur Árnastein":{role:"Skuespiller · Kok 2", email:"torurarnastein@gmail.com", phone:"266858"},
   "Jaspur Jørgensen":{role:"Skuespiller · Kok 1", email:"jj@hotelbrandan.fo", phone:"227570"},
-  "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
+  "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com"},
   "Ukendt kvindelig statist":{role:"Statist · Girl 2"},
   "Politibetjent A":{role:"Politi (uniform)"},
   "Civil politibetjent":{role:"Politi (civil)"},
@@ -379,6 +419,7 @@ function resetUI(){
   el('dayTitle').textContent = 'Vælg en dag i højre side';
   el('dayMeta').innerHTML = '';
   el('program').innerHTML = '';
+  el('scenes').innerHTML = '';
   el('cast').innerHTML = '';
   el('crew').innerHTML = '';
   el('callInfo').innerHTML = '<div class="muted">Ingen fil knyttet.</div>';
@@ -425,6 +466,18 @@ function showDay(dayId){
       prog.appendChild(row);
     });
   }
+
+  const sc = el('scenes'); sc.innerHTML='';
+  if(!d.scenes?.length){ sc.innerHTML = '<div class="muted">Ingen scener registreret.</div>'; }
+  else{
+    d.scenes.forEach((s,i)=>{
+      const div=document.createElement('div');
+      div.className='step';
+      div.innerHTML = `<span class="tag">Scene ${String(i+1).padStart(2,'0')}</span><div>${s}</div>`;
+      sc.appendChild(div);
+    });
+  }
+
   el('cast').innerHTML = d.cast.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
   el('crew').innerHTML = d.crew.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
   el('callInfo').innerHTML = d.call ? `<a href="${d.call}" target="_blank" download>📄 Åbn call sheet</a>` : '<div class="muted">Ingen fil knyttet.</div>';
@@ -476,7 +529,7 @@ function renderContacts(){
   });
 }
 
-/* -------------------- Call sheets (samlet) -------------------- */
+/* -------------------- Call sheets (samlet liste) -------------------- */
 function openCallSheets(){ el('callSheetsModal').style.display='flex'; renderCallSheets(); }
 function closeCallSheets(){ el('callSheetsModal').style.display='none'; }
 function renderCallSheets(){
@@ -484,7 +537,7 @@ function renderCallSheets(){
   const root = document.getElementById('callSheetsList'); root.innerHTML='';
   const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
   days.forEach(d=>{
-    const hay = [d.id, d.title, d.location, ...d.cast, ...d.crew, ...(d.program?.flat()||[])].join(' ').toLowerCase();
+    const hay = [d.id, d.title, d.location, ...(d.scenes||[]), ...d.cast, ...d.crew, ...(d.program?.flat()||[])].join(' ').toLowerCase();
     if(q && !hay.includes(q)) return;
     const sheet = document.createElement('div');
     sheet.className='sheet';
@@ -497,6 +550,7 @@ function renderCallSheets(){
       <h2 style="margin:.25rem 0 0 0">${d.title}</h2>
       <div class="chips" style="margin:.5rem 0 1rem 0">
         <span class="pill">Location: ${d.location}</span>
+        <span class="pill">Scener: ${d.scenes?.length||0}</span>
         <span class="pill">Skuespillere: ${d.cast.length}</span>
         <span class="pill">Crew: ${d.crew.length}</span>
         ${d.call ? `<a class="pill" href="${d.call}" target="_blank">Eksternt call sheet</a>` : `<span class="pill">Ingen ekstern fil</span>`}
@@ -507,6 +561,14 @@ function renderCallSheets(){
           ${ (d.program&&d.program.length)
               ? d.program.map(([t,desc])=>`<div class="step"><time class="tag">${t}</time><div>${desc}</div></div>`).join('')
               : '<div class="muted">Intet program registreret.</div>' }
+        </div>
+      </div>
+      <div class="section">
+        <h3>Scener</h3>
+        <div class="program">
+          ${ (d.scenes&&d.scenes.length)
+              ? d.scenes.map((s,i)=>`<div class="step"><span class="tag">Scene ${String(i+1).padStart(2,'0')}</span><div>${s}</div></div>`).join('')
+              : '<div class="muted">Ingen scener registreret.</div>' }
         </div>
       </div>
       <div class="section grid">
