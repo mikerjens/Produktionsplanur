@@ -45,9 +45,11 @@
   .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center}
   a{color:#a5b4fc}
   @media (max-width:1100px){ .wrap{grid-template-columns:1fr;}.right{order:3}.center{order:2}.left{order:1}}
+  /* Modals */
   .modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;align-items:center;justify-content:center}
   .modal .box{width:min(1000px,94vw);max-height:86vh;overflow:auto}
   .modal .hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:var(--card);padding-bottom:8px;margin-bottom:8px}
+  /* Print */
   @media print{
     body{background:white;color:black}
     header,.left,.right,.footer,#contactsModal{display:none !important}
@@ -140,57 +142,42 @@
   </div>
 </div>
 
-<div class="footer">Version: 2.1 · Kilde: Produktionsplan v2.1</div>
+<div class="footer">Version: 2.2 · Kilde: Produktionsplan v2.2</div>
 
 <script>
-/* -------------------- DATA (v2.1 – COMPLETED udeladt) -------------------- */ // :contentReference[oaicite:1]{index=1}
+/* -------------------- DATA (v2.2 – COMPLETED udeladt) -------------------- */ // :contentReference[oaicite:1]{index=1}
 const DAYS = [
-  /* 21.10 “Esther hjemme-scene” */
-  {
-    id:"2025-10-21",
-    title:'Tirsdag 21. okt. · “Esther hjemme-scene”',
-    location:'Dr. Dahlsgøta 15, Tórshavn',
-    program:[
-      ["15:00","Crew møder (Hans Petur, Thomas, Ronni, Guðrun)"],
-      ["16:00","Skuespillere møder (Aksel í Botni, Esther). Anna Kristin ordner tøj"],
-      ["16:00","Julia make-up/hår – fri kl. 18:00"],
-      ["18:00","Julia får fri"],
-      ["18:05","Optagelse starter"],
-      ["21:30","SLUT"]
-    ],
-    scenes:[
-      "Sovikamar – Jóhanna og maðurin í sovikamari.",
-      "Sovikamar endasena – Jóhanna og maðurin."
-    ],
-    cast:["Aksel í Botni","Esther á Fjallinum"],
-    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Jónfinn Stenberg","Guðrun Joensen","Katrin Kallsberg"],
-    call:null
-  },
-
   /* 01.11 Terapilokale */
   {
     id:"2025-11-01",
     title:'Lørdag 1. nov. · Optagelse i terapilokale',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
-      ["06:00","Alle crew møder. Skuespillere: Bjørn & Marius til make-up/tøj. Props & design møder (Anna Kristin)"],
-      ["06:30","Hjálmar & Elsa til make-up/tøj"],
-      ["07:00","Esther & Hans til make-up/tøj"],
-      ["07:01","Morgenmad (kaffe/te + rundstykker)"],
-      ["08:00","Filmoptagelse starter"],
-      ["08:15","Make-up får fri (Julia)"],
-      ["10:30","Pause/kaffe – Props & design får fri (Anna Kristin)"],
-      ["10:50","Optagelser fortsætter"],
-      ["12:30","Frokost (gryderet fra Jan)"],
-      ["13:15","Optagelser fortsætter"],
-      ["15:30","Pause/kaffe"],
-      ["15:45","Optagelser fortsætter"],
-      ["19:00","SLUT"]
+      ["06:00","Make-up møder (Julia). Props & design møder (Anna Kristin). Producer møder (Michael)."],
+      ["06:00","Skuespiller Ruth møder (Elsa Maria Magnusardóttir) – klargøres til optagelser."],
+      ["06:40","Skuespiller Johanna møder (Esther á Fjallinum)."],
+      ["07:00","Morgenmad: kaffe/te og rundstykker til cast & crew."],
+      ["07:15","Skuespiller Líggjas møder (Bjørn Ulvedal)."],
+      ["07:25","Skuespiller Danny møder (Marius)."],
+      ["07:35","Skuespiller Høgni møder (Hjálmar Dam)."],
+      ["07:45","Skuespiller Holgar møder (Hans Tórgarð)."],
+      ["08:00","Filmoptagelse starter."],
+      ["08:30","Make-up får fri (Julia Jacobsen)."],
+      ["10:30","Pause / Kaffe og sødt."],
+      ["10:45","Optagelser starter igen."],
+      ["12:20","Frokost."],
+      ["13:10","Optagelser fortsætter."],
+      ["13:30","Props & design får fri (Anna Kristin)."],
+      ["15:00","Pause / Kaffe."],
+      ["15:15","Optagelser fortsætter."],
+      ["19:00","SLUT."]
     ],
     scenes:[
-      "Terapisession 01 – Intro; Johanna introducerer Holgar; Líggjas & Danny om “breka”; Høgni byrjar dickpik-søgu.",
-      "Terapisession 02 – Høgni stutt inn; sigur at hann hevði gloymt alt um tað.",
-      "Plan: 1/11 (venjing fyrst; so 2, 3 og 4)."
+      "Plan: 1/11 – øvning først; derefter Session 02, 03 og 04.",
+      "Terapisession 01 (lang): Indslusning; Johanna introducerer Holgar; Líggjas & Danny diskuterer “breka”; Høgni starter dickpic-historien.",
+      "Terapisession 02: Høgni kort inde – ‘havde glemt alt om det’.",
+      "Terapisession 03: Ruth viser dickpic; Høgni om børn og selvmord; Líggjas næste; Danny driller.",
+      "Terapisession 04: Líggjas ‘kunne ikke krænke’; Holgar bryder ind; Danny starter sin historie."
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
@@ -202,39 +189,40 @@ const DAYS = [
     id:"2025-11-02",
     title:'Søndag 2. nov. · Optagelse i terapilokale (fortsat)',
     location:'Aulan, Studenterskolen i Hoydølum',
-    program:[["08:00","Optagelser fortsætter (rytme som 1. nov.)"]],
+    program:[
+      ["08:00","Optagelser fortsætter (rytme som 1. nov.)."]
+    ],
     scenes:[
-      "Terapisession 03 – Ruth vísir dickpik-mynd; Høgni um børn & sjálvmorð; Líggjas er næst; Danny argar.",
-      "Terapisession 04 – Líggjas sigur hann kundi ikki krænkt; Holgar brýtur inn; Danny byrjar sína søgu.",
-      "Plan: 2/11 (session 1)."
+      "Plan: 2/11 – Session 01.",
+      "Fortsat arbejde i terapilokalet iht. ovenstående sessionsstruktur."
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
     call:null
   },
 
-  /* 10.11 “P-plads scene & office scene” */
+  /* 10.11 P-plads & office */
   {
     id:"2025-11-10",
     title:'Mandag 10. nov. · “P-plads scene & office scene”',
     location:'Studenterskolen i Hoydølum',
     program:[
-      ["07:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
-      ["08:00","Skuespillere møder (Hans Tórgarð, Esther, Thora). Make-up (Julia) klargør"],
-      ["08:45","Office optagelse starter"],
-      ["11:30","Office scene SLUT · Frokost"],
-      ["12:10","P-plads scenen klargøres"],
-      ["12:30","Civil politibetjent møder"],
-      ["13:00","Politibetjent fra Føroya Politi møder"],
-      ["13:30","Optagelse af P-plads scene starter"],
-      ["15:30","Optagelse af P-plads scene SLUT"]
+      ["07:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)."],
+      ["08:00","Skuespillere møder (Hans Tórgarð, Esther, Thora)."],
+      ["08:00","Make-up (Julia) klargør skuespillere."],
+      ["08:45","Office optagelse starter."],
+      ["11:30","Office scene SLUT · Frokost."],
+      ["12:10","P-plads scenen klargøres."],
+      ["12:30","Civil politibetjent møder."],
+      ["13:00","Politibetjent fra Føroya Politi møder."],
+      ["13:30","Optagelse af P-plads scene starter."],
+      ["15:30","Optagelse af P-plads scene SLUT."]
     ],
     scenes:[
-      "Office: Johanna i gang; kaldes ind på chefens kontor. Johanna i døråbningen; chefen & Holgar sidder inde.",
-      "P-plads: Johanna ser direktøren tale med 2 betjente (1 uniform, 1 civil) gennem bilruden. Stemningen rolig men alvorlig.",
-      "Civil betjent spilles af skuespiller (kostume: KOVBOY FILM).",
-      "Parkeringsproblemer – Holgar stjæler pladsen fra Johanna.",
-      "Bilsekvens: Johanna kører mod Tórshavn."
+      "Office: Johanna gennem gangen; kaldes ind på chefens kontor. Johanna i døråbningen; chefen & Holgar sidder inde.",
+      "P-plads: Johanna ser direktøren tale med to betjente (én uniform, én civil) gennem bilruden. Civil betjent spilles af skuespiller (kostume af KOVBOY FILM).",
+      "Parkeringsproblemer – Holgar stjæler parkeringspladsen fra Johanna.",
+      "Bilsekvenser: Johanna går til bilen og kører til Tórshavn."
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A","Civil politibetjent"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
@@ -247,21 +235,27 @@ const DAYS = [
     title:'Lørdag 22. nov. · Optagelse i terapilokale',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
-      ["06:00","Alle crew møder. Skuespillere: Bjørn & Marius til make-up/tøj. Props & design møder (Anna Kristin)"],
-      ["06:30","Hjálmar & Elsa til make-up/tøj"],
-      ["07:00","Esther & Hans til make-up/tøj"],
-      ["07:01","Morgenmad"],
-      ["08:00","Filmoptagelse starter"],
-      ["08:15","Make-up får fri (Julia)"],
-      ["10:30","Pause/kaffe – Props & design får fri (Anna Kristin)"],
-      ["10:50","Optagelser fortsætter"],
-      ["12:30","Frokost"],
-      ["13:15","Optagelser fortsætter"],
-      ["15:30","Pause/kaffe"],
-      ["18:00","SLUT"]
+      ["06:00","Make-up møder (Julia). Props & design (Anna Kristin). Producer (Michael)."],
+      ["06:00","Skuespiller Johanna møder (Esther á Fjallinum)."],
+      ["06:40","Skuespiller Ruth møder (Elsa Maria)."],
+      ["07:00","Morgenmad: kaffe/te og rundstykker."],
+      ["07:15","Skuespiller Líggjas møder (Bjørn)."],
+      ["07:25","Skuespiller Danny møder (Marius)."],
+      ["07:35","Skuespiller Høgni møder (Hjálmar)."],
+      ["07:45","Skuespiller Holgar møder (Hans)."],
+      ["08:00","Filmoptagelse starter."],
+      ["08:30","Make-up får fri (Julia Jacobsen)."],
+      ["10:30","Pause / Kaffe og sødt."],
+      ["10:45","Optagelser starter igen."],
+      ["12:20","Frokost."],
+      ["13:10","Optagelser fortsætter."],
+      ["13:30","Props & design får fri (Anna Kristin)."],
+      ["14:45","Pause / Kaffe."],
+      ["15:10","Optagelser fortsætter."],
+      ["17:30","SLUT."]
     ],
     scenes:[
-      "Terapisession 05 – Ruths monolog; “Alt handlar um sex/makt”; konfrontation; mentor-søgur; eskalation m.m."
+      "Terapisession 05 (Ruths monolog): Johanna sammenligner Líggjas’ og Dannys historier; Holgar ‘føler sig krænket’; Holgar nærmer sig gruppen; halvt flirter med Ruth; Johanna spørger om Holgar vil overtage; Ruths rundgang; Holgar: ‘Alt handler om sex/magt’; Holgar sammenfatter, peger på hver; Johanna fremfører mentorscenen; konflikt topper; Holgar afbryder, monolog; Johanna ‘fanger’ Holgar (magt); fysisk konfrontation; Ruth vil gå; afsløringer; gråd/orgasme; Holgar rejser sig; konfronterer alle; slår Johanna."
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
@@ -274,11 +268,11 @@ const DAYS = [
     title:'Søndag 23. nov. · Optagelse i terapilokale (fortsat)',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
-      ["08:00","Optagelser fortsætter (session 5 fortsættes)"],
-      ["18:00","SLUT (forventet)"]
+      ["08:00","Optagelser fortsætter (session 5 fortsættes)."],
+      ["18:00","SLUT (forventet)."]
     ],
     scenes:[
-      "Terapisession 05 – fortsat: Holgar konfronterer alle; Johanna ‘fanger’ Holgar på magt; eskalation."
+      "Session 05 fortsætter og afrundes i henhold til ovenstående forløb."
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
@@ -291,15 +285,15 @@ const DAYS = [
     title:'Mandag 24. nov. · “Flashback 3B – Kaffemaskine scene”',
     location:'Tjarnir',
     program:[
-      ["15:00","Film crew gør “kaffemaskine”-scenen i Presselogen klar (Hans Petur, Thomas, Michael)"],
-      ["15:00","Lyd, stylist & make-up, LM, props & design møder (Ronni, Julia, Guðrun, Anna Kristin)"],
-      ["16:00","2 statister + 1 hovedskuespiller møder (Helena, Ukendt kvindelig statist, Hjálmar)"],
-      ["17:00","Optagelse starter"],
-      ["20:00","SLUT"]
+      ["15:00","Film crew gør ‘kaffemaskine’-scenen i Presselogen klar (Hans Petur, Thomas, Michael)."],
+      ["15:00","Lyd, stylist & make-up, LM, props & design møder (Ronni, Julia, Guðrun, Anna Kristin)."],
+      ["16:00","2 statister + 1 hovedskuespiller til make-up/tøj (Helena, Ukendt kvindelig statist, Hjálmar Dam)."],
+      ["17:00","Optagelse starter."],
+      ["20:00","SLUT."]
     ],
     scenes:[
-      "Kantinan hjá Høgni – hann fær sær kaffi; smørtar viðmerkingar við kaffimaskinuna.",
-      "Fundarrúm – Høgni uppsagdur; samtale við 2 HR-fólk um dickpicks."
+      "Kantinen: Høgni henter kaffe; kække bemærkninger til to kvinder ved kaffemaskinen.",
+      "Møderum: Høgni opsiges; samtale med to HR-folk om dickpicks."
     ],
     cast:["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"],
@@ -307,7 +301,7 @@ const DAYS = [
   }
 ];
 
-/* -------------------- KONTAKTER (v2.1) -------------------- */ // :contentReference[oaicite:2]{index=2}
+/* -------------------- KONTAKTER (uddrag v2.2) -------------------- */ // :contentReference[oaicite:2]{index=2}
 const CONTACTS = {
   // Cast
   "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
@@ -316,7 +310,6 @@ const CONTACTS = {
   "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
   "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
   "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
-  "Aksel í Botni":{role:"Skuespiller · Lars (Johannas mand)", email:"akselbot@hotmail.dk", phone:"+298220265"},
   "Thora Augustinussen":{role:"Skuespiller · Receptionist", email:"ta@faer.fo"},
   "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
   "Ukendt kvindelig statist":{role:"Statist · Girl 2"},
