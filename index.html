@@ -12,6 +12,13 @@
   .logo{display:flex;align-items:center;gap:.5rem;cursor:pointer;text-decoration:none;color:var(--text)}
   .logo .mark{width:32px;height:32px;border-radius:10px;background:conic-gradient(from 210deg,var(--brand),var(--brand2))}
   .logo h1{font-size:18px;letter-spacing:.4px;margin:0;font-weight:700}
+
+  /* Progress (timer) */
+  .progress-wrap{display:flex;align-items:center;gap:10px;margin-left:auto}
+  .progress-meter{width:260px;height:12px;border-radius:999px;background:#0b0e16;border:1px solid var(--border);overflow:hidden}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--brand2))}
+  .progress-text{font-size:12px;color:var(--muted)}
+
   .wrap{display:grid;grid-template-columns:320px 1fr 360px;gap:16px;padding:16px}
   .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
   .pane{padding:16px}
@@ -67,6 +74,10 @@
   <a class="logo" onclick="resetUI()" title="Til start">
     <span class="mark"></span><h1>KRENKARIRNIR · Produktionsportal</h1>
   </a>
+  <div class="progress-wrap" title="Fremskridt for produktionen (timer)">
+    <div class="progress-meter"><div id="progressFill" class="progress-fill"></div></div>
+    <div id="progressText" class="progress-text">0% filmet · 100% tilbage</div>
+  </div>
 </header>
 
 <div class="wrap">
@@ -145,30 +156,43 @@
 <div class="footer">Version: 2.3 · Kilde: Produktionsplan v2.3</div>
 
 <script>
-/* -------------------- DATA (v2.3 – COMPLETED udeladt) -------------------- */ // Source: latest doc.
+/* ===========================================================
+   PROGRESS (HOURS MODE) – KONFIG
+   Sæt planlagt totaltimer. Scriptet estimerer "tilbage" ud fra
+   de tilbageværende DAYS (første-til-sidste klokkeslæt pr. dag).
+   Hvis en dag mangler tider, bruges DEFAULT_DAY_HOURS.
+=========================================================== */
+const USE_MODE = 'hours';
+const PLANNED_TOTAL_HOURS = 120;  // ← RET til jeres samlede planlagte optagetimer
+const DEFAULT_DAY_HOURS   = 10;   // fallback pr. dag uden tider
+const MANUAL_COMPLETED_HOURS = null; // udfyld hvis I vil overstyre automatisk "filmet"
+
+/* ===========================================================
+   DATA fra PRODUKTIONSPLAN v2.3 (COMPLETED udeladt)
+=========================================================== */
 const DAYS = [
-  /* 10.11 P-plads & Office (rækkefølge som i dokumentet) */
+  /* 10.11 P-plads & Office */
   {
     id:"2025-11-10",
     title:'Mandag 10. nov. · “P-plads scene & office scene”',
     location:'Studenterskolen i Hoydølum',
     program:[
-      ["07:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],                 // :contentReference[oaicite:1]{index=1}
-      ["08:00","Skuespillere møder (Hans Tórgarð, Esther, Thora)"],                      // :contentReference[oaicite:2]{index=2}
-      ["08:00","Make-up (Julia) gør skuespillere klar"],                                  // :contentReference[oaicite:3]{index=3}
-      ["08:45","P-plads optagelse starter"],                                              // :contentReference[oaicite:4]{index=4}
-      ["11:30","P-plads scene SLUT · Frokost"],                                          // :contentReference[oaicite:5]{index=5}
-      ["12:10","Office scenen klargøres"],                                               // :contentReference[oaicite:6]{index=6}
-      ["12:30","Skuespiller: Civil politibetjent møder"],                                // :contentReference[oaicite:7]{index=7}
-      ["13:00","Skuespiller: Politibetjent fra Føroya Politi møder"],                    // :contentReference[oaicite:8]{index=8}
-      ["13:30","Optagelse af Office scene starter"],                                     // :contentReference[oaicite:9]{index=9}
-      ["15:30","Office scene SLUT"]                                                      // :contentReference[oaicite:10]{index=10}
+      ["07:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
+      ["08:00","Skuespillere møder (Hans Tórgarð, Esther, Thora)"],
+      ["08:00","Make-up (Julia) gør skuespillere klar"],
+      ["08:45","P-plads optagelse starter"],
+      ["11:30","P-plads scene SLUT · Frokost"],
+      ["12:10","Office scenen klargøres"],
+      ["12:30","Skuespiller: Civil politibetjent møder"],
+      ["13:00","Skuespiller: Politibetjent fra Føroya Politi møder"],
+      ["13:30","Optagelse af Office scene starter"],
+      ["15:30","Office scene SLUT"]
     ],
     scenes:[
-      "Office: Johanna går gennem gangen; kaldes ind på chefens kontor. Johanna i døråbningen; chefen og Holgar sidder inde.", // :contentReference[oaicite:11]{index=11}
-      "Johanna går til bilen og kører mod Tórshavn. Ved udkørslen ser hun direktøren tale med to betjente (én uniform, én civil) gennem bilruden; vi hører ikke dialogen.", // :contentReference[oaicite:12]{index=12}
-      "Civil betjent spilles af skuespiller (kostume leveres af KOVBOY FILM).", // :contentReference[oaicite:13]{index=13}
-      "Parkeringsproblemer: Holgar stjæler Johannas plads."                    // :contentReference[oaicite:14]{index=14}
+      "Office: Johanna går i gangen; kaldes ind på chefens kontor. Johanna i døråbningen; chefen og Holgar sidder inde.",
+      "Johanna kører – ved udkørslen ser hun direktøren tale med to betjente (én uniform, én civil) gennem bilruden; ingen dialog høres.",
+      "Civil betjent spilles af skuespiller (kostume af KOVBOY FILM).",
+      "Parkeringsproblemer: Holgar stjæler Johannas plads."
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A","Civil politibetjent"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
@@ -181,32 +205,27 @@ const DAYS = [
     title:'Lørdag 22. nov. · Optagelse i terapilokale',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
-      ["06:00","Make-up (Julia) · Props & design (Anna Kristin) · Producer (Michael) møder"], // :contentReference[oaicite:15]{index=15}
-      ["06:00","Skuespiller Johanna (Esther) møder"],                                         // :contentReference[oaicite:16]{index=16}
-      ["06:40","Skuespiller Ruth (Elsa Maria) møder – klargøres"],                            // :contentReference[oaicite:17]{index=17}
-      ["07:00","Morgenmad (kaffe/te, rundstykker)"],                                          // :contentReference[oaicite:18]{index=18}
-      ["07:15","Skuespiller Líggjas (Bjørn) møder"],                                          // :contentReference[oaicite:19]{index=19}
-      ["07:25","Skuespiller Danny (Marius) møder"],                                           // :contentReference[oaicite:20]{index=20}
-      ["07:35","Skuespiller Høgni (Hjálmar) møder"],                                          // :contentReference[oaicite:21]{index=21}
-      ["07:45","Skuespiller Holgar (Hans) møder"],                                            // :contentReference[oaicite:22]{index=22}
-      ["08:00","Filmoptagelse starter"],                                                      // :contentReference[oaicite:23]{index=23}
-      ["08:30","Make-up (Julia) får fri"],                                                   // :contentReference[oaicite:24]{index=24}
-      ["10:30","Pause / Kaffe og sødt"],                                                     // :contentReference[oaicite:25]{index=25}
-      ["10:45","Optagelser starter igen"],                                                   // :contentReference[oaicite:26]{index=26}
-      ["12:20","Frokost"],                                                                   // :contentReference[oaicite:27]{index=27}
-      ["13:10","Optagelser fortsætter"],                                                     // :contentReference[oaicite:28]{index=28}
-      ["13:30","Props & design (Anna Kristin) får fri"],                                     // :contentReference[oaicite:29]{index=29}
-      ["14:45","Pause / Kaffe"],                                                             // :contentReference[oaicite:30]{index=30}
-      ["15:10","Optagelser fortsætter"],                                                     // :contentReference[oaicite:31]{index=31}
-      ["17:30","SLUT"]                                                                       // :contentReference[oaicite:32]{index=32}
+      ["06:00","Make-up (Julia). Props & design (Anna Kristin). Producer (Michael) møder"],
+      ["06:00","Skuespiller Johanna (Esther) møder"],
+      ["06:40","Skuespiller Ruth (Elsa Maria) møder – klargøres"],
+      ["07:00","Morgenmad (kaffe/te, rundstykker)"],
+      ["07:15","Skuespiller Líggjas (Bjørn) møder"],
+      ["07:25","Skuespiller Danny (Marius) møder"],
+      ["07:35","Skuespiller Høgni (Hjálmar) møder"],
+      ["07:45","Skuespiller Holgar (Hans) møder"],
+      ["08:00","Filmoptagelse starter"],
+      ["08:30","Make-up (Julia) får fri"],
+      ["10:30","Pause / Kaffe og sødt"],
+      ["10:45","Optagelser starter igen"],
+      ["12:20","Frokost"],
+      ["13:10","Optagelser fortsætter"],
+      ["13:30","Props & design (Anna Kristin) får fri"],
+      ["14:45","Pause / Kaffe"],
+      ["15:10","Optagelser fortsætter"],
+      ["17:30","SLUT"]
     ],
     scenes:[
-      "1/11: øvning; Session 02, 03 og 04. 2/11: Session 01. 22/11: Session 05. 23/11: Session 05 fortsat.", // :contentReference[oaicite:33]{index=33}
-      "Session 01 (introduktion): Johanna introducerer Holgar; Líggjas og Danny diskuterer ‘breka’; Høgni starter dickpick-historien.", // :contentReference[oaicite:34]{index=34}
-      "Session 02: Høgni kort inde – ‘havde glemt alt om det’.", // :contentReference[oaicite:35]{index=35}
-      "Session 03: Ruth viser dickpick; Høgni om børn og selvmord; Líggjas næste; Danny driller.", // :contentReference[oaicite:36]{index=36}
-      "Session 04: Líggjas ‘kunne ikke krænke’; Holgar bryder ind; Danny starter sin historie.",   // :contentReference[oaicite:37]{index=37}
-      "Session 05 (Ruths monolog): konflikt og konfrontation kulminerer; Holgar slår Johanna."     // :contentReference[oaicite:38]{index=38}
+      "Sessions: 01–05 (jf. plan). Session 05 ‘Ruths monolog’ – konflikt kulminerer; Holgar slår Johanna."
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
@@ -219,12 +238,10 @@ const DAYS = [
     title:'Søndag 23. nov. · Optagelse i terapilokale (fortsat)',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
-      ["08:00","Optagelser fortsætter (Session 05 fortsættes)"], // :contentReference[oaicite:39]{index=39}
-      ["18:00","SLUT (forventet)"]                               // :contentReference[oaicite:40]{index=40}
+      ["08:00","Optagelser fortsætter (Session 05 fortsættes)"],
+      ["18:00","SLUT (forventet)"]
     ],
-    scenes:[
-      "Session 05 fortsætter og afrundes (jf. ovenfor)."
-    ],
+    scenes:["Session 05 fortsættes og afrundes."],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
     call:null
@@ -233,18 +250,18 @@ const DAYS = [
   /* 24.11 Flashback 3B – Kaffemaskine */
   {
     id:"2025-11-24",
-    title:'Mandag 24. nov. · “Flashback 3B – Kaffemaskine scene”',
+    title:'Mandag 24. nov. · “Flash back 3B – Kaffemaskine scene”',
     location:'Tjarnir',
     program:[
-      ["15:00","Film crew gør ‘kaffemaskine’-scenen klar i Presselogen (Hans Petur, Thomas, Michael)"], // :contentReference[oaicite:41]{index=41}
-      ["15:00","Lyd, stylist & make-up, LM, props & design møder (Ronni, Julia, Guðrun, Anna Kristin)"], // :contentReference[oaicite:42]{index=42}
-      ["16:00","2 statister + 1 hovedskuespiller til make-up/tøj (Helena, ukendt kvinde, Hjálmar)"],     // :contentReference[oaicite:43]{index=43}
-      ["17:00","Optagelse starter"],                                                                    // :contentReference[oaicite:44]{index=44}
-      ["20:00","SLUT"]                                                                                  // :contentReference[oaicite:45]{index=45}
+      ["15:00","Film crew gør ‘kaffemaskine’-scenen klar i Presselogen (Hans Petur, Thomas, Michael)"],
+      ["15:00","Lyd, stylist & make-up, LM, props & design møder (Ronni, Julia, Guðrun, Anna Kristin)"],
+      ["16:00","2 statister + 1 hovedskuespiller møder (Helena, ukendt kvinde, Hjálmar)"],
+      ["17:00","Optagelse starter"],
+      ["20:00","SLUT"]
     ],
     scenes:[
-      "Kantinen: Høgni henter kaffe og fyrer smarte bemærkninger af til to kvinder ved kaffemaskinen.", // :contentReference[oaicite:46]{index=46}
-      "Møderum: Høgni opsiges; samtale med to HR-folk om dickpicks."                                    // :contentReference[oaicite:47]{index=47}
+      "Kantinen: Høgni henter kaffe og fyrer bemærkninger af til to kvinder ved kaffemaskinen.",
+      "Møderum: Høgni opsiges; samtale med to HR-folk om dickpicks."
     ],
     cast:["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"],
@@ -252,39 +269,95 @@ const DAYS = [
   }
 ];
 
-/* -------------------- KONTAKTER (uddrag v2.3) -------------------- */
+/* Kontakter (uddrag) */
 const CONTACTS = {
-  // Cast
-  "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},        // :contentReference[oaicite:48]{index=48}
-  "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},                      // :contentReference[oaicite:49]{index=49}
-  "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},    // :contentReference[oaicite:50]{index=50}
-  "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},                         // :contentReference[oaicite:51]{index=51}
-  "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},                         // :contentReference[oaicite:52]{index=52}
-  "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},        // :contentReference[oaicite:53]{index=53}
-  "Thora Augustinussen":{role:"Skuespiller · Receptionist", email:"ta@faer.fo"},                                    // :contentReference[oaicite:54]{index=54}
-  "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},                         // :contentReference[oaicite:55]{index=55}
+  "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
+  "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},
+  "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},
+  "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},
+  "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},
+  "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
+  "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com"},
+  "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
+  "Guðrun Joensen":{role:"Location manager", email:"gudrunjoensen@gmail.com", phone:"548747"},
+  "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
+  "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
+  "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
+  "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
+  "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
+  "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
+  "Thora Augustinussen":{role:"Skuespiller · Receptionist", email:"ta@faer.fo"},
+  "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
   "Ukendt kvindelig statist":{role:"Statist · Girl 2"},
-  "Politibetjent A":{role:"Politi (Føroya Politi)", email:"SLE021@politi.dk"},                                      // :contentReference[oaicite:56]{index=56}
-  "Civil politibetjent":{role:"Politi (civil)"},
-  // Crew & locations
-  "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},                                            // :contentReference[oaicite:57]{index=57}
-  "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},                        // :contentReference[oaicite:58]{index=58}
-  "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},                     // :contentReference[oaicite:59]{index=59}
-  "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},                                             // :contentReference[oaicite:60]{index=60}
-  "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},                       // :contentReference[oaicite:61]{index=61}
-  "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com"},                                                    // :contentReference[oaicite:62]{index=62}
-  "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},                                    // :contentReference[oaicite:63]{index=63}
-  "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},                             // :contentReference[oaicite:64]{index=64}
-  "Guðrun Joensen":{role:"Location manager", email:"gudrunjoensen@gmail.com", phone:"548747"}                       // :contentReference[oaicite:65]{index=65}
+  "Politibetjent A":{role:"Politi (Føroya Politi)", email:"SLE021@politi.dk"},
+  "Civil politibetjent":{role:"Politi (civil)"}
 };
 
 /* Udledte navne til dropdown */
 const PEOPLE = Array.from(new Set([
   ...Object.keys(CONTACTS),
-  ...DAYS.flatMap(d => [...d.cast, ...d.crew])
+  ...DAYS.flatMap(d => [...(d.cast||[]), ...(d.crew||[])])
 ])).sort((a,b)=>a.localeCompare(b,'da'));
 
-/* -------------------- DOM helpers & INIT -------------------- */
+/* ===========================================================
+   PROGRESS: HOUR CALC HELPERS
+=========================================================== */
+function parseHM(str){
+  const m = String(str).match(/(\d{1,2})[:.](\d{2})/);
+  if(!m) return null;
+  const h = +m[1], min = +m[2];
+  if(h<0||h>23||min<0||min>59) return null;
+  return h*60+min;
+}
+function extractMinutesFromText(txt){
+  const out = [];
+  const times = String(txt).match(/\d{1,2}[:.]\d{2}/g);
+  if(times) for(const t of times){ const mm = parseHM(t); if(mm!=null) out.push(mm); }
+  return out;
+}
+function estimateDayHours(day){
+  const minutes = [];
+  (day.program||[]).forEach(entry=>{
+    const [t, desc] = entry;
+    extractMinutesFromText(t).forEach(m=>minutes.push(m));
+    extractMinutesFromText(desc).forEach(m=>minutes.push(m));
+  });
+  if(!minutes.length) return DEFAULT_DAY_HOURS;
+  const start = Math.min(...minutes);
+  const end   = Math.max(...minutes);
+  const spanMin = end - start;
+  if(!Number.isFinite(spanMin) || spanMin<=0) return DEFAULT_DAY_HOURS;
+  return +(spanMin/60).toFixed(2);
+}
+function estimateRemainingHours(days){
+  return days.reduce((sum,d)=>sum + estimateDayHours(d), 0);
+}
+function computeProgressByHours(){
+  if(!Number.isFinite(PLANNED_TOTAL_HOURS) || PLANNED_TOTAL_HOURS<=0){
+    return {done:0,total:0,left:0};
+  }
+  const remaining = estimateRemainingHours(DAYS);
+  const done = MANUAL_COMPLETED_HOURS!=null
+    ? Math.min(PLANNED_TOTAL_HOURS, Math.max(0, MANUAL_COMPLETED_HOURS))
+    : Math.max(0, PLANNED_TOTAL_HOURS - remaining);
+  const left = Math.max(0, PLANNED_TOTAL_HOURS - done);
+  return {done, total:PLANNED_TOTAL_HOURS, left};
+}
+function renderProgress(){
+  const {done,total,left} = computeProgressByHours();
+  const pctDone = total>0 ? Math.round((done/total)*100) : 0;
+  const pctLeft = Math.max(0,100-pctDone);
+  const fill = document.getElementById('progressFill');
+  const txt  = document.getElementById('progressText');
+  if(fill) fill.style.width = pctDone + '%';
+  if(txt){
+    txt.textContent = `${pctDone}% filmet · ${pctLeft}% tilbage  (${done.toFixed(1).replace('.0','')}/${total} timer)`;
+  }
+}
+
+/* ===========================================================
+   UI HELPERS + INIT
+=========================================================== */
 const el = id => document.getElementById(id);
 let currentDay = null;
 
@@ -294,10 +367,10 @@ function init(){
     const o = document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o);
   }
   renderDayList();
+  renderProgress();
 }
-init();
+document.addEventListener('DOMContentLoaded', init);
 
-/* -------------------- UI base -------------------- */
 function resetUI(){
   el('nameSelect').value="";
   renderMySchedule();
@@ -311,12 +384,13 @@ function resetUI(){
   el('callInfo').innerHTML = '<div class="muted">Ingen fil knyttet.</div>';
   renderDayList();
   window.scrollTo({top:0,behavior:'smooth'});
+  renderProgress();
 }
 
-/* -------------------- Dagsliste (højre) -------------------- */
+/* Dagsliste (højre) */
 function renderDayList(){
-  const q = (el('daySearch').value||'').toLowerCase();
-  const list = el('dayList'); list.innerHTML = '';
+  const q = (el('daySearch')?.value||'').toLowerCase();
+  const list = el('dayList'); if(!list) return; list.innerHTML = '';
   const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
   days.forEach(d=>{
     if(q && !(d.title.toLowerCase().includes(q) || d.location.toLowerCase().includes(q))) return;
@@ -333,7 +407,7 @@ function renderDayList(){
   });
 }
 
-/* -------------------- Dagvisning -------------------- */
+/* Dagvisning */
 function showDay(dayId){
   const d = DAYS.find(x=>x.id===dayId); if(!d) return;
   currentDay = d.id;
@@ -341,8 +415,9 @@ function showDay(dayId){
   el('dayMeta').innerHTML = `
     <span class="pill">Location: ${d.location}</span>
     <span class="pill">Scener: ${d.scenes?.length||0}</span>
-    <span class="pill">Skuespillere: ${d.cast.length}</span>
-    <span class="pill">Crew: ${d.crew.length}</span>`;
+    <span class="pill">Skuespillere: ${d.cast?.length||0}</span>
+    <span class="pill">Crew: ${d.crew?.length||0}</span>
+    <span class="pill">Estimeret dagstimer: ${estimateDayHours(d)}</span>`;
   const prog = el('program'); prog.innerHTML='';
   if(!d.program?.length){ prog.innerHTML = '<div class="empty">Intet program registreret.</div>'; }
   else{
@@ -353,7 +428,6 @@ function showDay(dayId){
       prog.appendChild(row);
     });
   }
-
   const sc = el('scenes'); sc.innerHTML='';
   if(!d.scenes?.length){ sc.innerHTML = '<div class="muted">Ingen scener registreret.</div>'; }
   else{
@@ -364,19 +438,18 @@ function showDay(dayId){
       sc.appendChild(div);
     });
   }
-
-  el('cast').innerHTML = d.cast.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
-  el('crew').innerHTML = d.crew.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
+  el('cast').innerHTML = d.cast?.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
+  el('crew').innerHTML = d.crew?.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
   el('callInfo').innerHTML = d.call ? `<a href="${d.call}" target="_blank" download>📄 Åbn call sheet</a>` : '<div class="muted">Ingen fil knyttet.</div>';
   if(window.innerWidth<1100){ document.querySelector('.center').scrollIntoView({behavior:'smooth'}); }
 }
 
-/* -------------------- Mit skema -------------------- */
+/* Mit skema (venstre) */
 function renderMySchedule(){
   const name = el('nameSelect').value;
   const box = el('mySchedule'); box.innerHTML='';
   if(!name){ box.innerHTML = '<div class="empty">Vælg dit navn for at se dine arbejdsdage.</div>'; return; }
-  const mine = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)).filter(d => d.cast.includes(name) || d.crew.includes(name));
+  const mine = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)).filter(d => (d.cast||[]).includes(name) || (d.crew||[]).includes(name));
   if(!mine.length){ box.innerHTML = '<div class="empty">Ingen dage fundet for denne person.</div>'; return; }
   mine.forEach(d=>{
     const div = document.createElement('div');
@@ -392,11 +465,11 @@ function renderMySchedule(){
   });
 }
 
-/* -------------------- Kontakter -------------------- */
+/* Kontakter */
 function openContacts(){ el('contactsModal').style.display='flex'; renderContacts(); }
 function closeContacts(){ el('contactsModal').style.display='none'; }
 function renderContacts(){
-  const q = (el('contactSearch').value||'').toLowerCase();
+  const q = (el('contactSearch')?.value||'').toLowerCase();
   const root = el('contactsList'); root.innerHTML='';
   const rows = Object.entries(CONTACTS)
     .filter(([name,c])=>{
@@ -416,15 +489,15 @@ function renderContacts(){
   });
 }
 
-/* -------------------- Call sheets (samlet liste) -------------------- */
+/* Call sheets (samlet liste) */
 function openCallSheets(){ el('callSheetsModal').style.display='flex'; renderCallSheets(); }
 function closeCallSheets(){ el('callSheetsModal').style.display='none'; }
 function renderCallSheets(){
-  const q = (el('callSearch').value||'').toLowerCase();
+  const q = (el('callSearch')?.value||'').toLowerCase();
   const root = document.getElementById('callSheetsList'); root.innerHTML='';
   const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
   days.forEach(d=>{
-    const hay = [d.id, d.title, d.location, ...(d.scenes||[]), ...d.cast, ...d.crew, ...(d.program?.flat()||[])].join(' ').toLowerCase();
+    const hay = [d.id, d.title, d.location, ...(d.scenes||[]), ...(d.cast||[]), ...(d.crew||[]), ...(d.program?.flat()||[])].join(' ').toLowerCase();
     if(q && !hay.includes(q)) return;
     const sheet = document.createElement('div');
     sheet.className='sheet';
@@ -438,8 +511,8 @@ function renderCallSheets(){
       <div class="chips" style="margin:.5rem 0 1rem 0">
         <span class="pill">Location: ${d.location}</span>
         <span class="pill">Scener: ${d.scenes?.length||0}</span>
-        <span class="pill">Skuespillere: ${d.cast.length}</span>
-        <span class="pill">Crew: ${d.crew.length}</span>
+        <span class="pill">Skuespillere: ${d.cast?.length||0}</span>
+        <span class="pill">Crew: ${d.crew?.length||0}</span>
         ${d.call ? `<a class="pill" href="${d.call}" target="_blank">Eksternt call sheet</a>` : `<span class="pill">Ingen ekstern fil</span>`}
       </div>
       <div class="section">
@@ -459,8 +532,8 @@ function renderCallSheets(){
         </div>
       </div>
       <div class="section grid">
-        <div><h3>Skuespillere</h3><div class="chips">${ d.cast.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
-        <div><h3>Crew</h3><div class="chips">${ d.crew.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
+        <div><h3>Skuespillere</h3><div class="chips">${ d.cast?.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
+        <div><h3>Crew</h3><div class="chips">${ d.crew?.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
       </div>`;
     root.appendChild(sheet);
   });
