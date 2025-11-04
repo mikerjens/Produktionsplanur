@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="da">
 <head>
 <meta charset="utf-8" />
@@ -12,20 +12,13 @@
   .logo{display:flex;align-items:center;gap:.5rem;cursor:pointer;text-decoration:none;color:var(--text)}
   .logo .mark{width:32px;height:32px;border-radius:10px;background:conic-gradient(from 210deg,var(--brand),var(--brand2))}
   .logo h1{font-size:18px;letter-spacing:.4px;margin:0;font-weight:700}
-
-  /* Progress (timer) */
-  .progress-wrap{display:flex;align-items:center;gap:10px;margin-left:auto}
-  .progress-meter{width:260px;height:12px;border-radius:999px;background:#0b0e16;border:1px solid var(--border);overflow:hidden}
-  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--brand2))}
-  .progress-text{font-size:12px;color:var(--muted)}
-
   .wrap{display:grid;grid-template-columns:320px 1fr 360px;gap:16px;padding:16px}
   .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
   .pane{padding:16px}
   h2{margin:.25rem 0 1rem 0;font-size:18px}
   h3{margin:1rem 0 .5rem 0;font-size:16px}
   label{display:block;margin-bottom:.5rem;font-size:13px;color:var(--muted)}
-  select,input[type="search"]{width:100%;padding:12px;border-radius:12px;background:#0f1218;border:1px solid var(--border);color:var(--text);outline:none}
+  select,input[type="search"]{width:100%;padding:12px;border-radius:12px;background:#0f1218;border:1px solid var(--border);color:var(--text)}
   .tag{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
   .list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
   .item{padding:12px;border:1px solid var(--border);border-radius:12px;background:#131623;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
@@ -51,6 +44,9 @@
   .search{display:flex;gap:8px;margin-top:8px}
   .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center}
   a{color:#a5b4fc}
+  /* Statusbar */
+  .progress{height:10px;border-radius:999px;background:#0e1220;border:1px solid #263048;overflow:hidden}
+  .bar{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));width:0}
   @media (max-width:1100px){ .wrap{grid-template-columns:1fr;}.right{order:3}.center{order:2}.left{order:1}}
   /* Modals */
   .modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;align-items:center;justify-content:center}
@@ -74,10 +70,6 @@
   <a class="logo" onclick="resetUI()" title="Til start">
     <span class="mark"></span><h1>KRENKARIRNIR · Produktionsportal</h1>
   </a>
-  <div class="progress-wrap" title="Fremskridt for produktionen (timer)">
-    <div class="progress-meter"><div id="progressFill" class="progress-fill"></div></div>
-    <div id="progressText" class="progress-text">0% filmet · 100% tilbage</div>
-  </div>
 </header>
 
 <div class="wrap">
@@ -88,12 +80,23 @@
       <button onclick="openCallSheets()">Call sheets</button>
       <button onclick="window.print()">Print</button>
     </div>
+
+    <div class="section">
+      <div class="kicker">Status</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="progress" style="flex:1"><div id="bar" class="bar"></div></div>
+        <div id="pct" class="tag">0% tilbage</div>
+      </div>
+      <div class="muted" style="margin-top:6px" id="statusText"></div>
+    </div>
+
     <div class="section">
       <label for="nameSelect">Vælg dit navn</label>
       <select id="nameSelect" onchange="renderMySchedule()">
         <option value="">— Vælg person —</option>
       </select>
     </div>
+
     <div class="section">
       <div class="kicker">Mit skema</div>
       <div id="mySchedule" class="stack"></div>
@@ -107,19 +110,23 @@
         <div class="kicker">Valgt dag</div>
         <h2 id="dayTitle">Vælg en dag i højre side</h2>
         <div id="dayMeta" class="chips"></div>
+
         <div class="section">
           <h3>Program</h3>
           <div id="program" class="program"></div>
         </div>
-        <div class="section">
-          <h3>Scener</h3>
-          <div id="scenes" class="stack"></div>
-        </div>
+
         <div class="section grid">
           <div><h3>Skuespillere</h3><div id="cast" class="chips"></div></div>
           <div><h3>Crew</h3><div id="crew" class="chips"></div></div>
         </div>
+
+        <div class="section">
+          <h3>Scener (kort beskrivelse)</h3>
+          <div id="scenes" class="program"></div>
+        </div>
       </div>
+
       <div>
         <h3>Call sheet</h3>
         <div id="callInfo" class="stack"><div class="muted">Ingen fil knyttet.</div></div>
@@ -138,234 +145,187 @@
 <!-- Kontakter modal -->
 <div id="contactsModal" class="modal">
   <div class="card pane box">
-    <div class="hdr"><h2 style="margin:0">Kontakter</h2><div class="toolbar"><button onclick="closeContacts()">Luk</button></div></div>
+    <div class="hdr"><h2 style="margin:0">Kontakter (kun fremtidige)</h2><div class="toolbar"><button onclick="closeContacts()">Luk</button></div></div>
     <div class="search"><input id="contactSearch" type="search" placeholder="Søg navn, rolle, e-mail, tlf…" oninput="renderContacts()"></div>
     <div id="contactsList" class="stack section"></div>
   </div>
 </div>
 
-<!-- Call sheets modal -->
+<!-- Call sheets modal (samlet liste) -->
 <div id="callSheetsModal" class="modal">
   <div class="card pane box">
-    <div class="hdr"><h2 style="margin:0">Call sheets · fuld dagsplan pr. dag</h2><div class="toolbar"><button onclick="window.print()">Print</button><button onclick="closeCallSheets()">Luk</button></div></div>
+    <div class="hdr">
+      <h2 style="margin:0">Call sheets · fuld dagsplan pr. dag</h2>
+      <div class="toolbar"><button onclick="window.print()">Print</button><button onclick="closeCallSheets()">Luk</button></div>
+    </div>
     <div class="search"><input id="callSearch" type="search" placeholder="Søg (dato, titel, location, person…)" oninput="renderCallSheets()"></div>
     <div id="callSheetsList" class="stack section"></div>
   </div>
 </div>
 
-<div class="footer">Version: 2.3 · Kilde: Produktionsplan v2.3</div>
+<div class="footer">Version: 2.4 · Kilde: Produktionsplan (17)</div>
 
 <script>
-/* ===========================================================
-   PROGRESS (HOURS MODE) – KONFIG
-   Sæt planlagt totaltimer. Scriptet estimerer "tilbage" ud fra
-   de tilbageværende DAYS (første-til-sidste klokkeslæt pr. dag).
-   Hvis en dag mangler tider, bruges DEFAULT_DAY_HOURS.
-=========================================================== */
-const USE_MODE = 'hours';
-const PLANNED_TOTAL_HOURS = 120;  // ← RET til jeres samlede planlagte optagetimer
-const DEFAULT_DAY_HOURS   = 10;   // fallback pr. dag uden tider
-const MANUAL_COMPLETED_HOURS = null; // udfyld hvis I vil overstyre automatisk "filmet"
+/* ======================== DATA: Version 2.4 (fra dokument 17) ======================== */
+/* Kommende dage (COMPLETED udeladt af UI, men tælles i statusbaren) */
 
-/* ===========================================================
-   DATA fra PRODUKTIONSPLAN v2.3 (COMPLETED udeladt)
-=========================================================== */
 const DAYS = [
-  /* 10.11 P-plads & Office */
+  /* 10.11 Office */
   {
     id:"2025-11-10",
-    title:'Mandag 10. nov. · “P-plads scene & office scene”',
+    title:'Mandag 10. nov. · “Office scene”',
     location:'Studenterskolen i Hoydølum',
     program:[
-      ["07:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
-      ["08:00","Skuespillere møder (Hans Tórgarð, Esther, Thora)"],
-      ["08:00","Make-up (Julia) gør skuespillere klar"],
-      ["08:45","P-plads optagelse starter"],
-      ["11:30","P-plads scene SLUT · Frokost"],
-      ["12:10","Office scenen klargøres"],
-      ["12:30","Skuespiller: Civil politibetjent møder"],
-      ["13:00","Skuespiller: Politibetjent fra Føroya Politi møder"],
+      ["11:30","Crew møder (Hans Petur, Thomas, Anna Kristin, Michael)"],
+      ["11:30","Make-up (Julia) gør skuespillere klar"],
+      ["11:30","Skuespillere møder (Hans Tórgarð, Thora, Civil politibetjent)"],
+      ["13:15","Politibetjent A (Føroya Politi) møder (make-up ikke nødvendig)"],
       ["13:30","Optagelse af Office scene starter"],
-      ["15:30","Office scene SLUT"]
+      ["15:30","Optagelse af Office scene SLUT"]
     ],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A (Føroya Politi)","Civil politibetjent (ukendt)"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen"],
     scenes:[
-      "Office: Johanna går i gangen; kaldes ind på chefens kontor. Johanna i døråbningen; chefen og Holgar sidder inde.",
-      "Johanna kører – ved udkørslen ser hun direktøren tale med to betjente (én uniform, én civil) gennem bilruden; ingen dialog høres.",
-      "Civil betjent spilles af skuespiller (kostume af KOVBOY FILM).",
-      "Parkeringsproblemer: Holgar stjæler Johannas plads."
+      "Johanna kommer gennem gangen og kaldes ind til chefens kontor.",
+      "I kontoret: Thora og Holgar; uniformeret betjent ses fra siden/ryg; Holgar forklarer sig."
     ],
-    cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A","Civil politibetjent"],
+    call:null
+  },
+
+  /* 18.11 Parkering */
+  {
+    id:"2025-11-18",
+    title:'Tirsdag 18. nov. · “Parkeringsscene”',
+    location:'Studenterskolen i Hoydølum – P-plads',
+    program:[
+      ["08:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
+      ["09:00","Make-up (Julia) gør skuespillere klar"],
+      ["09:00","Skuespillere møder (Hans Tórgarð, Esther)"],
+      ["10:00","Optagelse parkeringsscene starter"],
+      ["12:00","Optagelse SLUT"]
+    ],
+    cast:["Esther á Fjallinum","Hans Tórgarð","Politibetjent A (Føroya Politi)","Civil politibetjent (ukendt)"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
+    scenes:[
+      "Johanna ser direktøren tale med to betjente (set gennem bilruden).",
+      "Parkeringskonflikt: Holgar stjæler Johannas plads.",
+      "Ind-/udkørsler og inserts fra førerhus."
+    ],
     call:null
   },
 
   /* 22.11 Terapilokale */
   {
     id:"2025-11-22",
-    title:'Lørdag 22. nov. · Optagelse i terapilokale',
+    title:'Lørdag 22. nov. · Terapilokale',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
-      ["06:00","Make-up (Julia). Props & design (Anna Kristin). Producer (Michael) møder"],
-      ["06:00","Skuespiller Johanna (Esther) møder"],
-      ["06:40","Skuespiller Ruth (Elsa Maria) møder – klargøres"],
-      ["07:00","Morgenmad (kaffe/te, rundstykker)"],
-      ["07:15","Skuespiller Líggjas (Bjørn) møder"],
-      ["07:25","Skuespiller Danny (Marius) møder"],
-      ["07:35","Skuespiller Høgni (Hjálmar) møder"],
-      ["07:45","Skuespiller Holgar (Hans) møder"],
-      ["08:00","Filmoptagelse starter"],
-      ["08:30","Make-up (Julia) får fri"],
-      ["10:30","Pause / Kaffe og sødt"],
-      ["10:45","Optagelser starter igen"],
+      ["06:00","Make-up (Julia), props/design (Anna K.), producer (Michael) møder"],
+      ["06:00","Johanna (Esther) møder"],
+      ["06:40","Ruth (Elsa) møder og klargøres"],
+      ["07:00","Morgenmad (buffet)"],
+      ["07:15","Líggjas (Bjørn) møder"],
+      ["07:25","Danny (Marius) møder"],
+      ["07:35","Høgni (Hjálmar) møder"],
+      ["07:45","Holgar (Hans) møder"],
+      ["08:00","Optagelse starter (Session 05)"],
+      ["08:30","Make-up får fri (Julia)"],
+      ["10:30","Pause / kaffe"],
+      ["10:45","Optagelser fortsætter"],
       ["12:20","Frokost"],
       ["13:10","Optagelser fortsætter"],
-      ["13:30","Props & design (Anna Kristin) får fri"],
-      ["14:45","Pause / Kaffe"],
+      ["13:30","Props/design får fri (Anna K.)"],
+      ["14:45","Pause / kaffe"],
       ["15:10","Optagelser fortsætter"],
       ["17:30","SLUT"]
     ],
-    scenes:[
-      "Sessions: 01–05 (jf. plan). Session 05 ‘Ruths monolog’ – konflikt kulminerer; Holgar slår Johanna."
-    ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
-    call:null
+    scenes:["Terapisession 05 – Ruths monolog; konflikt kulminerer."]
   },
 
   /* 23.11 Terapilokale (fortsat) */
   {
     id:"2025-11-23",
-    title:'Søndag 23. nov. · Optagelse i terapilokale (fortsat)',
+    title:'Søndag 23. nov. · Terapilokale (fortsat)',
     location:'Aulan, Studenterskolen i Hoydølum',
     program:[
-      ["08:00","Optagelser fortsætter (Session 05 fortsættes)"],
+      ["08:00","Optagelser fortsætter (Session 05)"],
+      ["12:30","Frokost"],
+      ["13:15","Inserts/reaktioner"],
       ["18:00","SLUT (forventet)"]
     ],
-    scenes:["Session 05 fortsættes og afrundes."],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
-    call:null
+    scenes:["Afslutning af terapiblok; reaktions- og etableringsbilleder."]
   },
 
-  /* 24.11 Flashback 3B – Kaffemaskine */
+  /* 24.11 Flashback 3B – kaffemaskine */
   {
     id:"2025-11-24",
-    title:'Mandag 24. nov. · “Flash back 3B – Kaffemaskine scene”',
-    location:'Tjarnir',
+    title:'Mandag 24. nov. · “Flash back 3B – kaffemaskine scene”',
+    location:'Tjarnir (Presselogen + møderum)',
     program:[
-      ["15:00","Film crew gør ‘kaffemaskine’-scenen klar i Presselogen (Hans Petur, Thomas, Michael)"],
-      ["15:00","Lyd, stylist & make-up, LM, props & design møder (Ronni, Julia, Guðrun, Anna Kristin)"],
-      ["16:00","2 statister + 1 hovedskuespiller møder (Helena, ukendt kvinde, Hjálmar)"],
+      ["15:00","Crew gør Presselogen klar (HPH, Thomas, Michael)"],
+      ["15:00","Lyd/stylist/make-up/location/props møder (Ronni, Julia, Guðrun, Anna K.)"],
+      ["16:00","2 statister + hovedskuespiller møder (Helena, ukendt kvindelig statist, Hjálmar)"],
       ["17:00","Optagelse starter"],
       ["20:00","SLUT"]
     ],
-    scenes:[
-      "Kantinen: Høgni henter kaffe og fyrer bemærkninger af til to kvinder ved kaffemaskinen.",
-      "Møderum: Høgni opsiges; samtale med to HR-folk om dickpicks."
-    ],
     cast:["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"],
-    call:null
+    scenes:[
+      "Kantinen hos Høgni – bemærkninger ved kaffemaskinen.",
+      "Møderum: HR-samtale om dickpics → fyring."
+    ]
   }
 ];
 
-/* Kontakter (uddrag) */
+/* Dage der er færdige (bruges kun til procent-udregning i toppen) */
+const COMPLETED_DAYS = [
+  "2025-11-01","2025-11-02","2025-10-21","2025-10-19",
+  "2025-09-23","2025-09-30","2025-10-07","2025-10-13"
+];
+
+/* Kontakter – KUN fremtidige deltagere (skuespillere/crew/location) */
 const CONTACTS = {
+  /* Crew (fremadrettet) */
   "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
   "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},
   "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},
   "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},
   "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},
-  "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
   "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com"},
+  "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
   "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
   "Guðrun Joensen":{role:"Location manager", email:"gudrunjoensen@gmail.com", phone:"548747"},
+
+  /* Cast/statister (fremtidige dage) */
   "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
   "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
+  "Thora Augustinussen":{role:"Skuespiller · Receptionist", email:"ta@faer.fo"},
+  "Politibetjent A (Føroya Politi)":{role:"Politi 1 (kontakt via Føroya Politi)", email:"SLE021@politi.dk"},
+  "Civil politibetjent (ukendt)":{role:"Politi (civil)"},
   "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
   "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
   "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
   "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
-  "Thora Augustinussen":{role:"Skuespiller · Receptionist", email:"ta@faer.fo"},
   "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
-  "Ukendt kvindelig statist":{role:"Statist · Girl 2"},
-  "Politibetjent A":{role:"Politi (Føroya Politi)", email:"SLE021@politi.dk"},
-  "Civil politibetjent":{role:"Politi (civil)"}
+  "Ukendt kvindelig statist":{role:"Statist · Girl 2"}
 };
 
-/* Udledte navne til dropdown */
+/* Udledte navne til dropdown (alle fremtidige kontakter + alle nævnte i DAYS) */
 const PEOPLE = Array.from(new Set([
   ...Object.keys(CONTACTS),
   ...DAYS.flatMap(d => [...(d.cast||[]), ...(d.crew||[])])
 ])).sort((a,b)=>a.localeCompare(b,'da'));
 
-/* ===========================================================
-   PROGRESS: HOUR CALC HELPERS
-=========================================================== */
-function parseHM(str){
-  const m = String(str).match(/(\d{1,2})[:.](\d{2})/);
-  if(!m) return null;
-  const h = +m[1], min = +m[2];
-  if(h<0||h>23||min<0||min>59) return null;
-  return h*60+min;
-}
-function extractMinutesFromText(txt){
-  const out = [];
-  const times = String(txt).match(/\d{1,2}[:.]\d{2}/g);
-  if(times) for(const t of times){ const mm = parseHM(t); if(mm!=null) out.push(mm); }
-  return out;
-}
-function estimateDayHours(day){
-  const minutes = [];
-  (day.program||[]).forEach(entry=>{
-    const [t, desc] = entry;
-    extractMinutesFromText(t).forEach(m=>minutes.push(m));
-    extractMinutesFromText(desc).forEach(m=>minutes.push(m));
-  });
-  if(!minutes.length) return DEFAULT_DAY_HOURS;
-  const start = Math.min(...minutes);
-  const end   = Math.max(...minutes);
-  const spanMin = end - start;
-  if(!Number.isFinite(spanMin) || spanMin<=0) return DEFAULT_DAY_HOURS;
-  return +(spanMin/60).toFixed(2);
-}
-function estimateRemainingHours(days){
-  return days.reduce((sum,d)=>sum + estimateDayHours(d), 0);
-}
-function computeProgressByHours(){
-  if(!Number.isFinite(PLANNED_TOTAL_HOURS) || PLANNED_TOTAL_HOURS<=0){
-    return {done:0,total:0,left:0};
-  }
-  const remaining = estimateRemainingHours(DAYS);
-  const done = MANUAL_COMPLETED_HOURS!=null
-    ? Math.min(PLANNED_TOTAL_HOURS, Math.max(0, MANUAL_COMPLETED_HOURS))
-    : Math.max(0, PLANNED_TOTAL_HOURS - remaining);
-  const left = Math.max(0, PLANNED_TOTAL_HOURS - done);
-  return {done, total:PLANNED_TOTAL_HOURS, left};
-}
-function renderProgress(){
-  const {done,total,left} = computeProgressByHours();
-  const pctDone = total>0 ? Math.round((done/total)*100) : 0;
-  const pctLeft = Math.max(0,100-pctDone);
-  const fill = document.getElementById('progressFill');
-  const txt  = document.getElementById('progressText');
-  if(fill) fill.style.width = pctDone + '%';
-  if(txt){
-    txt.textContent = `${pctDone}% filmet · ${pctLeft}% tilbage  (${done.toFixed(1).replace('.0','')}/${total} timer)`;
-  }
-}
-
-/* ===========================================================
-   UI HELPERS + INIT
-=========================================================== */
+/* ======================== UI/STATE HELPERS ======================== */
 const el = id => document.getElementById(id);
-let currentDay = null;
 
 function init(){
   const sel = el('nameSelect');
-  for(const p of PEOPLE){
-    const o = document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o);
-  }
+  PEOPLE.forEach(p=>{ const o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o); });
   renderDayList();
   renderProgress();
 }
@@ -374,117 +334,101 @@ document.addEventListener('DOMContentLoaded', init);
 function resetUI(){
   el('nameSelect').value="";
   renderMySchedule();
-  currentDay = null;
-  el('dayTitle').textContent = 'Vælg en dag i højre side';
-  el('dayMeta').innerHTML = '';
-  el('program').innerHTML = '';
-  el('scenes').innerHTML = '';
-  el('cast').innerHTML = '';
-  el('crew').innerHTML = '';
-  el('callInfo').innerHTML = '<div class="muted">Ingen fil knyttet.</div>';
+  el('dayTitle').textContent='Vælg en dag i højre side';
+  el('dayMeta').innerHTML='';
+  el('program').innerHTML='';
+  el('scenes').innerHTML='';
+  el('cast').innerHTML='';
+  el('crew').innerHTML='';
+  el('callInfo').innerHTML='<div class="muted">Ingen fil knyttet.</div>';
   renderDayList();
   window.scrollTo({top:0,behavior:'smooth'});
-  renderProgress();
 }
 
-/* Dagsliste (højre) */
+/* Statusbar (dage-baseret %) */
+function renderProgress(){
+  const total = DAYS.length + COMPLETED_DAYS.length; // 5 + 8 = 13
+  const done  = COMPLETED_DAYS.length;               // 8
+  const remaining = Math.max(0, total - done);       // 5
+  const pctLeft = total>0 ? Math.round((remaining/total)*100) : 0; // ~38%
+  const pctDone = Math.max(0, 100 - pctLeft);        // ~62%
+  el('bar').style.width = pctDone + '%';
+  el('pct').textContent = `${pctLeft}% tilbage`;
+  el('statusText').textContent = `Planlagte dage: ${DAYS.length} · Afsluttede: ${done} · Totalt: ${total}`;
+}
+
+/* Højre kolonne – dagsliste */
 function renderDayList(){
-  const q = (el('daySearch')?.value||'').toLowerCase();
-  const list = el('dayList'); if(!list) return; list.innerHTML = '';
-  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
-  days.forEach(d=>{
-    if(q && !(d.title.toLowerCase().includes(q) || d.location.toLowerCase().includes(q))) return;
-    const div = document.createElement('div');
+  const q=(el('daySearch')?.value||'').toLowerCase();
+  const list=el('dayList'); list.innerHTML='';
+  [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)).forEach(d=>{
+    const hay=[d.title,d.location,...(d.cast||[]),...(d.crew||[]),...(d.program?.flat()||[]),(d.scenes||[]).join(' ')].join(' ').toLowerCase();
+    if(q && !hay.includes(q)) return;
+    const div=document.createElement('div');
     div.className='item';
-    div.innerHTML = `
-      <div>
-        <div><strong>${d.title}</strong></div>
-        <div class="muted">${d.location}</div>
-      </div>
-      <span class="tag">Se program</span>`;
-    div.onclick = ()=>showDay(d.id);
+    div.innerHTML=`<div><div><strong>${d.title}</strong></div><div class="muted">${d.location}</div></div><span class="tag">Se program</span>`;
+    div.onclick=()=>showDay(d.id);
     list.appendChild(div);
   });
 }
 
-/* Dagvisning */
+/* Midterkolonne – valgt dag */
 function showDay(dayId){
-  const d = DAYS.find(x=>x.id===dayId); if(!d) return;
-  currentDay = d.id;
-  el('dayTitle').textContent = d.title;
-  el('dayMeta').innerHTML = `
+  const d=DAYS.find(x=>x.id===dayId); if(!d) return;
+  el('dayTitle').textContent=d.title;
+  el('dayMeta').innerHTML=`
     <span class="pill">Location: ${d.location}</span>
-    <span class="pill">Scener: ${d.scenes?.length||0}</span>
     <span class="pill">Skuespillere: ${d.cast?.length||0}</span>
-    <span class="pill">Crew: ${d.crew?.length||0}</span>
-    <span class="pill">Estimeret dagstimer: ${estimateDayHours(d)}</span>`;
-  const prog = el('program'); prog.innerHTML='';
-  if(!d.program?.length){ prog.innerHTML = '<div class="empty">Intet program registreret.</div>'; }
-  else{
-    d.program.forEach(([t,desc])=>{
-      const row = document.createElement('div');
-      row.className='step';
-      row.innerHTML = `<time class="tag">${t}</time><div>${desc}</div>`;
-      prog.appendChild(row);
-    });
-  }
-  const sc = el('scenes'); sc.innerHTML='';
-  if(!d.scenes?.length){ sc.innerHTML = '<div class="muted">Ingen scener registreret.</div>'; }
-  else{
-    d.scenes.forEach((s,i)=>{
-      const div=document.createElement('div');
-      div.className='step';
-      div.innerHTML = `<span class="tag">Scene ${String(i+1).padStart(2,'0')}</span><div>${s}</div>`;
-      sc.appendChild(div);
-    });
-  }
+    <span class="pill">Crew: ${d.crew?.length||0}</span>`;
+  const prog=el('program'); prog.innerHTML='';
+  if(!d.program?.length) prog.innerHTML='<div class="empty">Intet program registreret.</div>';
+  else d.program.forEach(([t,desc])=>{
+    const row=document.createElement('div'); row.className='step';
+    row.innerHTML=`<time class="tag">${t}</time><div>${desc}</div>`;
+    prog.appendChild(row);
+  });
+  const sc=el('scenes'); sc.innerHTML='';
+  if(!d.scenes?.length) sc.innerHTML='<div class="muted">—</div>';
+  else d.scenes.forEach((s,i)=>{
+    const div=document.createElement('div'); div.className='step';
+    div.innerHTML=`<span class="tag">Scene ${String(i+1).padStart(2,'0')}</span><div>${s}</div>`;
+    sc.appendChild(div);
+  });
   el('cast').innerHTML = d.cast?.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
   el('crew').innerHTML = d.crew?.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
   el('callInfo').innerHTML = d.call ? `<a href="${d.call}" target="_blank" download>📄 Åbn call sheet</a>` : '<div class="muted">Ingen fil knyttet.</div>';
   if(window.innerWidth<1100){ document.querySelector('.center').scrollIntoView({behavior:'smooth'}); }
 }
 
-/* Mit skema (venstre) */
+/* Venstre kolonne – mit skema */
 function renderMySchedule(){
-  const name = el('nameSelect').value;
-  const box = el('mySchedule'); box.innerHTML='';
-  if(!name){ box.innerHTML = '<div class="empty">Vælg dit navn for at se dine arbejdsdage.</div>'; return; }
-  const mine = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)).filter(d => (d.cast||[]).includes(name) || (d.crew||[]).includes(name));
-  if(!mine.length){ box.innerHTML = '<div class="empty">Ingen dage fundet for denne person.</div>'; return; }
+  const name=el('nameSelect').value, box=el('mySchedule'); box.innerHTML='';
+  if(!name){ box.innerHTML='<div class="empty">Vælg dit navn for at se dine arbejdsdage.</div>'; return; }
+  const mine=[...DAYS].sort((a,b)=>a.id.localeCompare(b.id)).filter(d=>(d.cast||[]).includes(name)||(d.crew||[]).includes(name));
+  if(!mine.length){ box.innerHTML='<div class="empty">Ingen dage fundet for denne person.</div>'; return; }
   mine.forEach(d=>{
-    const div = document.createElement('div');
-    div.className='item';
-    div.innerHTML = `
-      <div>
-        <div><strong>${d.title}</strong></div>
-        <div class="muted">${d.location}</div>
-      </div>
-      <button class="daybtn">Åbn</button>`;
-    div.onclick = ()=>showDay(d.id);
+    const div=document.createElement('div'); div.className='item';
+    div.innerHTML=`<div><div><strong>${d.title}</strong></div><div class="muted">${d.location}</div></div><button class="daybtn">Åbn</button>`;
+    div.onclick=()=>showDay(d.id);
     box.appendChild(div);
   });
 }
 
-/* Kontakter */
+/* Kontakter (KUN fremtidige) */
 function openContacts(){ el('contactsModal').style.display='flex'; renderContacts(); }
 function closeContacts(){ el('contactsModal').style.display='none'; }
 function renderContacts(){
-  const q = (el('contactSearch')?.value||'').toLowerCase();
-  const root = el('contactsList'); root.innerHTML='';
-  const rows = Object.entries(CONTACTS)
-    .filter(([name,c])=>{
-      const hay = [name,c.role||'',c.email||'',c.phone||''].join(' ').toLowerCase();
-      return !q || hay.includes(q);
-    })
+  const q=(el('contactSearch')?.value||'').toLowerCase();
+  const root=el('contactsList'); root.innerHTML='';
+  const rows=Object.entries(CONTACTS)
+    .filter(([n,c])=>[n,c.role||'',c.email||'',c.phone||''].join(' ').toLowerCase().includes(q||''))
     .sort((a,b)=>a[0].localeCompare(b[0],'da'));
   if(!rows.length){ root.innerHTML='<div class="empty">Ingen kontakter matcher.</div>'; return; }
-  rows.forEach(([name,c])=>{
-    const div = document.createElement('div');
-    div.className='contact-row';
-    const role = c.role? `<div class="muted">${c.role}</div>` : '';
-    const mail = c.email? `<a href="mailto:${c.email}">${c.email}</a>` : '<span class="muted">—</span>';
-    const tel  = c.phone? `<a href="tel:${c.phone}">${c.phone}</a>` : '<span class="muted">—</span>';
-    div.innerHTML = `<div><div><strong>${name}</strong></div>${role}</div><div style="text-align:right"><div>${mail}</div><div>${tel}</div></div>`;
+  rows.forEach(([n,c])=>{
+    const div=document.createElement('div'); div.className='contact-row';
+    const role=c.role?`<div class="muted">${c.role}</div>`:''; const mail=c.email?`<a href="mailto:${c.email}">${c.email}</a>`:'<span class="muted">—</span>';
+    const tel=c.phone?`<a href="tel:${c.phone}">${c.phone}</a>`:'<span class="muted">—</span>';
+    div.innerHTML=`<div><div><strong>${n}</strong></div>${role}</div><div style="text-align:right"><div>${mail}</div><div>${tel}</div></div>`;
     root.appendChild(div);
   });
 }
@@ -493,19 +437,15 @@ function renderContacts(){
 function openCallSheets(){ el('callSheetsModal').style.display='flex'; renderCallSheets(); }
 function closeCallSheets(){ el('callSheetsModal').style.display='none'; }
 function renderCallSheets(){
-  const q = (el('callSearch')?.value||'').toLowerCase();
-  const root = document.getElementById('callSheetsList'); root.innerHTML='';
-  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
+  const q=(el('callSearch')?.value||'').toLowerCase();
+  const root=document.getElementById('callSheetsList'); root.innerHTML='';
+  const days=[...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
   days.forEach(d=>{
-    const hay = [d.id, d.title, d.location, ...(d.scenes||[]), ...(d.cast||[]), ...(d.crew||[]), ...(d.program?.flat()||[])].join(' ').toLowerCase();
+    const hay=[d.id,d.title,d.location,...(d.scenes||[]),...(d.cast||[]),...(d.crew||[]),...(d.program?.flat()||[])].join(' ').toLowerCase();
     if(q && !hay.includes(q)) return;
-    const sheet = document.createElement('div');
-    sheet.className='sheet';
-    sheet.style.border='1px solid var(--border)';
-    sheet.style.borderRadius='12px';
-    sheet.style.padding='16px';
-    sheet.style.background='#111521';
-    sheet.innerHTML = `
+    const sheet=document.createElement('div'); sheet.className='sheet';
+    sheet.style.cssText='border:1px solid var(--border);border-radius:12px;padding:16px;background:#111521';
+    sheet.innerHTML=`
       <div class="kicker">${d.id}</div>
       <h2 style="margin:.25rem 0 0 0">${d.title}</h2>
       <div class="chips" style="margin:.5rem 0 1rem 0">
@@ -524,11 +464,11 @@ function renderCallSheets(){
         </div>
       </div>
       <div class="section">
-        <h3>Scener</h3>
+        <h3>Scener (kort beskrivelse)</h3>
         <div class="program">
           ${ (d.scenes&&d.scenes.length)
               ? d.scenes.map((s,i)=>`<div class="step"><span class="tag">Scene ${String(i+1).padStart(2,'0')}</span><div>${s}</div></div>`).join('')
-              : '<div class="muted">Ingen scener registreret.</div>' }
+              : '<div class="muted">—</div>' }
         </div>
       </div>
       <div class="section grid">
@@ -537,14 +477,13 @@ function renderCallSheets(){
       </div>`;
     root.appendChild(sheet);
   });
-  if(!root.children.length){ root.innerHTML = '<div class="empty">Ingen dage matcher din søgning.</div>'; }
+  if(!root.children.length){ root.innerHTML='<div class="empty">Ingen dage matcher din søgning.</div>'; }
 }
 
-/* Helper */
+/* Utils */
 function contactTip(name){
   const c = CONTACTS[name]; if(!c) return '';
-  const bits = [c.role, c.email, c.phone].filter(Boolean);
-  return bits.join(' · ');
+  return [c.role,c.email,c.phone].filter(Boolean).join(' · ');
 }
 </script>
 </body>
