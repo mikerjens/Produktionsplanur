@@ -169,7 +169,7 @@
 /* ======================== DATA (fra dokument v2.5) ======================== */
 /* Kommende dage (COMPLETED udelades i UI, men tælles i status) */
 const DAYS = [
-  /* 10.11 Office scene */
+  /* 10.11 Office scene — Óluva deltager KUN denne dag */
   {
     id:"2025-11-10",
     title:'Mandag 10. nov. · “Office scene”',
@@ -183,6 +183,7 @@ const DAYS = [
       ["14:30","Optagelse af Office scene slut"],
       ["15:30","Óluva (civil politibetjent) møder på sættet"],
       ["15:40","Scene optages med civil politibetjent"],
+      ["17:45","Óluva får fri"],
       ["18:00","Optagelse af alle scener slut"]
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A (Føroya Politi)","Óluva Gunnarsdóttir"],
@@ -194,7 +195,7 @@ const DAYS = [
     call:null
   },
 
-  /* 18.11 Parkeringsscene */
+  /* 18.11 Parkeringsscene — uden Óluva */
   {
     id:"2025-11-18",
     title:'Tirsdag 18. nov. · “Parkeringsscene”',
@@ -203,15 +204,15 @@ const DAYS = [
       ["08:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
       ["09:00","Make-up (Julia) gør skuespillere klar til scenen"],
       ["09:00","Skuespillere møder (Hans Tórgarð, Esther)"],
-      ["10:00","Optagelse af P-scene starter"],
-      ["12:00","Optagelse af P-scene slut"]
+      ["10:00","Optagelse af parkeringsscene starter"],
+      ["12:00","Optagelse af parkeringsscene slut"]
     ],
-    cast:["Esther á Fjallinum","Hans Tórgarð","Politibetjent A (Føroya Politi)","Óluva Gunnarsdóttir"],
+    cast:["Esther á Fjallinum","Hans Tórgarð"],
     crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
     scenes:[
-      "Johanna ser direktøren tale med to betjente (set gennem bilruden).",
-      "Parkeringskonflikt: Holgar stjæler Johannas plads.",
-      "Ind-/udkørsler og inserts fra førerhus."
+      "Parkeringsproblemer: Holgar stjæler Johannas plads.",
+      "Ind-/udkørsler og inserts fra førerhus.",
+      "Johanna ser direktøren tale med to betjente (via bilrude)."
     ],
     call:null
   },
@@ -269,8 +270,8 @@ const DAYS = [
     location:'Tjarnir (Presselogen + møderum)',
     program:[
       ["15:00","Crew gør Presselogen klar (HPH, Thomas, Michael)"],
-      ["15:00","Lyd/stylist/make-up/location/props møder (Ronni, Julia, Guðrun, Anna K.)"],
-      ["16:00","2 statister + hovedskuespiller møder (Helena, ukendt kvindelig statist, Hjálmar)"],
+      ["15:00","Lyd, stylist & make-up, location, props møder (Ronni, Julia, Guðrun, Anna K.)"],
+      ["16:00","2 statister + hovedskuespiller møder (Helena, Ukendt kv., Hjálmar)"],
       ["17:00","Optagelse starter"],
       ["20:00","SLUT"]
     ],
@@ -291,7 +292,7 @@ const COMPLETED_DAYS = [
   "2025-09-23","2025-09-30","2025-10-07","2025-10-13"
 ];
 
-/* Kontakter – KUN fremtidige deltagere */
+/* Kontakter – KUN fremtidige deltagere fra dagene ovenfor */
 const CONTACTS = {
   /* Crew */
   "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
@@ -304,12 +305,12 @@ const CONTACTS = {
   "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
   "Guðrun Joensen":{role:"Location manager", email:"gudrunjoensen@gmail.com", phone:"548747"},
 
-  /* Cast/statister */
+  /* Cast/statister (fremtidige dage) */
   "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
   "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
   "Thora Augustinussen":{role:"Skuespiller · Receptionist", email:"thora_a@hotmail.com"},
   "Politibetjent A (Føroya Politi)":{role:"Politi 1 · kontakt via Føroya Politi", email:"SLE021@politi.dk"},
-  "Óluva Gunnarsdóttir":{role:"Civil politibetjent", email:"Oluvap@hotmail.com"},
+  "Óluva Gunnarsdóttir":{role:"Civil politibetjent (10. nov.)", email:"Oluvap@hotmail.com"},
   "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
   "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
   "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
@@ -318,7 +319,7 @@ const CONTACTS = {
   "Ukendt kvindelig statist":{role:"Statist · Girl 2"}
 };
 
-/* Udledte navne til dropdown (fremtidige kontakter + alle nævnte i DAYS) */
+/* Udledte navne til dropdown */
 const PEOPLE = Array.from(new Set([
   ...Object.keys(CONTACTS),
   ...DAYS.flatMap(d => [...(d.cast||[]), ...(d.crew||[])])
