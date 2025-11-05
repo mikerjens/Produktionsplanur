@@ -151,7 +151,7 @@
   </div>
 </div>
 
-<!-- Call sheets modal (samlet liste) -->
+<!-- Call sheets modal -->
 <div id="callSheetsModal" class="modal">
   <div class="card pane box">
     <div class="hdr">
@@ -163,11 +163,11 @@
   </div>
 </div>
 
-<div class="footer">Version: 2.4 · Kilde: Produktionsplan (17)</div>
+<div class="footer">Version: 2.5 · Kilde: Produktionsplan</div>
 
 <script>
-/* ======================== DATA: Version 2.4 (fra dokument 17) ======================== */
-/* Kommende dage (COMPLETED udeladt af UI, men tælles i statusbaren) */
+/* ======================== DATA: Version 2.5 (fra dokument) ======================== */
+/* Kommende dage (COMPLETED udelades i UI, men tælles i status) */
 
 const DAYS = [
   /* 10.11 Office */
@@ -177,14 +177,25 @@ const DAYS = [
     location:'Studenterskolen i Hoydølum',
     program:[
       ["11:30","Crew møder (Hans Petur, Thomas, Anna Kristin, Michael)"],
-      ["11:30","Make-up (Julia) gør skuespillere klar"],
-      ["11:30","Skuespillere møder (Hans Tórgarð, Thora, Civil politibetjent)"],
+      ["11:30","Make-up (Julia) gør skuespillere klar til scenen"],
+      ["11:30","Skuespillere møder (Hans Tórgarð, Thora, Esther)"],
       ["13:15","Politibetjent A (Føroya Politi) møder (make-up ikke nødvendig)"],
       ["13:30","Optagelse af Office scene starter"],
-      ["15:30","Optagelse af Office scene SLUT"]
+      ["14:30","Optagelse af Office scene slut"],
+      ["15:30","Óluva (civil politibetjent) møder på sættet"],
+      ["15:40","Scene optages med civil politibetjent"],
+      ["18:00","Optagelse af alle scener slut"]
     ],
-    cast:["Esther á Fjallinum","Hans Tórgarð","Thora Augustinussen","Politibetjent A (Føroya Politi)","Civil politibetjent (ukendt)"],
-    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen"],
+    cast:[
+      "Esther á Fjallinum",
+      "Hans Tórgarð",
+      "Thora Augustinussen",
+      "Politibetjent A (Føroya Politi)",
+      "Óluva Gunnarsdóttir"
+    ],
+    crew:[
+      "Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen"
+    ],
     scenes:[
       "Johanna kommer gennem gangen og kaldes ind til chefens kontor.",
       "I kontoret: Thora og Holgar; uniformeret betjent ses fra siden/ryg; Holgar forklarer sig."
@@ -192,7 +203,7 @@ const DAYS = [
     call:null
   },
 
-  /* 18.11 Parkering */
+  /* 18.11 Parkeringsscene */
   {
     id:"2025-11-18",
     title:'Tirsdag 18. nov. · “Parkeringsscene”',
@@ -201,13 +212,18 @@ const DAYS = [
       ["08:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
       ["09:00","Make-up (Julia) gør skuespillere klar"],
       ["09:00","Skuespillere møder (Hans Tórgarð, Esther)"],
-      ["10:00","Optagelse parkeringsscene starter"],
-      ["12:00","Optagelse SLUT"]
+      ["10:00","Optagelse af parkeringsscene starter"],
+      ["12:00","Optagelse af parkeringsscene slut"]
     ],
-    cast:["Esther á Fjallinum","Hans Tórgarð","Politibetjent A (Føroya Politi)","Civil politibetjent (ukendt)"],
-    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"],
+    cast:[
+      "Esther á Fjallinum","Hans Tórgarð",
+      "Politibetjent A (Føroya Politi)","Óluva Gunnarsdóttir"
+    ],
+    crew:[
+      "Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"
+    ],
     scenes:[
-      "Johanna ser direktøren tale med to betjente (set gennem bilruden).",
+      "Johanna ser direktøren tale med to betjente (gennem bilruden).",
       "Parkeringskonflikt: Holgar stjæler Johannas plads.",
       "Ind-/udkørsler og inserts fra førerhus."
     ],
@@ -228,7 +244,7 @@ const DAYS = [
       ["07:25","Danny (Marius) møder"],
       ["07:35","Høgni (Hjálmar) møder"],
       ["07:45","Holgar (Hans) møder"],
-      ["08:00","Optagelse starter (Session 05)"],
+      ["08:00","Optagelse starter (Session 05 blok)"],
       ["08:30","Make-up får fri (Julia)"],
       ["10:30","Pause / kaffe"],
       ["10:45","Optagelser fortsætter"],
@@ -239,8 +255,14 @@ const DAYS = [
       ["15:10","Optagelser fortsætter"],
       ["17:30","SLUT"]
     ],
-    cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
-    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
+    cast:[
+      "Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen",
+      "Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"
+    ],
+    crew:[
+      "Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen",
+      "Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"
+    ],
     scenes:["Terapisession 05 – Ruths monolog; konflikt kulminerer."]
   },
 
@@ -255,8 +277,14 @@ const DAYS = [
       ["13:15","Inserts/reaktioner"],
       ["18:00","SLUT (forventet)"]
     ],
-    cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
-    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
+    cast:[
+      "Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen",
+      "Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"
+    ],
+    crew:[
+      "Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen",
+      "Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"
+    ],
     scenes:["Afslutning af terapiblok; reaktions- og etableringsbilleder."]
   },
 
@@ -273,7 +301,10 @@ const DAYS = [
       ["20:00","SLUT"]
     ],
     cast:["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
-    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"],
+    crew:[
+      "Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk",
+      "Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"
+    ],
     scenes:[
       "Kantinen hos Høgni – bemærkninger ved kaffemaskinen.",
       "Møderum: HR-samtale om dickpics → fyring."
@@ -281,13 +312,14 @@ const DAYS = [
   }
 ];
 
-/* Dage der er færdige (bruges kun til procent-udregning i toppen) */
+/* Dage der er færdige (bruges kun til % i toppen) */
 const COMPLETED_DAYS = [
-  "2025-11-01","2025-11-02","2025-10-21","2025-10-19",
+  "2025-11-01","2025-11-02",
+  "2025-10-21","2025-10-19",
   "2025-09-23","2025-09-30","2025-10-07","2025-10-13"
 ];
 
-/* Kontakter – KUN fremtidige deltagere (skuespillere/crew/location) */
+/* Kontakter – KUN fremtidige deltagere (cast/crew/location for dage ovenfor) */
 const CONTACTS = {
   /* Crew (fremadrettet) */
   "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
@@ -304,8 +336,8 @@ const CONTACTS = {
   "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
   "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
   "Thora Augustinussen":{role:"Skuespiller · Receptionist", email:"ta@faer.fo"},
-  "Politibetjent A (Føroya Politi)":{role:"Politi 1 (kontakt via Føroya Politi)", email:"SLE021@politi.dk"},
-  "Civil politibetjent (ukendt)":{role:"Politi (civil)"},
+  "Politibetjent A (Føroya Politi)":{role:"Politi 1 · kontakt via Føroya Politi", email:"SLE021@politi.dk"},
+  "Óluva Gunnarsdóttir":{role:"Civil politibetjent", email:"Oluvap@hotmail.com"},
   "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
   "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
   "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
@@ -347,11 +379,11 @@ function resetUI(){
 
 /* Statusbar (dage-baseret %) */
 function renderProgress(){
-  const total = DAYS.length + COMPLETED_DAYS.length; // 5 + 8 = 13
-  const done  = COMPLETED_DAYS.length;               // 8
-  const remaining = Math.max(0, total - done);       // 5
-  const pctLeft = total>0 ? Math.round((remaining/total)*100) : 0; // ~38%
-  const pctDone = Math.max(0, 100 - pctLeft);        // ~62%
+  const total = DAYS.length + COMPLETED_DAYS.length;
+  const done  = COMPLETED_DAYS.length;
+  const remaining = Math.max(0, total - done);
+  const pctLeft = total>0 ? Math.round((remaining/total)*100) : 0;
+  const pctDone = Math.max(0, 100 - pctLeft);
   el('bar').style.width = pctDone + '%';
   el('pct').textContent = `${pctLeft}% tilbage`;
   el('statusText').textContent = `Planlagte dage: ${DAYS.length} · Afsluttede: ${done} · Totalt: ${total}`;
@@ -414,7 +446,7 @@ function renderMySchedule(){
   });
 }
 
-/* Kontakter (KUN fremtidige) */
+/* Kontakter (kun fremtidige) */
 function openContacts(){ el('contactsModal').style.display='flex'; renderContacts(); }
 function closeContacts(){ el('contactsModal').style.display='none'; }
 function renderContacts(){
