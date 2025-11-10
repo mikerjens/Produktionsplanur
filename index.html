@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>KRENKARIRNIR · Produktionsportal</title>
 <style>
-  :root{
-    --bg:#0f1115; --card:#171922; --muted:#9aa3b2; --text:#e8ecf1;
-    --brand:#7dd3fc; --brand2:#a78bfa; --border:#262a36;
-  }
+  :root{ --bg:#0f1115; --card:#171922; --muted:#9aa3b2; --text:#e8ecf1; --brand:#7dd3fc; --brand2:#a78bfa; --border:#262a36; }
   *{box-sizing:border-box}
   body{margin:0;background:linear-gradient(180deg,#0d0f14 0%,#11141b 100%);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
   header{display:flex;align-items:center;gap:.75rem;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#0f1115cc;backdrop-filter: blur(6px);z-index:10}
@@ -47,18 +44,11 @@
   .search{display:flex;gap:8px;margin-top:8px}
   .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center}
   a{color:#a5b4fc}
-
-  /* Statusbars */
-  .progress{height:10px;border-radius:999px;background:#0e1220;border:1px solid #263048;overflow:hidden}
-  .bar{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));width:0}
-
   @media (max-width:1100px){ .wrap{grid-template-columns:1fr;}.right{order:3}.center{order:2}.left{order:1}}
-
   /* Modals */
   .modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;align-items:center;justify-content:center}
   .modal .box{width:min(1000px,94vw);max-height:86vh;overflow:auto}
   .modal .hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:var(--card);padding-bottom:8px;margin-bottom:8px}
-
   /* Print */
   @media print{
     body{background:white;color:black}
@@ -86,24 +76,6 @@
       <button class="primary" onclick="openContacts()">Kontakter</button>
       <button onclick="openCallSheets()">Call sheets</button>
       <button onclick="window.print()">Print</button>
-    </div>
-
-    <div class="section">
-      <div class="kicker">Status (dage)</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="progress" style="flex:1"><div id="barDays" class="bar"></div></div>
-        <div id="pctDays" class="tag">0% tilbage</div>
-      </div>
-      <div class="muted" style="margin-top:6px" id="textDays"></div>
-    </div>
-
-    <div class="section">
-      <div class="kicker">Status (timer)</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="progress" style="flex:1"><div id="barHours" class="bar"></div></div>
-        <div id="pctHours" class="tag">0% tilbage</div>
-      </div>
-      <div class="muted" style="margin-top:6px" id="textHours"></div>
     </div>
 
     <div class="section">
@@ -182,28 +154,31 @@
 <div class="footer">Version: 2.6 · Kilde: Produktionsplan</div>
 
 <script>
-/* ======================== DATA ======================== */
-/* Kommende dage (eksempler fra seneste plan) */
+/* ======================== DATA (fra dokument v2.6) ======================== */
+/* Kommende dage (COMPLETED vises ikke i UI) */
 const DAYS = [
+  /* 18.11 Parkeringsscene */
   {
     id:"2025-11-18",
     title:'Tirsdag 18. nov. · “Parkeringsscene”',
     location:'Studenterskolen i Hoydølum – P-plads',
     program:[
-      ["08:30","Crew møder (Hans Petur, Thomas, Anna Kristin)"],
+      ["08:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
       ["09:00","Make-up (Julia) gør skuespillere klar til scenen"],
       ["09:00","Skuespillere møder (Hans Tórgarð, Esther)"],
       ["10:00","Optagelse af P-scene starter"],
       ["12:00","Optagelse slut"]
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð"],
-    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen","Ronni Poulsen"],
     scenes:[
       "Parkeringsproblemer: Holgar stjæler pladsen fra Johanna.",
-      "Bilscener og inserts."
+      "Bilscener: Johanna går ind i bilen; kørsel på Færøerne; mod Tórshavn."
     ],
     call:null
   },
+
+  /* 22.11 Terapilokale */
   {
     id:"2025-11-22",
     title:'Lørdag 22. nov. · Terapilokale',
@@ -219,20 +194,24 @@ const DAYS = [
       ["07:45","Holgar (Hans) møder"],
       ["08:00","Optagelse starter"],
       ["08:30","Make-up får fri (Julia)"],
-      ["10:30","Pause/kaffe"],
+      ["10:30","Pause / kaffe"],
       ["10:45","Optagelser fortsætter"],
       ["12:20","Frokost"],
       ["13:10","Optagelser fortsætter"],
       ["13:30","Props/Design får fri (Anna K.)"],
-      ["14:45","Pause/kaffe"],
+      ["14:45","Pause / kaffe"],
       ["15:10","Optagelser fortsætter"],
       ["17:30","SLUT"]
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
-    scenes:["Terapisession 05 – Ruths monolog; konflikt kulmination."],
+    scenes:[
+      "Terapisession 05 – Ruths monolog; konflikt kulminerer."
+    ],
     call:null
   },
+
+  /* 23.11 Terapilokale (fortsat) */
   {
     id:"2025-11-23",
     title:'Søndag 23. nov. · Terapilokale (fortsat)',
@@ -245,22 +224,26 @@ const DAYS = [
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
-    scenes:["Afslutning af terapiblok; reaktions- og etableringsbilleder."],
+    scenes:[
+      "Afslutning af terapiblok; reaktions- og etableringsbilleder."
+    ],
     call:null
   },
+
+  /* 24.11 Flashback 3B – kaffemaskine */
   {
     id:"2025-11-24",
     title:'Mandag 24. nov. · “Flash back 3B – kaffemaskine scene”',
     location:'Tjarnir (Presselogen + møderum)',
     program:[
-      ["15:00","Film crew gør kaffemaskine-scenen klar (HPH, Thomas, Michael)"],
+      ["15:00","Film crew gør Presselogen klar (Hans Petur, Thomas, Michael)"],
       ["15:00","Lyd, stylist & make-up, location, props møder (Ronni, Julia, Guðrun, Anna K.)"],
       ["16:00","2 statister + 1 hovedskuespiller møder (Helena, ukendt kv., Hjálmar)"],
       ["17:00","Optagelse starter"],
       ["20:00","SLUT"]
     ],
     cast:["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
-    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen","Hans Petur Hansen"],
     scenes:[
       "Kantinen hos Høgni – bemærkninger ved kaffemaskinen.",
       "Møderum: HR-samtale om dickpics → fyring."
@@ -269,154 +252,65 @@ const DAYS = [
   }
 ];
 
-/* Afsluttede dage (med program hvor kendt, ellers 0t – kan udfyldes løbende) */
-const COMPLETED = [
-  { id:"2025-11-10", title:"Mandag 10. nov. · Office scene", program:[
-      ["11:30","Crew/Make-up/Skuespillere møder"],
-      ["13:30","Optagelse starter"],["18:00","SLUT"]
-  ]},
-  { id:"2025-11-01", title:"Lørdag 1. nov. · Terapilokale", program:[
-      ["06:00","Alle crew møder"],["08:00","Optagelse starter"],["19:00","SLUT"]
-  ]},
-  { id:"2025-11-02", title:"Søndag 2. nov. · Terapilokale", program:[
-      ["08:00","Optagelser fortsætter"],["18:00","SLUT"]
-  ]},
-  { id:"2025-10-19", title:"Søndag 19. okt. · Ruth flirter m. tjener", program:[
-      ["14:00","Lys/Instruktør/Producer"],["15:30","Optagelse begynder"],["18:30","SLUT"]
-  ]},
-  { id:"2025-09-30", title:"Tirsdag 30. sept. · FB 1B – Dannys flirt", program:[
-      ["16:00","Teknisk/Make-up"],["19:00","Optagelse starter"],["21:30","SLUT"]
-  ]},
-  { id:"2025-10-07", title:"Tirsdag 7. okt. · FB 2 – Festen m. Líggjas", program:[
-      ["14:00","Crew gør scenen klar"],["16:30","Optagelse på location"],["19:00","SLUT"]
-  ]},
-  /* Nedenstående kendes ikke præcist i programmet her – tæller pt. 0t (kan udfyldes) */
-  { id:"2025-10-21", title:"Tirsdag 21. okt. · (komplet)", program:[] },
-  { id:"2025-09-23", title:"Tirsdag 23. sept. · (komplet)", program:[] },
-  { id:"2025-10-13", title:"Mandag 13. okt. · (komplet)", program:[] }
+/* Dage der allerede er færdige (bruges kun internt, vises ikke) */
+const COMPLETED_DAYS = [
+  "2025-11-10", /* Office scene (Óluva kun denne dag) */
+  "2025-11-01","2025-11-02",
+  "2025-10-21","2025-10-19",
+  "2025-09-23","2025-09-30","2025-10-07","2025-10-13"
 ];
 
-/* Kontakter – KUN fremtidige (fra dagene i DAYS) */
-const CONTACTS = {
-  "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
-  "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},
-  "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},
-  "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},
-  "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},
-  "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com"},
-  "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
-  "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
-  "Guðrun Joensen":{role:"Location manager", email:"gudrunjoensen@gmail.com", phone:"548747"},
-  "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
-  "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
-  "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
-  "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
-  "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
-  "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
-  "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
-  "Ukendt kvindelig statist":{role:"Statist · Girl 2"}
-};
+/* Kontakter – KUN fremtidige deltagere (afledt fra DAYS) */
+const CONTACTS = (() => {
+  const map = new Map();
+  const add = (name, role="", email="", phone="") => { if(!map.has(name)) map.set(name,{role,email,phone}); };
+  // Manual details (fra dokumentet)
+  const details = {
+    "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
+    "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},
+    "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},
+    "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},
+    "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},
+    "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com"},
+    "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
+    "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
+    "Guðrun Joensen":{role:"Location manager", email:"gudrunjoensen@gmail.com", phone:"548747"},
 
-/* Dropdown-navne */
+    "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
+    "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
+    "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
+    "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
+    "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
+    "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
+    "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
+    "Ukendt kvindelig statist":{role:"Statist · Girl 2"}
+  };
+  // Saml fra DAYS
+  for(const d of DAYS){
+    for(const n of [...(d.cast||[]), ...(d.crew||[])]){
+      const info = details[n] || {role:"",email:"",phone:""};
+      add(n, info.role, info.email, info.phone);
+    }
+  }
+  return Object.fromEntries(map);
+})();
+
+/* Udledte navne til dropdown */
 const PEOPLE = Array.from(new Set([
   ...Object.keys(CONTACTS),
   ...DAYS.flatMap(d => [...(d.cast||[]), ...(d.crew||[])])
 ])).sort((a,b)=>a.localeCompare(b,'da'));
 
-/* ======================== HJÆLPEFUNKTIONER ======================== */
+/* ======================== UI/STATE HELPERS ======================== */
 const el = id => document.getElementById(id);
 
-/* Parse tid "HH:MM" => minutter siden 00:00 */
-function parseHM(s){
-  const m = /(\d{1,2}):(\d{2})/.exec(s);
-  if(!m) return null;
-  const h = parseInt(m[1],10), mi = parseInt(m[2],10);
-  if(h>23 || mi>59) return null;
-  return h*60+mi;
-}
-
-/* Udleder timer for en dags program:
-   - Finder alle tidsstempler og intervaller "HH:MM–HH:MM" (både – og -)
-   - Samler samlet varighed: max(slut) - min(start)
-   - Intervaller bidrager direkte (f.eks. 11:00–18:00 -> 7t) og justerer evt. min/max */
-function calcDayHours(day){
-  if(!day?.program?.length) return 0;
-  let minStart = Infinity, maxEnd = -Infinity, extra = 0;
-
-  for(const [t,desc] of day.program){
-    if(!t) continue;
-    const dash = t.includes("–") ? "–" : (t.includes("-") ? "-" : null);
-    if(dash && /^\d{1,2}:\d{2}\s*[–-]\s*\d{1,2}:\d{2}$/.test(t)){
-      const [a,b] = t.split(dash).map(x=>x.trim());
-      const s = parseHM(a), e = parseHM(b);
-      if(s!=null && e!=null && e>s){
-        minStart = Math.min(minStart, s);
-        maxEnd   = Math.max(maxEnd, e);
-        extra += (e - s); // registrér interval direkte
-      }
-      continue;
-    }
-    const m = parseHM(t);
-    if(m!=null){
-      minStart = Math.min(minStart, m);
-      // heuristik: hvis teksten indeholder "SLUT", betragt som slutpunkt
-      if(/slut/i.test(t) || /slut/i.test(desc||"")) maxEnd = Math.max(maxEnd, m);
-      else maxEnd = Math.max(maxEnd, m);
-    }
-  }
-
-  // Hvis vi har et fornuftigt spænd
-  let span = 0;
-  if(minStart!==Infinity && maxEnd!==-Infinity && maxEnd>minStart){
-    span = maxEnd - minStart;
-  }
-
-  // Brug max af "span" og "sum af kendte intervaller"
-  const minutes = Math.max(span, extra);
-  return Math.max(0, Math.round(minutes/60*100)/100); // timer med 2 decimaler
-}
-
-/* Summér timer over arrays */
-function sumHours(list){ return list.reduce((acc,d)=>acc + calcDayHours(d), 0); }
-
-/* ======================== INIT ======================== */
 function init(){
-  // dropdown
   const sel = el('nameSelect');
   PEOPLE.forEach(p=>{ const o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o); });
-
   renderDayList();
-  renderProgressDays();
-  renderProgressHours();
 }
 document.addEventListener('DOMContentLoaded', init);
 
-/* ======================== STATUS – DAGE ======================== */
-function renderProgressDays(){
-  const totalDays = DAYS.length + COMPLETED.length;
-  const doneDays  = COMPLETED.length;
-  const remainingDays = Math.max(0, totalDays - doneDays);
-  const pctLeftDays = totalDays>0 ? Math.round((remainingDays/totalDays)*100) : 0;
-  const pctDoneDays = Math.max(0, 100 - pctLeftDays);
-  el('barDays').style.width = pctDoneDays + '%';
-  el('pctDays').textContent = `${pctLeftDays}% tilbage`;
-  el('textDays').textContent = `Planlagte dage: ${DAYS.length} · Afsluttede: ${doneDays} · Totalt: ${totalDays}`;
-}
-
-/* ======================== STATUS – TIMER ======================== */
-function renderProgressHours(){
-  const hoursPlanned   = sumHours(DAYS) + sumHours(COMPLETED);
-  const hoursCompleted = sumHours(COMPLETED);
-  const hoursRemaining = Math.max(0, hoursPlanned - hoursCompleted);
-  const pctLeftHours   = hoursPlanned>0 ? Math.round((hoursRemaining/hoursPlanned)*100) : 0;
-  const pctDoneHours   = Math.max(0, 100 - pctLeftHours);
-  el('barHours').style.width = pctDoneHours + '%';
-  el('pctHours').textContent = `${pctLeftHours}% tilbage`;
-  el('textHours').textContent =
-    `Timer færdige: ${hoursCompleted.toFixed(1)} · Timer tilbage: ${hoursRemaining.toFixed(1)} · Totalt: ${hoursPlanned.toFixed(1)}`;
-}
-
-/* ======================== UI – RESET ======================== */
 function resetUI(){
   el('nameSelect').value="";
   renderMySchedule();
@@ -428,12 +322,10 @@ function resetUI(){
   el('crew').innerHTML='';
   el('callInfo').innerHTML='<div class="muted">Ingen fil knyttet.</div>';
   renderDayList();
-  renderProgressDays();
-  renderProgressHours();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ======================== LISTE – Højre kolonne ======================== */
+/* Højre kolonne – dagsliste */
 function renderDayList(){
   const q=(el('daySearch')?.value||'').toLowerCase();
   const list=el('dayList'); list.innerHTML='';
@@ -442,28 +334,20 @@ function renderDayList(){
     if(q && !hay.includes(q)) return;
     const div=document.createElement('div');
     div.className='item';
-    const hours = calcDayHours(d);
-    div.innerHTML=`<div>
-        <div><strong>${d.title}</strong></div>
-        <div class="muted">${d.location} · ~${hours.toFixed(1)} t</div>
-      </div>
-      <span class="tag">Se program</span>`;
+    div.innerHTML=`<div><div><strong>${d.title}</strong></div><div class="muted">${d.location}</div></div><span class="tag">Se program</span>`;
     div.onclick=()=>showDay(d.id);
     list.appendChild(div);
   });
 }
 
-/* ======================== MIDTE – Valgt dag ======================== */
+/* Midterkolonne – valgt dag */
 function showDay(dayId){
   const d=DAYS.find(x=>x.id===dayId); if(!d) return;
   el('dayTitle').textContent=d.title;
-  const hours = calcDayHours(d);
   el('dayMeta').innerHTML=`
     <span class="pill">Location: ${d.location}</span>
-    <span class="pill">~${hours.toFixed(1)} t (est.)</span>
     <span class="pill">Skuespillere: ${d.cast?.length||0}</span>
     <span class="pill">Crew: ${d.crew?.length||0}</span>`;
-
   const prog=el('program'); prog.innerHTML='';
   if(!d.program?.length) prog.innerHTML='<div class="empty">Intet program registreret.</div>';
   else d.program.forEach(([t,desc])=>{
@@ -471,7 +355,6 @@ function showDay(dayId){
     row.innerHTML=`<time class="tag">${t}</time><div>${desc}</div>`;
     prog.appendChild(row);
   });
-
   const sc=el('scenes'); sc.innerHTML='';
   if(!d.scenes?.length) sc.innerHTML='<div class="muted">—</div>';
   else d.scenes.forEach((s,i)=>{
@@ -479,15 +362,13 @@ function showDay(dayId){
     div.innerHTML=`<span class="tag">Scene ${String(i+1).padStart(2,'0')}</span><div>${s}</div>`;
     sc.appendChild(div);
   });
-
   el('cast').innerHTML = d.cast?.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
   el('crew').innerHTML = d.crew?.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>';
   el('callInfo').innerHTML = d.call ? `<a href="${d.call}" target="_blank" download>📄 Åbn call sheet</a>` : '<div class="muted">Ingen fil knyttet.</div>';
-
   if(window.innerWidth<1100){ document.querySelector('.center').scrollIntoView({behavior:'smooth'}); }
 }
 
-/* ======================== VENSTRE – Mit skema ======================== */
+/* Venstre kolonne – mit skema */
 function renderMySchedule(){
   const name=el('nameSelect').value, box=el('mySchedule'); box.innerHTML='';
   if(!name){ box.innerHTML='<div class="empty">Vælg dit navn for at se dine arbejdsdage.</div>'; return; }
@@ -495,18 +376,13 @@ function renderMySchedule(){
   if(!mine.length){ box.innerHTML='<div class="empty">Ingen dage fundet for denne person.</div>'; return; }
   mine.forEach(d=>{
     const div=document.createElement('div'); div.className='item';
-    const hours = calcDayHours(d);
-    div.innerHTML=`<div>
-        <div><strong>${d.title}</strong></div>
-        <div class="muted">${d.location} · ~${hours.toFixed(1)} t</div>
-      </div>
-      <button class="daybtn">Åbn</button>`;
+    div.innerHTML=`<div><div><strong>${d.title}</strong></div><div class="muted">${d.location}</div></div><button class="daybtn">Åbn</button>`;
     div.onclick=()=>showDay(d.id);
     box.appendChild(div);
   });
 }
 
-/* ======================== Kontakter ======================== */
+/* Kontakter (kun fremtidige) */
 function openContacts(){ el('contactsModal').style.display='flex'; renderContacts(); }
 function closeContacts(){ el('contactsModal').style.display='none'; }
 function renderContacts(){
@@ -525,7 +401,7 @@ function renderContacts(){
   });
 }
 
-/* ======================== Call sheets (samlet) ======================== */
+/* Call sheets (samlet liste) */
 function openCallSheets(){ el('callSheetsModal').style.display='flex'; renderCallSheets(); }
 function closeCallSheets(){ el('callSheetsModal').style.display='none'; }
 function renderCallSheets(){
@@ -537,13 +413,11 @@ function renderCallSheets(){
     if(q && !hay.includes(q)) return;
     const sheet=document.createElement('div'); sheet.className='sheet';
     sheet.style.cssText='border:1px solid var(--border);border-radius:12px;padding:16px;background:#111521';
-    const hours = calcDayHours(d);
     sheet.innerHTML=`
       <div class="kicker">${d.id}</div>
       <h2 style="margin:.25rem 0 0 0">${d.title}</h2>
       <div class="chips" style="margin:.5rem 0 1rem 0">
         <span class="pill">Location: ${d.location}</span>
-        <span class="pill">~${hours.toFixed(1)} t</span>
         <span class="pill">Scener: ${d.scenes?.length||0}</span>
         <span class="pill">Skuespillere: ${d.cast?.length||0}</span>
         <span class="pill">Crew: ${d.crew?.length||0}</span>
@@ -564,13 +438,17 @@ function renderCallSheets(){
               ? d.scenes.map((s,i)=>`<div class="step"><span class="tag">Scene ${String(i+1).padStart(2,'0')}</span><div>${s}</div></div>`).join('')
               : '<div class="muted">—</div>' }
         </div>
+      </div>
+      <div class="section grid">
+        <div><h3>Skuespillere</h3><div class="chips">${ d.cast?.length ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
+        <div><h3>Crew</h3><div class="chips">${ d.crew?.length ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('') : '<div class="muted">–</div>' }</div></div>
       </div>`;
     root.appendChild(sheet);
   });
   if(!root.children.length){ root.innerHTML = '<div class="empty">Ingen dage matcher din søgning.</div>'; }
 }
 
-/* ======================== Utils ======================== */
+/* Utils */
 function contactTip(name){
   const c = CONTACTS[name]; if(!c) return '';
   return [c.role,c.email,c.phone].filter(Boolean).join(' · ');
