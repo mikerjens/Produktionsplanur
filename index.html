@@ -45,7 +45,7 @@
   .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center}
   a{color:#a5b4fc}
   @media (max-width:1100px){ .wrap{grid-template-columns:1fr;}.right{order:3}.center{order:2}.left{order:1}}
-  /* Modals */
+  /* Modal */
   .modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;align-items:center;justify-content:center}
   .modal .box{width:min(1000px,94vw);max-height:86vh;overflow:auto}
   .modal .hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:var(--card);padding-bottom:8px;margin-bottom:8px}
@@ -133,7 +133,7 @@
 <!-- Kontakter modal -->
 <div id="contactsModal" class="modal">
   <div class="card pane box">
-    <div class="hdr"><h2 style="margin:0">Kontakter (kun fremtidige)</h2><div class="toolbar"><button onclick="closeContacts()">Luk</button></div></div>
+    <div class="hdr"><h2 style="margin:0">Kontakter (kun kommende dage)</h2><div class="toolbar"><button onclick="closeContacts()">Luk</button></div></div>
     <div class="search"><input id="contactSearch" type="search" placeholder="Søg navn, rolle, e-mail, tlf…" oninput="renderContacts()"></div>
     <div id="contactsList" class="stack section"></div>
   </div>
@@ -154,8 +154,8 @@
 <div class="footer">Version: 2.6 · Kilde: Produktionsplan</div>
 
 <script>
-/* ======================== DATA (fra dokument v2.6) ======================== */
-/* Kommende dage (COMPLETED vises ikke i UI) */
+/* ======================== DATA (fra seneste dokument) ======================== */
+/* Kommende dage (COMPLETED holdes ude af UI) */
 const DAYS = [
   /* 18.11 Parkeringsscene */
   {
@@ -163,14 +163,14 @@ const DAYS = [
     title:'Tirsdag 18. nov. · “Parkeringsscene”',
     location:'Studenterskolen i Hoydølum – P-plads',
     program:[
-      ["08:30","Crew møder (Hans Petur, Thomas, Ronni, Anna Kristin)"],
+      ["08:30","Crew møder (Hans Petur, Thomas, Anna Kristin)"],
       ["09:00","Make-up (Julia) gør skuespillere klar til scenen"],
       ["09:00","Skuespillere møder (Hans Tórgarð, Esther)"],
       ["10:00","Optagelse af P-scene starter"],
       ["12:00","Optagelse slut"]
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð"],
-    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen","Ronni Poulsen"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Anna Kristin Bæk","Julia Jacobsen"],
     scenes:[
       "Parkeringsproblemer: Holgar stjæler pladsen fra Johanna.",
       "Bilscener: Johanna går ind i bilen; kørsel på Færøerne; mod Tórshavn."
@@ -205,9 +205,7 @@ const DAYS = [
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
-    scenes:[
-      "Terapisession 05 – Ruths monolog; konflikt kulminerer."
-    ],
+    scenes:["Terapisession 05 – Ruths monolog; konflikt kulminerer."],
     call:null
   },
 
@@ -224,26 +222,24 @@ const DAYS = [
     ],
     cast:["Esther á Fjallinum","Hans Tórgarð","Elsa Maria Magnusardóttir Olsen","Hjálmar Dam","Marius DC","Bjørn Simonsen Ulvedal"],
     crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Hans Petur Hansen","Anna Kristin Bæk","Høgni Fagraberg","Julia Jacobsen"],
-    scenes:[
-      "Afslutning af terapiblok; reaktions- og etableringsbilleder."
-    ],
+    scenes:["Afslutning af terapiblok; reaktions- og etableringsbilleder."],
     call:null
   },
 
-  /* 24.11 Flashback 3B – kaffemaskine */
+  /* 24.11 Flash back 3B – kaffemaskine (Guðrun fjernet fra crew) */
   {
     id:"2025-11-24",
     title:'Mandag 24. nov. · “Flash back 3B – kaffemaskine scene”',
     location:'Tjarnir (Presselogen + møderum)',
     program:[
-      ["15:00","Film crew gør Presselogen klar (Hans Petur, Thomas, Michael)"],
-      ["15:00","Lyd, stylist & make-up, location, props møder (Ronni, Julia, Guðrun, Anna K.)"],
+      ["15:00","Film crew gør kaffemaskine-scenen klar (HPH, Thomas, Michael)"],
+      ["15:00","Lyd, stylist & make-up, props/design møder (Ronni, Julia, Anna K.)"],
       ["16:00","2 statister + 1 hovedskuespiller møder (Helena, ukendt kv., Hjálmar)"],
       ["17:00","Optagelse starter"],
       ["20:00","SLUT"]
     ],
     cast:["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
-    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen","Guðrun Joensen","Hans Petur Hansen"],
+    crew:["Michael Koba","Thomas Koba","Jónfinn Stenberg","Anna Kristin Bæk","Ronni Poulsen","Julia Jacobsen"], /* Guðrun udeladt */
     scenes:[
       "Kantinen hos Høgni – bemærkninger ved kaffemaskinen.",
       "Møderum: HR-samtale om dickpics → fyring."
@@ -252,48 +248,36 @@ const DAYS = [
   }
 ];
 
-/* Dage der allerede er færdige (bruges kun internt, vises ikke) */
+/* Dage der er færdige (vises ikke i UI) */
 const COMPLETED_DAYS = [
-  "2025-11-10", /* Office scene (Óluva kun denne dag) */
+  "2025-11-10", /* Office scene – inkl. Óluva */
   "2025-11-01","2025-11-02",
   "2025-10-21","2025-10-19",
   "2025-09-23","2025-09-30","2025-10-07","2025-10-13"
 ];
 
-/* Kontakter – KUN fremtidige deltagere (afledt fra DAYS) */
-const CONTACTS = (() => {
-  const map = new Map();
-  const add = (name, role="", email="", phone="") => { if(!map.has(name)) map.set(name,{role,email,phone}); };
-  // Manual details (fra dokumentet)
-  const details = {
-    "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
-    "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},
-    "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},
-    "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},
-    "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},
-    "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com"},
-    "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
-    "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
-    "Guðrun Joensen":{role:"Location manager", email:"gudrunjoensen@gmail.com", phone:"548747"},
+/* Kontakter – KUN fremtidige deltagere (Guðrun er udeladt) */
+const CONTACTS = {
+  /* Crew */
+  "Michael Koba":{role:"Producer", email:"mk@fixer.fo", phone:"591011"},
+  "Thomas Koba":{role:"Instruktør / A-foto", email:"thomas@kovboyfilm.com", phone:"213457"},
+  "Jónfinn Stenberg":{role:"B-fotograf", email:"jonfinn_stenberg@hotmail.com", phone:"296682"},
+  "Hans Petur Hansen":{role:"Lys", email:"hph@kvf.fo", phone:"296652"},
+  "Anna Kristin Bæk":{role:"Props & design", email:"kristin.baek@gmail.com", phone:"265180"},
+  "Høgni Fagraberg":{role:"Lyd", email:"h.fagraberg@gmail.com"},
+  "Ronni Poulsen":{role:"Lyd", email:"ronni.poulsen@gmail.com", phone:"794141"},
+  "Julia Jacobsen":{role:"Make-up", email:"juliajacobsen@outlook.com", phone:"251175"},
 
-    "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
-    "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
-    "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
-    "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
-    "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
-    "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
-    "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
-    "Ukendt kvindelig statist":{role:"Statist · Girl 2"}
-  };
-  // Saml fra DAYS
-  for(const d of DAYS){
-    for(const n of [...(d.cast||[]), ...(d.crew||[])]){
-      const info = details[n] || {role:"",email:"",phone:""};
-      add(n, info.role, info.email, info.phone);
-    }
-  }
-  return Object.fromEntries(map);
-})();
+  /* Cast/statister (kommende dage) */
+  "Esther á Fjallinum":{role:"Skuespiller · Johanna", email:"estherafjallinum@gmail.com", phone:"265069"},
+  "Hans Tórgarð":{role:"Skuespiller · Holgar", email:"hanstorgar@gmail.com", phone:"229342"},
+  "Elsa Maria Magnusardóttir Olsen":{role:"Skuespiller · Ruth", email:"emmocontact@gmail.com", phone:"507104"},
+  "Hjálmar Dam":{role:"Skuespiller · Høgni", email:"helmetsdam@gmail.com", phone:"512449"},
+  "Marius DC":{role:"Skuespiller · Danny", email:"mariusdamchr@gmail.com", phone:"582161"},
+  "Bjørn Simonsen Ulvedal":{role:"Skuespiller · Líggjas", email:"bjorn.simonsen@gmail.com", phone:"222867"},
+  "Helena":{role:"Statist · Girl 1", email:"helena.h.jorgensen@gmail.com", phone:"274450"},
+  "Ukendt kvindelig statist":{role:"Statist · Girl 2"}
+};
 
 /* Udledte navne til dropdown */
 const PEOPLE = Array.from(new Set([
@@ -382,7 +366,7 @@ function renderMySchedule(){
   });
 }
 
-/* Kontakter (kun fremtidige) */
+/* Kontakter (kun kommende) */
 function openContacts(){ el('contactsModal').style.display='flex'; renderContacts(); }
 function closeContacts(){ el('contactsModal').style.display='none'; }
 function renderContacts(){
