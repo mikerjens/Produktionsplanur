@@ -5,51 +5,265 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>KRENKARIRNIR · Produktionsportal</title>
 <style>
-  :root{ --bg:#0f1115; --card:#171922; --muted:#9aa3b2; --text:#e8ecf1; --brand:#7dd3fc; --brand2:#a78bfa; --border:#262a36; }
+  :root{
+    --bg:#0f1115;
+    --card:#171922;
+    --muted:#9aa3b2;
+    --text:#e8ecf1;
+    --brand:#7dd3fc;
+    --brand2:#a78bfa;
+    --border:#262a36;
+  }
   *{box-sizing:border-box}
-  body{margin:0;background:linear-gradient(180deg,#0d0f14 0%,#11141b 100%);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  header{display:flex;align-items:center;gap:.75rem;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#0f1115cc;backdrop-filter: blur(6px);z-index:10}
-  .logo{display:flex;align-items:center;gap:.5rem;cursor:pointer;text-decoration:none;color:var(--text)}
-  .logo .mark{width:32px;height:32px;border-radius:10px;background:conic-gradient(from 210deg,var(--brand),var(--brand2))}
-  .logo h1{font-size:18px;letter-spacing:.4px;margin:0;font-weight:700}
-  .wrap{display:grid;grid-template-columns:320px 1fr 360px;gap:16px;padding:16px}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#0d0f14 0%,#11141b 100%);
+    color:var(--text);
+    font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.75rem;
+    padding:16px 20px;
+    border-bottom:1px solid var(--border);
+    position:sticky;
+    top:0;
+    background:#0f1115cc;
+    backdrop-filter: blur(6px);
+    z-index:10;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    cursor:pointer;
+    text-decoration:none;
+    color:var(--text);
+  }
+  .logo .mark{
+    width:32px;
+    height:32px;
+    border-radius:10px;
+    background:conic-gradient(from 210deg,var(--brand),var(--brand2));
+  }
+  .logo h1{
+    font-size:18px;
+    letter-spacing:.4px;
+    margin:0;
+    font-weight:700;
+  }
+  .status{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:6px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .status-row{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .pill{
+    padding:4px 10px;
+    border-radius:999px;
+    background:#0f1218;
+    border:1px solid var(--border);
+    font-size:12px;
+    white-space:nowrap;
+  }
+  .progress-bar{
+    position:relative;
+    width:220px;
+    height:8px;
+    border-radius:999px;
+    background:#191c26;
+    overflow:hidden;
+  }
+  .progress-fill{
+    position:absolute;
+    inset:0;
+    transform-origin:left center;
+    background:linear-gradient(90deg,var(--brand),var(--brand2));
+  }
+
+  .wrap{
+    display:grid;
+    grid-template-columns:320px 1fr 360px;
+    gap:16px;
+    padding:16px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:0 6px 24px rgba(0,0,0,.25);
+  }
   .pane{padding:16px}
   h2{margin:.25rem 0 1rem 0;font-size:18px}
   h3{margin:1rem 0 .5rem 0;font-size:16px}
-  label{display:block;margin-bottom:.5rem;font-size:13px;color:var(--muted)}
-  select,input[type="search"]{width:100%;padding:12px;border-radius:12px;background:#0f1218;border:1px solid var(--border);color:var(--text);outline:none}
-  .tag{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
-  .list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-  .item{padding:12px;border:1px solid var(--border);border-radius:12px;background:#131623;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-  .item:hover{border-color:#2f3444;transform:translateY(-1px)}
+  label{
+    display:block;
+    margin-bottom:.5rem;
+    font-size:13px;
+    color:var(--muted);
+  }
+  select,input[type="search"]{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    background:#0f1218;
+    border:1px solid var(--border);
+    color:var(--text);
+    outline:none;
+  }
+  .tag{
+    font-size:12px;
+    padding:2px 8px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    color:var(--muted);
+  }
+  .list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:12px;
+  }
+  .item{
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:#131623;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+  }
+  .item:hover{
+    border-color:#2f3444;
+    transform:translateY(-1px);
+  }
   .muted{color:var(--muted)}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
   .program{display:flex;flex-direction:column;gap:8px}
-  .step{display:flex;gap:10px;align-items:flex-start;background:#121622;border:1px dashed #293042;padding:10px;border-radius:10px}
+  .step{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:#121622;
+    border:1px dashed #293042;
+    padding:10px;
+    border-radius:10px;
+  }
   .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:#0f1218;font-size:12px}
-  .pill{padding:4px 10px;border-radius:999px;background:#0f1218;border:1px solid var(--border);font-size:12px}
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-  button{cursor:pointer;border:1px solid var(--border);background:#10131a;color:var(--text);padding:10px 12px;border-radius:12px}
-  button.primary{border-color:transparent;background:linear-gradient(135deg,var(--brand),var(--brand2))}
-  .section{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
-  .empty{padding:16px;text-align:center;color:var(--muted)}
-  .kicker{font-size:12px;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+  .chip{
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:#0f1218;
+    font-size:12px;
+  }
+  .toolbar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  button{
+    cursor:pointer;
+    border:1px solid var(--border);
+    background:#10131a;
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:12px;
+    font-size:13px;
+  }
+  button.primary{
+    border-color:transparent;
+    background:linear-gradient(135deg,var(--brand),var(--brand2));
+  }
+  .section{
+    border-top:1px solid var(--border);
+    margin-top:12px;
+    padding-top:12px;
+  }
+  .empty{
+    padding:16px;
+    text-align:center;
+    color:var(--muted);
+  }
+  .kicker{
+    font-size:12px;
+    color:var(--muted);
+    letter-spacing:.3px;
+    text-transform:uppercase;
+  }
   .stack{display:flex;flex-direction:column;gap:10px}
   .two{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
   .daybtn{width:100%;text-align:left}
-  .contact-row{display:flex;justify-content:space-between;gap:8px;padding:10px;border:1px solid var(--border);border-radius:10px;background:#101421}
+  .contact-row{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    padding:10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#101421;
+  }
   .scroll{max-height:62vh;overflow:auto;padding-right:6px}
   .search{display:flex;gap:8px;margin-top:8px}
-  .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center}
+  .footer{
+    padding:10px 16px;
+    color:var(--muted);
+    font-size:12px;
+    text-align:center;
+  }
   a{color:#a5b4fc}
-  @media (max-width:1100px){ .wrap{grid-template-columns:1fr;}.right{order:3}.center{order:2}.left{order:1}}
+
+  @media (max-width:1100px){
+    .wrap{grid-template-columns:1fr;}
+    .right{order:3}
+    .center{order:2}
+    .left{order:1}
+    header{flex-direction:column;align-items:flex-start}
+    .status{align-items:flex-start}
+  }
 
   /* Modal */
-  .modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;align-items:center;justify-content:center}
-  .modal .box{width:min(1000px,94vw);max-height:86vh;overflow:auto}
-  .modal .hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:var(--card);padding-bottom:8px;margin-bottom:8px}
+  .modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#0009;
+    z-index:50;
+    align-items:center;
+    justify-content:center;
+  }
+  .modal .box{
+    width:min(1000px,94vw);
+    max-height:86vh;
+    overflow:auto;
+  }
+  .modal .hdr{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    position:sticky;
+    top:0;
+    background:var(--card);
+    padding-bottom:8px;
+    margin-bottom:8px;
+  }
 
   /* Print */
   @media print{
@@ -67,8 +281,18 @@
 <body>
 <header>
   <a class="logo" onclick="resetUI()" title="Til start">
-    <span class="mark"></span><h1>KRENKARIRNIR · Produktionsportal</h1>
+    <span class="mark"></span>
+    <h1>KRENKARIRNIR · Produktionsportal</h1>
   </a>
+  <div class="status">
+    <div class="status-row">
+      <span class="pill" id="statusCompleted"></span>
+      <span class="pill" id="statusRemaining"></span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="statusBar"></div>
+    </div>
+  </div>
 </header>
 
 <div class="wrap">
@@ -86,7 +310,7 @@
       </select>
     </div>
     <div class="section">
-      <div class="kicker">Mit skema</div>
+      <div class="kicker">Mit skema (kommende optagedage)</div>
       <div id="mySchedule" class="stack"></div>
     </div>
   </div>
@@ -103,21 +327,35 @@
           <div id="program" class="program"></div>
         </div>
         <div class="section grid">
-          <div><h3>Skuespillere</h3><div id="cast" class="chips"></div></div>
-          <div><h3>Crew</h3><div id="crew" class="chips"></div></div>
+          <div>
+            <h3>Skuespillere</h3>
+            <div id="cast" class="chips"></div>
+          </div>
+          <div>
+            <h3>Crew</h3>
+            <div id="crew" class="chips"></div>
+          </div>
+        </div>
+        <div class="section">
+          <h3>Scener (kort beskrivelse)</h3>
+          <div id="scenesText" class="stack"></div>
         </div>
       </div>
       <div>
-        <h3>Call sheet</h3>
-        <div id="callInfo" class="stack"><div class="muted">Ingen fil knyttet.</div></div>
+        <h3>Call sheet (kort)</h3>
+        <div id="callInfo" class="stack">
+          <div class="muted">Vælg en dag for at se detaljer.</div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- HØJRE -->
   <div class="card pane right">
-    <div class="kicker">Produktionsdage</div>
-    <div class="search"><input id="daySearch" type="search" placeholder="Søg dato, sted, titel…" oninput="renderDayList()"></div>
+    <div class="kicker">Kommende produktionsdage</div>
+    <div class="search">
+      <input id="daySearch" type="search" placeholder="Søg dato, sted, titel…" oninput="renderDayList()">
+    </div>
     <div id="dayList" class="list scroll"></div>
   </div>
 </div>
@@ -126,8 +364,10 @@
 <div id="contactsModal" class="modal">
   <div class="card pane box">
     <div class="hdr">
-      <h2 style="margin:0">Kontakter</h2>
-      <div class="toolbar"><button onclick="closeContacts()">Luk</button></div>
+      <h2 style="margin:0">Kontakter (resterende optagelser)</h2>
+      <div class="toolbar">
+        <button onclick="closeContacts()">Luk</button>
+      </div>
     </div>
     <div class="search">
       <input id="contactSearch" type="search" placeholder="Søg navn, rolle, e-mail, tlf…" oninput="renderContacts()">
@@ -140,7 +380,7 @@
 <div id="callSheetsModal" class="modal">
   <div class="card pane box">
     <div class="hdr">
-      <h2 style="margin:0">Call sheets · fuld dagsplan pr. dag</h2>
+      <h2 style="margin:0">Call sheets · resterende optagedage</h2>
       <div class="toolbar">
         <button onclick="window.print()">Print</button>
         <button onclick="closeCallSheets()">Luk</button>
@@ -153,63 +393,38 @@
   </div>
 </div>
 
-<div class="footer">Version: 3.0 · Kilde: Produktionsplan v3.0</div>
+<div class="footer">
+  Version: 3.1 · KRENKARIRNIR · Denne portal viser de resterende optagedage.
+</div>
 
 <script>
-/* -------------------- DATA · 3 resterende optagedage -------------------- */
-const DAYS = [
-  /* Søndag 23. nov. – Terapilokale (Aulan) */
-  {
-    id:"2025-11-23",
-    title:"Søndag 23. nov. · Terapilokale",
-    location:"Aulan i Studenterskolen i Hoydølum",
-    program:[
-      ["07:00","Make-up møder (Julia). Producer møder (Michael)."],
-      ["07:00","Skuespiller Ruth møder (Elsa Maria Magnusardóttir) – klargøres til filmoptagelser."],
-      ["07:40","Skuespiller Johanna møder (Esther á Fjallinum)."],
-      ["08:00","Morgenmad kaffe/te og rundstykker klargøres på buffet til skuespillere og crew."],
-      ["08:15","Skuespiller Líggjas møder (Bjørn Simonsen Ulvedal)."],
-      ["08:25","Skuespiller Danny møder (Marius DC)."],
-      ["08:35","Skuespiller Høgni møder (Hjálmar Dam)."],
-      ["08:45","Skuespiller Holgar møder (Hans Tórgarð)."],
-      ["09:00","Filmoptagelse starter."],
-      ["09:00","Make-up får fri (Julia Jacobsen)."],
-      ["12:00","Frokost."],
-      ["12:30","Filmoptagelse fortsætter."],
-      ["13:30","Filmoptagelse slut."]
-    ],
-    cast:[
-      "Esther á Fjallinum",
-      "Hans Tórgarð",
-      "Elsa Maria Magnusardóttir Olsen",
-      "Hjálmar Dam",
-      "Marius DC",
-      "Bjørn Simonsen Ulvedal"
-    ],
-    crew:[
-      "Michael Koba",
-      "Thomas Koba",
-      "Julia Jacobsen",
-      "Jónfinn Stenberg",
-      "Hans Petur Hansen",
-      "Høgni Fagraberg"
-    ],
-    call:null
-  },
+/* -------------------- STATUS (scener i %) -------------------- */
+/*
+  Baseret på produktionsplan vers. 3.1:
+  - 2 kommende optagedage (7. dec, 8. dec)
+  - 10 optagedage markeret som COMPLETED
+  I alt 12 "scenedage".
+*/
+const TOTAL_SCENE_DAYS = 12;
+const COMPLETED_SCENE_DAYS = 10;
+const COMPLETED_PERCENT = Math.round((COMPLETED_SCENE_DAYS / TOTAL_SCENE_DAYS) * 100);
+const REMAINING_PERCENT = 100 - COMPLETED_PERCENT;
 
-  /* Tirsdag 2. dec – Parkeringsscene */
+/* -------------------- DATA (kommende dage) -------------------- */
+const DAYS = [
+  /* Søndag 7. dec - Parkeringsscene */
   {
-    id:"2025-12-02",
-    title:'Tirsdag 2. dec. · “Parkeringsscene”',
-    location:"Studenterskolen i Hoydølum",
+    id:"2025-12-07",
+    title:'Søndag 7. dec. · “Parkeringsscene”',
+    location:'Studenterskolen i Hoydølum',
     program:[
       ["08:00","Crew møder (Thomas, Anna Kristin, Michael)."],
       ["08:00","Make-up (Julia) gør skuespillere klar til scenen."],
-      ["09:00","Skuespillere møder (Hans Tórgarð, Esther)."],
-      ["10:00","Optagelse af parkeringsscene starter."],
-      ["11:00","Hans får fri."],
-      ["14:00","Esther får fri."],
-      ["14:15","Crew får fri."]
+      ["08:00","Skuespillere møder (Hans Tórgarð, Esther)."],
+      ["09:30","Optagelse af parkeringsscene starter."],
+      ["11:30","Hans får fri."],
+      ["15:00","Esther får fri."],
+      ["15:00","Crew får fri."]
     ],
     cast:[
       "Esther á Fjallinum",
@@ -221,18 +436,22 @@ const DAYS = [
       "Anna Kristin Bæk",
       "Julia Jacobsen"
     ],
-    call:null
+    scenes:[
+      "Parkeringsproblemer – Holgar stjæler parkeringspladsen fra Jóhanna.",
+      "Bilscene: Jóhanna går ind i bilen.",
+      "Kørsel på Færøerne – Jóhanna kører til Tórshavn."
+    ]
   },
 
-  /* Mandag 8. dec – Flashback 3B “kaffemaskine scene” */
+  /* Mandag 8. dec - Flash back 3B “kaffemaskine scene” */
   {
     id:"2025-12-08",
-    title:'Mandag 8. dec. · “Flashback 3B – kaffemaskine scene”',
-    location:"Tjarnir",
+    title:'Mandag 8. dec. · “Flashback 3B – Kaffemaskine-scene”',
+    location:'Tjarnir (Presselogen)',
     program:[
-      ["16:00","Film crew gør “kaffemaskinen scenen” i Presselogen klar (Hans Petur, Thomas, Michael)."],
+      ["16:00","Film crew gør “kaffemaskine-scenen” i Presselogen klar (Hans Petur, Thomas, Michael)."],
       ["16:00","Lydmand, stylist, make-up og props & design møder (Ronni, Julia, Anna Kristin)."],
-      ["16:00","2 statister (girl 1 og girl 2) og hovedskuespiller møder til make-up og tøj (Helena, ukendt kvindelig statist, Hjálmar Dam)."],
+      ["16:00","2 statister (girl 1 og girl 2) og 1 hovedskuespiller møder (Helena + ukendt kvindelig statist + Hjálmar)."],
       ["18:00","Optagelse starter."],
       ["21:30","SLUT."]
     ],
@@ -249,13 +468,15 @@ const DAYS = [
       "Ronni Poulsen",
       "Julia Jacobsen"
     ],
-    call:null
+    scenes:[
+      "Flashback: Høgni Nielsen ved kaffemaskinen.",
+      "Høgni og de to kvinder omkring kaffemaskinen (girl 1 og girl 2)."
+    ]
   }
 ];
 
-/* -------------------- Kontakter (kun personer med resterende optagedage) -------------------- */
+/* Kontakter – kun personer der indgår i de resterende optagedage */
 const CONTACTS = {
-  /* Skuespillere */
   "Esther á Fjallinum":{
     role:"Skuespiller · Johanna, psyk. terapeut",
     email:"estherafjallinum@gmail.com",
@@ -266,69 +487,44 @@ const CONTACTS = {
     email:"hanstorgar@gmail.com",
     phone:"229342"
   },
-  "Elsa Maria Magnusardóttir Olsen":{
-    role:"Skuespiller · Ruth, kvinnuligur chefur (krænker)",
-    email:"emmocontact@gmail.com",
-    phone:"507104"
+  "Helena":{
+    role:"Skuespiller · Flashback – Høgni Nielsen – girl 1",
+    email:"helena.h.jorgensen@gmail.com",
+    phone:"274450"
+  },
+  "Ukendt kvindelig statist":{
+    role:"Skuespiller · Flashback – Høgni Nielsen – girl 2",
+    email:""
   },
   "Hjálmar Dam":{
     role:"Skuespiller · Høgni Nielsen, business man (krænker)",
     email:"helmetsdam@gmail.com",
     phone:"512449"
   },
-  "Marius DC":{
-    role:"Skuespiller · Danny Bergsson, tann ungi (krænker)",
-    email:"mariusdamchr@gmail.com",
-    phone:"582161"
-  },
-  "Bjørn Simonsen Ulvedal":{
-    role:"Skuespiller · Líggjas Dahl, í rullistólinum (krænker)",
-    email:"bjorn.simonsen@gmail.com",
-    phone:"222867"
-  },
-  "Helena":{
-    role:"Statist · Flashback – Høgni Nielsen – girl 1",
-    email:"helena.h.jorgensen@gmail.com",
-    phone:"274450"
-  },
-  "Ukendt kvindelig statist":{
-    role:"Statist · Flashback – Høgni Nielsen – girl 2"
-  },
-
-  /* Crew */
   "Michael Koba":{
     role:"Producer",
     email:"mk@fixer.fo",
     phone:"591011"
   },
   "Thomas Koba":{
-    role:"Instruktør / foto",
+    role:"Instruktør / instruktør + kamera",
     email:"thomas@kovboyfilm.com",
     phone:"213457"
+  },
+  "Anna Kristin Bæk":{
+    role:"Props & design",
+    email:"kristin.baek@gmail.com",
+    phone:"265180"
   },
   "Julia Jacobsen":{
     role:"Make-up",
     email:"juliajacobsen@outlook.com",
     phone:"251175"
   },
-  "Jónfinn Stenberg":{
-    role:"Foto",
-    email:"jonfinn_stenberg@hotmail.com",
-    phone:"296682"
-  },
   "Hans Petur Hansen":{
     role:"Lys",
     email:"hph@kvf.fo",
     phone:"296652"
-  },
-  "Høgni Fagraberg":{
-    role:"Lyd",
-    email:"h.fagraberg@gmail.com"
-  },
-  "Anna Kristin Bæk":{
-    role:"Props & design",
-    email:"kristin.baek@gmail.com",
-    phone:"265180"
   },
   "Ronni Poulsen":{
     role:"Lyd",
@@ -349,14 +545,24 @@ let currentDay = null;
 
 /* -------------------- INIT -------------------- */
 function init(){
+  // Dropdown med navne
   const sel = el('nameSelect');
-  PEOPLE.forEach(p=>{
+  for(const p of PEOPLE){
     const o = document.createElement('option');
-    o.value=p;
-    o.textContent=p;
+    o.value = p;
+    o.textContent = p;
     sel.appendChild(o);
-  });
+  }
+  // Status (procent)
+  el('statusCompleted').textContent = `Scener completed: ${COMPLETED_SCENE_DAYS} / ${TOTAL_SCENE_DAYS} (${COMPLETED_PERCENT}%)`;
+  el('statusRemaining').textContent = `Scener tilbage: ${TOTAL_SCENE_DAYS - COMPLETED_SCENE_DAYS} / ${TOTAL_SCENE_DAYS} (${REMAINING_PERCENT}%)`;
+  el('statusBar').style.transform = `scaleX(${COMPLETED_PERCENT/100})`;
+  // Dagsliste
   renderDayList();
+  // Evt. vælg første dag som default
+  if(DAYS.length){
+    showDay(DAYS[0].id);
+  }
 }
 init();
 
@@ -370,19 +576,21 @@ function resetUI(){
   el('program').innerHTML = '';
   el('cast').innerHTML = '';
   el('crew').innerHTML = '';
-  el('callInfo').innerHTML = '<div class="muted">Ingen fil knyttet.</div>';
+  el('scenesText').innerHTML = '';
+  el('callInfo').innerHTML = '<div class="muted">Vælg en dag for at se detaljer.</div>';
   renderDayList();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 /* -------------------- Dagsliste (højre) -------------------- */
 function renderDayList(){
-  const q = (el('daySearch').value||'').toLowerCase();
+  const q = (el('daySearch').value || '').toLowerCase();
   const list = el('dayList');
   list.innerHTML = '';
-  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
+  const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)); // dato-sorteret
   days.forEach(d=>{
-    if(q && !(d.title.toLowerCase().includes(q) || d.location.toLowerCase().includes(q))) return;
+    const haystack = (d.title + ' ' + d.location).toLowerCase();
+    if(q && !haystack.includes(q)) return;
     const div = document.createElement('div');
     div.className='item';
     div.innerHTML = `
@@ -394,19 +602,25 @@ function renderDayList(){
     div.onclick = ()=>showDay(d.id);
     list.appendChild(div);
   });
+  if(!list.children.length){
+    list.innerHTML = '<div class="empty">Ingen kommende dage matcher din søgning.</div>';
+  }
 }
 
 function showDay(dayId){
   const d = DAYS.find(x=>x.id===dayId);
   if(!d) return;
   currentDay = d.id;
+
   el('dayTitle').textContent = d.title;
   el('dayMeta').innerHTML = `
     <span class="pill">Location: ${d.location}</span>
     <span class="pill">Skuespillere: ${d.cast.length}</span>
     <span class="pill">Crew: ${d.crew.length}</span>`;
+
+  // Program
   const prog = el('program');
-  prog.innerHTML='';
+  prog.innerHTML = '';
   if(!d.program || !d.program.length){
     prog.innerHTML = '<div class="empty">Intet program registreret.</div>';
   } else {
@@ -417,16 +631,38 @@ function showDay(dayId){
       prog.appendChild(row);
     });
   }
+
+  // Cast & crew
   el('cast').innerHTML = d.cast.length
     ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
     : '<div class="muted">–</div>';
+
   el('crew').innerHTML = d.crew.length
     ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
     : '<div class="muted">–</div>';
 
-  el('callInfo').innerHTML = d.call
-    ? `<a href="${d.call}" target="_blank">Åbn call sheet</a>`
-    : '<div class="muted">Ingen fil knyttet.</div>';
+  // Scenes kort tekst
+  const st = el('scenesText');
+  st.innerHTML = '';
+  if(d.scenes && d.scenes.length){
+    d.scenes.forEach(s=>{
+      const div = document.createElement('div');
+      div.className = 'step';
+      div.innerHTML = `<span class="tag">Scene</span><div>${s}</div>`;
+      st.appendChild(div);
+    });
+  } else {
+    st.innerHTML = '<div class="muted">Ingen scenebeskrivelse registreret.</div>';
+  }
+
+  // Kort call sheet-opsummering
+  el('callInfo').innerHTML = `
+    <div class="stack">
+      <div><span class="kicker">Dato</span><div>${d.title}</div></div>
+      <div><span class="kicker">Location</span><div>${d.location}</div></div>
+      <div><span class="kicker">Første mødetid</span><div>${d.program?.[0]?.[0] || '—'}</div></div>
+      <div><span class="kicker">Sidste planlagte tid</span><div>${d.program?.[d.program.length-1]?.[0] || '—'}</div></div>
+    </div>`;
 
   if(window.innerWidth<1100){
     document.querySelector('.center').scrollIntoView({behavior:'smooth'});
@@ -437,16 +673,16 @@ function showDay(dayId){
 function renderMySchedule(){
   const name = el('nameSelect').value;
   const box = el('mySchedule');
-  box.innerHTML='';
+  box.innerHTML = '';
   if(!name){
-    box.innerHTML = '<div class="empty">Vælg dit navn for at se dine arbejdsdage.</div>';
+    box.innerHTML = '<div class="empty">Vælg dit navn for at se dine kommende arbejdsdage.</div>';
     return;
   }
   const mine = [...DAYS]
     .sort((a,b)=>a.id.localeCompare(b.id))
     .filter(d => d.cast.includes(name) || d.crew.includes(name));
   if(!mine.length){
-    box.innerHTML = '<div class="empty">Ingen dage fundet for denne person.</div>';
+    box.innerHTML = '<div class="empty">Ingen kommende dage fundet for denne person.</div>';
     return;
   }
   mine.forEach(d=>{
@@ -478,27 +714,33 @@ function openContacts(){
 function closeContacts(){
   el('contactsModal').style.display='none';
 }
-
 function renderContacts(){
-  const q = (el('contactSearch').value||'').toLowerCase();
+  const q = (el('contactSearch').value || '').toLowerCase();
   const root = el('contactsList');
-  root.innerHTML='';
+  root.innerHTML = '';
+
   const rows = Object.entries(CONTACTS)
     .filter(([name,c])=>{
       const hay = [name,c.role||'',c.email||'',c.phone||''].join(' ').toLowerCase();
       return !q || hay.includes(q);
     })
     .sort((a,b)=>a[0].localeCompare(b[0],'da'));
+
   if(!rows.length){
     root.innerHTML='<div class="empty">Ingen kontakter matcher.</div>';
     return;
   }
+
   rows.forEach(([name,c])=>{
     const div = document.createElement('div');
     div.className='contact-row';
     const role = c.role ? `<div class="muted">${c.role}</div>` : '';
-    const mail = c.email ? `<a href="mailto:${c.email}">${c.email}</a>` : '<span class="muted">—</span>';
-    const tel  = c.phone ? `<a href="tel:${c.phone}">${c.phone}</a>` : '<span class="muted">—</span>';
+    const mail = c.email
+      ? `<a href="mailto:${c.email}">${c.email}</a>`
+      : '<span class="muted">—</span>';
+    const tel  = c.phone
+      ? `<a href="tel:${c.phone}">${c.phone}</a>`
+      : '<span class="muted">—</span>';
     div.innerHTML = `
       <div>
         <div><strong>${name}</strong></div>
@@ -512,7 +754,7 @@ function renderContacts(){
   });
 }
 
-/* -------------------- Call sheets (samlet liste) -------------------- */
+/* -------------------- Call sheets (samlet for resterende dage) -------------------- */
 function openCallSheets(){
   el('callSheetsModal').style.display='flex';
   renderCallSheets();
@@ -520,11 +762,10 @@ function openCallSheets(){
 function closeCallSheets(){
   el('callSheetsModal').style.display='none';
 }
-
 function renderCallSheets(){
-  const q = (el('callSearch').value||'').toLowerCase();
+  const q = (el('callSearch').value || '').toLowerCase();
   const root = el('callSheetsList');
-  root.innerHTML='';
+  root.innerHTML = '';
   const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id));
   days.forEach(d=>{
     const hay = [
@@ -533,7 +774,8 @@ function renderCallSheets(){
       d.location,
       ...d.cast,
       ...d.crew,
-      ...(d.program||[]).flat()
+      ...(d.program?.flat() || []),
+      ...(d.scenes || [])
     ].join(' ').toLowerCase();
     if(q && !hay.includes(q)) return;
 
@@ -550,7 +792,6 @@ function renderCallSheets(){
         <span class="pill">Location: ${d.location}</span>
         <span class="pill">Skuespillere: ${d.cast.length}</span>
         <span class="pill">Crew: ${d.crew.length}</span>
-        ${d.call ? `<a class="pill" href="${d.call}" target="_blank">Eksternt call sheet</a>` : `<span class="pill">Ingen ekstern fil</span>`}
       </div>
       <div class="section">
         <h3>Program</h3>
@@ -584,11 +825,19 @@ function renderCallSheets(){
           </div>
         </div>
       </div>
+      ${
+        d.scenes && d.scenes.length
+          ? `<div class="section"><h3>Scener</h3><div class="program">${
+              d.scenes.map(s=>`<div class="step"><span class="tag">Scene</span><div>${s}</div></div>`).join('')
+            }</div></div>`
+          : ''
+      }
     `;
     root.appendChild(sheet);
   });
+
   if(!root.children.length){
-    root.innerHTML = '<div class="empty">Ingen dage matcher din søgning.</div>';
+    root.innerHTML = '<div class="empty">Ingen kommende call sheets matcher din søgning.</div>';
   }
 }
 </script>
