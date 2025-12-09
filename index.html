@@ -30,8 +30,8 @@
     position:sticky;
     top:0;
     background:#0f1115cc;
-    backdrop-filter: blur(6px);
-    z-index:10;
+    backdrop-filter:blur(6px);
+    z-index:20;
   }
   .logo{
     display:flex;
@@ -53,11 +53,62 @@
     margin:0;
     font-weight:700;
   }
+
+  /* Summary */
+  .summary{
+    padding:12px 16px 4px 16px;
+  }
+  .status-card{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .summary-top{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+  .summary-text{
+    font-size:14px;
+  }
+  .summary-numbers{
+    display:flex;
+    gap:16px;
+    align-items:flex-end;
+    flex-wrap:wrap;
+  }
+  .summary-numbers div{
+    text-align:right;
+    font-size:13px;
+  }
+  .summary-numbers strong{
+    display:block;
+    font-size:18px;
+  }
+  .progress{
+    position:relative;
+    width:100%;
+    height:8px;
+    border-radius:999px;
+    background:#0f1218;
+    overflow:hidden;
+    border:1px solid #222535;
+  }
+  .progress-inner{
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--brand),var(--brand2));
+    width:0%;
+    transition:width .6s ease-out;
+  }
+
   .wrap{
     display:grid;
     grid-template-columns:320px 1fr 360px;
     gap:16px;
-    padding:16px;
+    padding:8px 16px 16px 16px;
   }
   .card{
     background:var(--card);
@@ -68,7 +119,12 @@
   .pane{padding:16px}
   h2{margin:.25rem 0 1rem 0;font-size:18px}
   h3{margin:1rem 0 .5rem 0;font-size:16px}
-  label{display:block;margin-bottom:.5rem;font-size:13px;color:var(--muted)}
+  label{
+    display:block;
+    margin-bottom:.5rem;
+    font-size:13px;
+    color:var(--muted);
+  }
   select,input[type="search"]{
     width:100%;
     padding:12px;
@@ -117,7 +173,11 @@
     padding:10px;
     border-radius:10px;
   }
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
   .chip{
     padding:6px 10px;
     border-radius:999px;
@@ -132,7 +192,11 @@
     border:1px solid var(--border);
     font-size:12px;
   }
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  .toolbar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
   button{
     cursor:pointer;
     border:1px solid var(--border);
@@ -140,6 +204,7 @@
     color:var(--text);
     padding:10px 12px;
     border-radius:12px;
+    font-size:13px;
   }
   button.primary{
     border-color:transparent;
@@ -150,7 +215,11 @@
     margin-top:12px;
     padding-top:12px;
   }
-  .empty{padding:16px;text-align:center;color:var(--muted)}
+  .empty{
+    padding:16px;
+    text-align:center;
+    color:var(--muted);
+  }
   .kicker{
     font-size:12px;
     color:var(--muted);
@@ -179,37 +248,13 @@
   }
   a{color:#a5b4fc}
 
-  /* Status / progress */
-  .status-block{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-  .progressbar{
-    width:100%;
-    height:8px;
-    border-radius:999px;
-    background:#0c0f16;
-    border:1px solid #222637;
-    overflow:hidden;
-  }
-  .progressfill{
-    height:100%;
-    width:0;
-    border-radius:999px;
-    background:linear-gradient(90deg,var(--brand),var(--brand2));
-    transition:width .8s ease-out;
-  }
-  .statusline{
-    font-size:13px;
-    color:var(--muted);
-  }
-
   @media (max-width:1100px){
     .wrap{grid-template-columns:1fr;}
     .right{order:3}
     .center{order:2}
     .left{order:1}
+    .summary{padding:8px}
+    .wrap{padding:8px}
   }
 
   /* Modal */
@@ -243,7 +288,19 @@
   @media print{
     body{background:white;color:black}
     header,.left,.right,.footer,#contactsModal{display:none !important}
+    .summary{display:none !important}
     .center{border:none;box-shadow:none}
+    #callSheetsModal{display:block;background:none}
+    #callSheetsModal .box{width:100%;max-height:none;overflow:visible}
+    #callSheetsList .sheet{
+      page-break-after:always;
+      border:1px solid #0002;
+    }
+    .sheet .program .step{
+      border:1px solid #0001;
+      background:#fff;
+    }
+    a{color:inherit}
   }
 </style>
 </head>
@@ -254,25 +311,39 @@
   </a>
 </header>
 
+<!-- STATUS / PROGRESS -->
+<div class="summary">
+  <div class="card pane status-card">
+    <div class="summary-top">
+      <div>
+        <div class="kicker">Status for optagelser</div>
+        <div id="summaryText" class="summary-text"></div>
+      </div>
+      <div class="summary-numbers">
+        <div>
+          <strong id="completedHours">–</strong>
+          <span class="muted">optaget (ca.)</span>
+        </div>
+        <div>
+          <strong id="remainingHours">–</strong>
+          <span class="muted">tilbage (ca.)</span>
+        </div>
+      </div>
+    </div>
+    <div class="progress">
+      <div class="progress-inner" id="progressInner"></div>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <!-- VENSTRE -->
   <div class="card pane left">
     <div class="toolbar">
       <button class="primary" onclick="openContacts()">Kontakter</button>
+      <button onclick="openCallSheets()">Call sheets</button>
       <button onclick="window.print()">Print</button>
     </div>
-
-    <!-- STATUS / PROGRESS -->
-    <div class="section">
-      <div class="kicker">Status</div>
-      <div class="status-block">
-        <div id="statusLine" class="statusline">Indlæser status…</div>
-        <div class="progressbar">
-          <div id="statusFill" class="progressfill"></div>
-        </div>
-      </div>
-    </div>
-
     <div class="section">
       <label for="nameSelect">Vælg dit navn</label>
       <select id="nameSelect" onchange="renderMySchedule()">
@@ -295,6 +366,10 @@
         <div class="section">
           <h3>Program</h3>
           <div id="program" class="program"></div>
+        </div>
+        <div class="section">
+          <h3>Scener</h3>
+          <div id="scenes" class="stack"></div>
         </div>
         <div class="section grid">
           <div>
@@ -330,7 +405,7 @@
 <div id="contactsModal" class="modal">
   <div class="card pane box">
     <div class="hdr">
-      <h2 style="margin:0">Kontakter</h2>
+      <h2 style="margin:0">Kontakter (resterende optagelse)</h2>
       <div class="toolbar"><button onclick="closeContacts()">Luk</button></div>
     </div>
     <div class="search">
@@ -340,72 +415,97 @@
   </div>
 </div>
 
-<div class="footer">Version: 24.09.2025 · Kilde: Produktionsplan v3.4 (arbejdsversion)</div>
+<!-- Call sheets modal (samlet liste) -->
+<div id="callSheetsModal" class="modal">
+  <div class="card pane box">
+    <div class="hdr">
+      <h2 style="margin:0">Call sheets · fuld dagsplan</h2>
+      <div class="toolbar">
+        <button onclick="window.print()">Print</button>
+        <button onclick="closeCallSheets()">Luk</button>
+      </div>
+    </div>
+    <div class="search">
+      <input id="callSearch" type="search" placeholder="Søg (dato, titel, location, person…)" oninput="renderCallSheets()">
+    </div>
+    <div id="callSheetsList" class="stack section"></div>
+  </div>
+</div>
+
+<div class="footer">
+  Version: 3.5 · Opdateret efter produktionsplan · Status baseret på planlagte produktionstimer
+</div>
 
 <script>
-/* -------------------- PRODUKTIONS-TIMER / STATUS -------------------- */
-/* Estimat baseret på hele planen:
-   Ca. 108 produktionstimer totalt og ca. 5,5 timer tilbage på sidste optagedag.
-   Juster værdierne her, hvis du senere finregner timerne. */
-const TOTAL_HOURS = 108;
-const REMAINING_HOURS = 5.5;
+/* -------------------- DATA -------------------- */
 
-/* -------------------- DATA (SISTE OPTAGEDAG) -------------------- */
-
+/* Resterende optagedag (ikke completed) */
 const DAYS = [
   {
-    id: "2025-12-14",
-    title: 'Søndag 14. dec. · “Flashback 3B – kaffemaskine scene”',
-    location: 'Tjarnir (Presselogen)',
-    program: [
-      ["15:00","Film crew gør “kaffemaskine scenen” i Presselogen klar (Hans Petur, Thomas, Michael)"],
-      ["15:00","Lydmand, make-up og stylist møder (Ronni Poulsen, Julia Jacobsen)"],
-      ["15:00","2 statister (girl 1 og girl 2) og 1 hovedskuespiller møder til make-up/tøj (Helena, ukendt kvindelig statist, Hjálmar Dam)"],
-      ["17:00","Optagelse starter"],
+    id:"2025-12-14",
+    title:'Søndag 14. dec. · “Flashback 3B – kaffemaskine-scene”',
+    location:'Tjarnir (Presselogen)',
+    program:[
+      ["15:00","Film crew gør kaffemaskine-scenen i Presselogen klar (Hans Petur, Thomas, Michael)"],
+      ["15:00","Lydmand + make-up møder (Ronni Poulsen, Julia Jacobsen)"],
+      ["15:00","Helena møder til make-up og tøj"],
+      ["15:45","Marianna Winther Nagata møder til make-up og tøj"],
+      ["16:15","Hjálmar møder til tøj og make-up"],
+      ["17:30","Optagelse starter"],
       ["20:30","SLUT"]
     ],
-    cast: ["Helena","Ukendt kvindelig statist","Hjálmar Dam"],
-    crew: ["Michael Koba","Thomas Koba","Hans Petur Hansen","Ronni Poulsen","Julia Jacobsen"],
-    call: null
+    cast:["Helena","Marianna Winther Nagata","Hjálmar Dam"],
+    crew:["Michael Koba","Thomas Koba","Hans Petur Hansen","Ronni Poulsen","Julia Jacobsen"],
+    scenes:[
+      "Flashback 3B – kaffemaskine-scene med Høgni og to kvinder ved kaffemaskinen i Presselogen på Tjarnir."
+    ],
+    call:null
   }
 ];
 
-/* Kun personer som stadig skal med fremover */
+/* Call-sheet-liste: her kan du evt. tilføje tidligere completed dage,
+   hvis du vil printe alle sammen fra portalen. Lige nu vises kun
+   den resterende dag i listen. */
+const CALL_SHEETS = [...DAYS];
+
+/* Kontakter – kun dem, der er med i resterende optagelse */
 const CONTACTS = {
-  "Helena": {
-    role:"Statist · Flashback girl 1",
+  "Helena":{
+    role:"Skuespiller · Flashback – Høgni Nielsen, girl 1",
     email:"helena.h.jorgensen@gmail.com",
     phone:"274450"
   },
-  "Ukendt kvindelig statist": {
-    role:"Statist · Flashback girl 2"
+  "Marianna Winther Nagata":{
+    role:"Skuespiller · Flashback – Høgni Nielsen, girl 2",
+    email:"mariannawnagata@gmail.com",
+    phone:"282107"
   },
-  "Hjálmar Dam": {
-    role:"Skuespiller · Høgni Nielsen",
+  "Hjálmar Dam":{
+    role:"Skuespiller · Høgni Nielsen, business man (krænker)",
     email:"helmetsdam@gmail.com",
     phone:"512449"
   },
-  "Michael Koba": {
+  "Michael Koba":{
     role:"Producer",
     email:"mk@fixer.fo",
     phone:"591011"
   },
-  "Thomas Koba": {
+  "Thomas Koba":{
     role:"Instruktør",
     email:"thomas@kovboyfilm.com",
     phone:"213457"
   },
-  "Hans Petur Hansen": {
+  "Hans Petur Hansen":{
     role:"Lys",
     email:"hph@kvf.fo",
     phone:"296652"
   },
-  "Ronni Poulsen": {
+  "Ronni Poulsen":{
     role:"Lyd",
     email:"ronni.poulsen@gmail.com",
     phone:"794141"
   },
-  "Julia Jacobsen": {
+  "Julia Jacobsen":{
     role:"Make-up",
     email:"juliajacobsen@outlook.com",
     phone:"251175"
@@ -418,50 +518,57 @@ const PEOPLE = Array.from(new Set([
   ...DAYS.flatMap(d => [...d.cast, ...d.crew])
 ])).sort((a,b)=>a.localeCompare(b,'da'));
 
+/* Optagelses-timer til status (ca.) */
+/* Baseret på produktionsplanen (completed dage + 14. dec) */
+const TOTAL_HOURS = 79.0;      // ca. samlet planlagt optagelsestid
+const COMPLETED_HOURS = 73.5;  // ca. optaget
+const REMAINING_HOURS = TOTAL_HOURS - COMPLETED_HOURS;
+
 /* -------------------- DOM helpers -------------------- */
 const el = id => document.getElementById(id);
 let currentDay = null;
 
 /* -------------------- INIT -------------------- */
 function init(){
-  // Fyld navneliste
+  // Dropdown med navne
   const sel = el('nameSelect');
-  PEOPLE.forEach(p=>{
+  for(const p of PEOPLE){
     const o = document.createElement('option');
     o.value = p;
     o.textContent = p;
     sel.appendChild(o);
-  });
+  }
 
   renderDayList();
-  renderStatus();
+  updateSummary();
 }
-
-function renderStatus(){
-  const total = TOTAL_HOURS;
-  const remaining = REMAINING_HOURS;
-  const done = Math.max(0, total - remaining);
-  const pctDone = Math.round(done / total * 100);
-  const pctLeft = 100 - pctDone;
-
-  const statusLine = el('statusLine');
-  const statusFill = el('statusFill');
-
-  statusLine.textContent =
-    `Ca. ${pctDone}% af optagetimerne er gennemført · ${pctLeft}% tilbage`;
-  statusFill.style.width = pctDone + '%';
-}
-
 init();
+
+/* -------------------- Status / summary -------------------- */
+function updateSummary(){
+  const pctCompleted = Math.round((COMPLETED_HOURS / TOTAL_HOURS) * 100);
+  const pctRemaining = 100 - pctCompleted;
+
+  el('summaryText').textContent =
+    `Ca. ${pctCompleted}% af optagelserne er i hus · ca. ${pctRemaining}% tilbage (baseret på produktionstimer).`;
+
+  el('completedHours').textContent =
+    COMPLETED_HOURS.toString().replace('.', ',') + ' t';
+  el('remainingHours').textContent =
+    REMAINING_HOURS.toString().replace('.', ',') + ' t';
+
+  el('progressInner').style.width = pctCompleted + '%';
+}
 
 /* -------------------- UI base -------------------- */
 function resetUI(){
-  el('nameSelect').value = "";
+  el('nameSelect').value="";
   renderMySchedule();
   currentDay = null;
   el('dayTitle').textContent = 'Vælg en dag i højre side';
   el('dayMeta').innerHTML = '';
   el('program').innerHTML = '';
+  el('scenes').innerHTML = '';
   el('cast').innerHTML = '';
   el('crew').innerHTML = '';
   el('callInfo').innerHTML = '<div class="muted">Ingen fil knyttet.</div>';
@@ -476,10 +583,11 @@ function renderDayList(){
   list.innerHTML = '';
 
   const days = [...DAYS].sort((a,b)=>a.id.localeCompare(b.id)); // dato-sorteret
+
   days.forEach(d=>{
     if(q && !(d.title.toLowerCase().includes(q) || d.location.toLowerCase().includes(q))) return;
     const div = document.createElement('div');
-    div.className = 'item';
+    div.className='item';
     div.innerHTML = `
       <div>
         <div><strong>${d.title}</strong></div>
@@ -507,6 +615,7 @@ function showDay(dayId){
     <span class="pill">Crew: ${d.crew.length}</span>
   `;
 
+  // Program
   const prog = el('program');
   prog.innerHTML = '';
   if(!d.program || !d.program.length){
@@ -514,30 +623,47 @@ function showDay(dayId){
   } else {
     d.program.forEach(([t,desc])=>{
       const row = document.createElement('div');
-      row.className = 'step';
+      row.className='step';
       row.innerHTML = `<time class="tag">${t}</time><div>${desc}</div>`;
       prog.appendChild(row);
     });
   }
 
-  el('cast').innerHTML = d.cast.length
-    ? d.cast.map(n => `<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
-    : '<div class="muted">–</div>';
+  // Scener
+  const sceneBox = el('scenes');
+  sceneBox.innerHTML = '';
+  if(d.scenes && d.scenes.length){
+    d.scenes.forEach(text=>{
+      const div = document.createElement('div');
+      div.className = 'step';
+      div.innerHTML = `<div>${text}</div>`;
+      sceneBox.appendChild(div);
+    });
+  } else {
+    sceneBox.innerHTML = '<div class="muted">Ingen scenebeskrivelse registreret.</div>';
+  }
 
-  el('crew').innerHTML = d.crew.length
-    ? d.crew.map(n => `<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
-    : '<div class="muted">–</div>';
+  // Cast / crew
+  el('cast').innerHTML =
+    d.cast.length
+      ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
+      : '<div class="muted">–</div>';
 
-  el('callInfo').innerHTML = d.call
-    ? `<a href="${d.call}" target="_blank">Åbn call sheet (PDF)</a>`
-    : '<div class="muted">Ingen fil knyttet.</div>';
+  el('crew').innerHTML =
+    d.crew.length
+      ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
+      : '<div class="muted">–</div>';
+
+  // Call info (ingen PDF knyttet endnu)
+  el('callInfo').innerHTML =
+    d.call ? `<a href="${d.call}" target="_blank">Åbn call sheet</a>`
+           : '<div class="muted">Ingen fil knyttet.</div>';
 
   if(window.innerWidth < 1100){
     document.querySelector('.center').scrollIntoView({behavior:'smooth'});
   }
 }
 
-/* -------------------- Mit skema -------------------- */
 function renderMySchedule(){
   const name = el('nameSelect').value;
   const box = el('mySchedule');
@@ -553,13 +679,13 @@ function renderMySchedule(){
     .filter(d => d.cast.includes(name) || d.crew.includes(name));
 
   if(!mine.length){
-    box.innerHTML = '<div class="empty">Ingen dage fundet for denne person.</div>';
+    box.innerHTML = '<div class="empty">Ingen fremtidige dage fundet for denne person.</div>';
     return;
   }
 
   mine.forEach(d=>{
     const div = document.createElement('div');
-    div.className = 'item';
+    div.className='item';
     div.innerHTML = `
       <div>
         <div><strong>${d.title}</strong></div>
@@ -571,7 +697,6 @@ function renderMySchedule(){
   });
 }
 
-/* -------------------- Kontakter -------------------- */
 function contactTip(name){
   const c = CONTACTS[name];
   if(!c) return '';
@@ -579,17 +704,18 @@ function contactTip(name){
   return bits.join(' · ');
 }
 
+/* -------------------- Kontakter -------------------- */
 function openContacts(){
-  el('contactsModal').style.display = 'flex';
+  el('contactsModal').style.display='flex';
   renderContacts();
 }
 function closeContacts(){
-  el('contactsModal').style.display = 'none';
+  el('contactsModal').style.display='none';
 }
 function renderContacts(){
-  const q = (el('contactSearch').value || '').toLowerCase();
+  const q = (el('contactSearch').value||'').toLowerCase();
   const root = el('contactsList');
-  root.innerHTML = '';
+  root.innerHTML='';
 
   const rows = Object.entries(CONTACTS)
     .filter(([name,c])=>{
@@ -599,16 +725,16 @@ function renderContacts(){
     .sort((a,b)=>a[0].localeCompare(b[0],'da'));
 
   if(!rows.length){
-    root.innerHTML = '<div class="empty">Ingen kontakter matcher.</div>';
+    root.innerHTML='<div class="empty">Ingen kontakter matcher.</div>';
     return;
   }
 
   rows.forEach(([name,c])=>{
     const div = document.createElement('div');
-    div.className = 'contact-row';
+    div.className='contact-row';
     const role = c.role ? `<div class="muted">${c.role}</div>` : '';
     const mail = c.email ? `<a href="mailto:${c.email}">${c.email}</a>` : '<span class="muted">—</span>';
-    const tel  = c.phone ? `<a href="tel:${c.phone}">${c.phone}</a>`   : '<span class="muted">—</span>';
+    const tel  = c.phone ? `<a href="tel:${c.phone}">${c.phone}</a>` : '<span class="muted">—</span>';
     div.innerHTML = `
       <div>
         <div><strong>${name}</strong></div>
@@ -620,6 +746,93 @@ function renderContacts(){
       </div>`;
     root.appendChild(div);
   });
+}
+
+/* -------------------- Call sheets (samlet liste) -------------------- */
+function openCallSheets(){
+  el('callSheetsModal').style.display='flex';
+  renderCallSheets();
+}
+function closeCallSheets(){
+  el('callSheetsModal').style.display='none';
+}
+function renderCallSheets(){
+  const q = (el('callSearch').value||'').toLowerCase();
+  const root = el('callSheetsList');
+  root.innerHTML='';
+
+  const days = [...CALL_SHEETS].sort((a,b)=>a.id.localeCompare(b.id));
+
+  days.forEach(d=>{
+    const hay = [
+      d.id, d.title, d.location,
+      ...(d.cast||[]),
+      ...(d.crew||[]),
+      ...(d.program ? d.program.flat() : [])
+    ].join(' ').toLowerCase();
+
+    if(q && !hay.includes(q)) return;
+
+    const sheet = document.createElement('div');
+    sheet.className='sheet';
+    sheet.style.border='1px solid var(--border)';
+    sheet.style.borderRadius='12px';
+    sheet.style.padding='16px';
+    sheet.style.background='#111521';
+    sheet.innerHTML = `
+      <div class="kicker">${d.id}</div>
+      <h2 style="margin:.25rem 0 0 0">${d.title}</h2>
+      <div class="chips" style="margin:.5rem 0 1rem 0">
+        <span class="pill">Location: ${d.location}</span>
+        <span class="pill">Skuespillere: ${d.cast.length}</span>
+        <span class="pill">Crew: ${d.crew.length}</span>
+        ${d.call ? `<a class="pill" href="${d.call}" target="_blank">Eksternt call sheet</a>` : `<span class="pill">Ingen ekstern fil</span>`}
+      </div>
+      <div class="section">
+        <h3>Program</h3>
+        <div class="program">
+          ${
+            (d.program && d.program.length)
+              ? d.program.map(([t,desc])=>`<div class="step"><time class="tag">${t}</time><div>${desc}</div></div>`).join('')
+              : '<div class="muted">Intet program registreret.</div>'
+          }
+        </div>
+      </div>
+      <div class="section">
+        <h3>Scener</h3>
+        <div class="stack">
+          ${
+            (d.scenes && d.scenes.length)
+              ? d.scenes.map(text=>`<div class="step"><div>${text}</div></div>`).join('')
+              : '<div class="muted">Ingen scenebeskrivelse registreret.</div>'
+          }
+        </div>
+      </div>
+      <div class="section grid">
+        <div>
+          <h3>Skuespillere</h3>
+          <div class="chips">${
+            d.cast.length
+              ? d.cast.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
+              : '<div class="muted">–</div>'
+          }</div>
+        </div>
+        <div>
+          <h3>Crew</h3>
+          <div class="chips">${
+            d.crew.length
+              ? d.crew.map(n=>`<span class="chip" title="${contactTip(n)}">${n}</span>`).join('')
+              : '<div class="muted">–</div>'
+          }</div>
+        </div>
+      </div>
+    `;
+    root.appendChild(sheet);
+  });
+
+  if(!root.children.length){
+    root.innerHTML = '<div class="empty">Ingen dage matcher din søgning.</div>';
+  }
 }
 </script>
 </body>
