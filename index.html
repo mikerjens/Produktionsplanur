@@ -1,254 +1,187 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Call Sheet Portal</title>
+
   <style>
-    :root{
-      --bg:#0b1220;
-      --card:#111a2e;
-      --muted:#9fb0d0;
-      --text:#eaf1ff;
-      --line:rgba(255,255,255,.08);
-      --good:#49d17e;
-      --warn:#ffcc66;
-      --bad:#ff6b6b;
-      --accent:#6aa8ff;
-    }
-    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: radial-gradient(1200px 600px at 20% 0%, rgba(106,168,255,.18), transparent 60%),
-                  radial-gradient(900px 500px at 80% 10%, rgba(73,209,126,.12), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.35;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:#0b1220;
+      color:#eaf1ff;
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:22px}
-    .top{
-      display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;
-      margin-bottom:16px;
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:24px;
     }
-    .title h1{margin:0;font-size:22px;letter-spacing:.2px}
-    .title p{margin:6px 0 0;color:var(--muted);font-size:14px}
-    .controls{
-      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-      background:rgba(17,26,46,.55);
-      border:1px solid var(--line);
-      padding:12px;border-radius:14px;
-      backdrop-filter: blur(10px);
-    }
-    select, button, input{
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--line);
-      color:var(--text);
+    h1{margin:0 0 8px}
+    p{color:#9fb0d0;margin:0 0 20px}
+
+    select{
       padding:10px 12px;
-      border-radius:12px;
-      font-size:14px;
-      outline:none;
+      font-size:16px;
+      border-radius:8px;
+      border:1px solid #333;
+      background:#111a2e;
+      color:#fff;
+      margin-bottom:20px;
     }
-    select{min-width:240px}
-    button{cursor:pointer}
-    button:hover{border-color:rgba(255,255,255,.18)}
+
     .grid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:14px;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
     }
-    @media (max-width: 920px){ .grid{grid-template-columns:1fr} select{min-width: 220px} }
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr}
+    }
+
     .card{
-      background:rgba(17,26,46,.7);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-      box-shadow: 0 14px 40px rgba(0,0,0,.28);
-      backdrop-filter: blur(10px);
-    }
-    .card h2{margin:0 0 10px;font-size:16px}
-    .meta{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-    .pill{
-      border:1px solid var(--line);
+      background:#111a2e;
       border-radius:14px;
-      padding:10px 12px;
-      background:rgba(255,255,255,.04);
-      font-size:13px;
+      padding:16px;
+      border:1px solid rgba(255,255,255,0.08);
     }
-    .pill b{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
-    .list{
-      display:flex;flex-direction:column;gap:10px;margin-top:10px;
+
+    .pill{
+      background:#0b1220;
+      padding:10px;
+      border-radius:10px;
+      margin-bottom:8px;
+      font-size:14px;
     }
+
     .item{
-      display:flex;gap:12px;align-items:flex-start;justify-content:space-between;
+      background:#0b1220;
       padding:12px;
-      border:1px solid var(--line);
-      border-radius:16px;
-      background:rgba(255,255,255,.04);
+      border-radius:12px;
+      margin-bottom:10px;
+      border:1px solid rgba(255,255,255,0.06);
     }
-    .left{min-width:0}
+
     .time{
-      display:inline-flex;align-items:center;gap:8px;
       font-weight:700;
-      padding:6px 10px;border-radius:999px;
-      background:rgba(106,168,255,.14);
-      border:1px solid rgba(106,168,255,.25);
-      margin-bottom:6px;
-      font-size:13px;
+      margin-bottom:4px;
     }
-    .desc{color:var(--text);font-size:14px}
-    .sub{color:var(--muted);font-size:13px;margin-top:2px}
-    .tag{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--line);
-      padding:6px 10px;border-radius:999px;
-      white-space:nowrap;
-    }
-    .notice{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:13px;
-      border-top:1px dashed var(--line);
-      padding-top:10px;
-    }
-    .ok{color:var(--good)}
-    .warn{color:var(--warn)}
-    .bad{color:var(--bad)}
-    .small{font-size:12px;color:var(--muted)}
-    .footer{margin-top:14px;color:var(--muted);font-size:12px}
-    .copybox{
-      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .copybox input{min-width:240px}
+
+    .muted{color:#9fb0d0;font-size:13px}
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <div class="top">
-      <div class="title">
-        <h1>Call Sheet Portal</h1>
-        <p>Vælg dit navn → se din mødetid, dine opgaver og hvor du skal være.</p>
-      </div>
 
-      <div class="controls">
-        <label class="small" for="personSelect">Jeg er:</label>
-        <select id="personSelect"></select>
-        <button id="showAllBtn" title="Vis hele dagsoversigten">Vis dagsoversigt</button>
-      </div>
+<body>
+<div class="wrap">
+
+  <h1>Call Sheet Portal</h1>
+  <p>Vælg dit navn – se kun dit eget skema</p>
+
+  <select id="personSelect"></select>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Mit skema</h2>
+      <div id="myMeta"></div>
+      <div id="myList"></div>
     </div>
 
-    <div class="grid">
-      <div class="card" id="myCard">
-        <h2>Mit skema</h2>
-        <div id="myMeta" class="meta"></div>
-        <div id="myList" class="list"></div>
-
-        <div class="copybox">
-          <input id="shareLink" type="text" readonly />
-          <button id="copyBtn">Kopiér link</button>
-          <span class="small">Tip: Send linket til folk – navnet kan være med i URL’en.</span>
-        </div>
-
-        <div class="notice" id="myNotice"></div>
-      </div>
-
-      <div class="card" id="dayCard">
-        <h2>Dagsoversigt</h2>
-        <div id="dayMeta" class="meta"></div>
-        <div id="dayList" class="list"></div>
-        <div class="footer">Hvis du vil skjule dagsoversigten for alle, kan du fjerne højre kolonne i HTML’en.</div>
-      </div>
+    <div class="card">
+      <h2>Dagsoversigt</h2>
+      <div id="dayList"></div>
     </div>
   </div>
 
-  <script>
-    // --- DATA (redigér her) ---
-    const CALLSHEETS = {
-      productionTitle: "Produktion – Call Sheets",
-      day: {
-        dateLabel: "Torsdag 8. jan 2025",
-        locationName: "Film location",
-        locationAddress: "Tórgarðsgøta 15",
-        wrapTime: "20:00",
-        generalNotes: [
-          "Mød til tiden. Sig til hvis du bliver forsinket.",
-          "Husk varmt tøj / praktisk tøj, hvis du står udenfor mellem takes."
-        ]
-      },
-      contacts: [
-        { name: "Michael Koba", role: "Producer", phone: "591011" },
-        { name: "Thomas Koba", role: "Fotograf & filmmaker", phone: "213457" },
-        { name: "Hans Petur Hansen", role: "Lys & fotograf", phone: "" }
-      ],
-      people: [
-        { id:"michael", name:"Michael Koba", type:"Crew", departments:["Produktion"] },
-        { id:"thomas", name:"Thomas Koba", type:"Crew", departments:["Foto"] },
-        { id:"hanspetur", name:"Hans Petur Hansen", type:"Crew", departments:["Lys/Foto"] },
-        { id:"gitte", name:"Gitte Klein", type:"Cast", departments:["Skuespiller"] },
-        { id:"suni", name:"Suni Poulsen", type:"Cast", departments:["Skuespiller"] }
-      ],
-      // Master schedule for the day (from your doc)
-      schedule: [
-        {
-          time:"10:00",
-          title:"Afhent udstyr",
-          detail:"Afhente gamer stol og computerskærm i Elding",
-          where:"Elding",
-          who:["michael","thomas"]
-        },
-        {
-          time:"11:00",
-          title:"Crew pickup / filmvogn",
-          detail:"Hans Petur møder – han og Thomas afhenter filmvogn á Hjalla",
-          where:"Hjalla",
-          who:["hanspetur","thomas"]
-        },
-        {
-          time:"12:00",
-          title:"Klargøring af location",
-          detail:"Klargøring af film location",
-          where:"Tórgarðsgøta 15",
-          who:["thomas","michael","hanspetur"]
-        },
-        {
-          time:"13:00",
-          title:"Make-up",
-          detail:"Møder til make-up i Stjørnuskotið",
-          where:"Stjørnuskotið",
-          who:["gitte"]
-        },
-        {
-          time:"13:30",
-          title:"Make-up",
-          detail:"Møder til make-up i Stjørnuskotið",
-          where:"Stjørnuskotið",
-          who:["suni"]
-        },
-        {
-          time:"16:00",
-          title:"Optagelse starter",
-          detail:"Optagelse påbegyndes",
-          where:"Tórgarðsgøta 15",
-          who:["michael","thomas","hanspetur","gitte","suni"]
-        },
-        {
-          time:"20:00",
-          title:"SLUT / Wrap",
-          detail:"Pak ned, check at alt udstyr er med",
-          where:"Tórgarðsgøta 15",
-          who:["michael","thomas","hanspetur"]
-        }
-      ]
-    };
+</div>
 
-    // --- HELPERS ---
-    const $ = (id) => document.getElementById(id);
+<script>
+/* ---------------- DATA ---------------- */
 
-    function formatPhone(p
+const DATA = {
+  day: {
+    date: "Torsdag 8. januar 2025",
+    location: "Tórgarðsgøta 15",
+    wrap: "20:00"
+  },
 
+  people: [
+    { id:"michael", name:"Michael Koba", role:"Producer" },
+    { id:"thomas", name:"Thomas Koba", role:"Fotograf" },
+    { id:"hans", name:"Hans Petur Hansen", role:"Lys / Foto" },
+    { id:"gitte", name:"Gitte Klein", role:"Skuespiller" },
+    { id:"suni", name:"Suni Poulsen", role:"Skuespiller" }
+  ],
+
+  schedule: [
+    { time:"10:00", title:"Afhent udstyr", where:"Elding", who:["michael","thomas"] },
+    { time:"11:00", title:"Afhent filmvogn", where:"Hjalla", who:["thomas","hans"] },
+    { time:"12:00", title:"Klargøring af location", where:"Tórgarðsgøta 15", who:["michael","thomas","hans"] },
+    { time:"13:00", title:"Make-up", where:"Stjørnuskotið", who:["gitte"] },
+    { time:"13:30", title:"Make-up", where:"Stjørnuskotið", who:["suni"] },
+    { time:"16:00", title:"Optagelse", where:"Tórgarðsgøta 15", who:["michael","thomas","hans","gitte","suni"] },
+    { time:"20:00", title:"Wrap", where:"Tórgarðsgøta 15", who:["michael","thomas","hans"] }
+  ]
+};
+
+/* ---------------- LOGIK ---------------- */
+
+const personSelect = document.getElementById("personSelect");
+const myMeta = document.getElementById("myMeta");
+const myList = document.getElementById("myList");
+const dayList = document.getElementById("dayList");
+
+// dropdown
+DATA.people.forEach(p=>{
+  const opt = document.createElement("option");
+  opt.value = p.id;
+  opt.textContent = p.name + " – " + p.role;
+  personSelect.appendChild(opt);
+});
+
+// render dagsoversigt
+function renderDay(){
+  dayList.innerHTML = "";
+  DATA.schedule.forEach(s=>{
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="time">${s.time} – ${s.title}</div>
+      <div class="muted">📍 ${s.where}</div>
+      <div class="muted">👥 ${s.who.map(id => DATA.people.find(p=>p.id===id).name).join(", ")}</div>
+    `;
+    dayList.appendChild(div);
+  });
+}
+
+// render person
+function renderPerson(id){
+  const person = DATA.people.find(p=>p.id===id);
+  myMeta.innerHTML = `
+    <div class="pill"><b>${person.name}</b><br>${person.role}</div>
+    <div class="pill">${DATA.day.date}<br>📍 ${DATA.day.location}<br>Wrap: ${DATA.day.wrap}</div>
+  `;
+
+  myList.innerHTML = "";
+  DATA.schedule.filter(s=>s.who.includes(id)).forEach(s=>{
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="time">${s.time} – ${s.title}</div>
+      <div class="muted">📍 ${s.where}</div>
+    `;
+    myList.appendChild(div);
+  });
+}
+
+// events
+personSelect.addEventListener("change", e=>{
+  renderPerson(e.target.value);
+});
+
+// init
+renderDay();
+renderPerson(DATA.people[0].id);
+</script>
+
+</body>
+</html>
